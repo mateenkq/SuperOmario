@@ -16,8 +16,6 @@
 package csci205FinalProject;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
@@ -26,14 +24,16 @@ import javafx.stage.Stage;
  */
 public class GameMain extends Application {
 
+    //initialize a gameWorld object here, eventually will be SuperOmar.io
+    GameWorld gameWorld = new GameWorld(60, "GameTest");
+
     @Override
     public void start(Stage primaryStage) {
 
-        GridPane root = new GridPane();
-        Scene scene = new Scene(root);
+        gameWorld.initialize(primaryStage);
 
-        primaryStage.setTitle("Super Omar.io");
-        primaryStage.setScene(scene);
+        gameWorld.beginGameLoop();
+
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }
