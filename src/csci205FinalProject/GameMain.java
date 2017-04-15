@@ -16,7 +16,6 @@
 package csci205FinalProject;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
 /**
@@ -26,18 +25,7 @@ import javafx.stage.Stage;
 public class GameMain extends Application {
 
     //initialize a gameWorld object here, eventually will be SuperOmar.io
-    GameWorld gameWorld = new GameWorld(60, "GameTest") {
-
-        @Override
-        public void initialize(Stage primaryStage) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        public void handle(ActionEvent event) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    };
+    GameWorld gameWorld = new SuperOmario(60, "GameTest");
 
     @Override
     public void start(Stage primaryStage) {
