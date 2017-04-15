@@ -1,21 +1,22 @@
 /* *****************************************
-* CSCI205 - Software Engineering and Design
-* Spring 2017
-*
-* Name: Still going to decide on
-* Date: Apr 14, 2017
-* Time: 2:35:02 AM
-*
-* Project: csci205FinalProject
-* Package: csci205FinalProject
-* File: GameMain
-* Description:
-*
-* ****************************************
+ * CSCI205 - Software Engineering and Design
+ * Spring 2017
+ *
+ * Name: Still going to decide on
+ * Date: Apr 14, 2017
+ * Time: 2:35:02 AM
+ *
+ * Project: csci205FinalProject
+ * Package: csci205FinalProject
+ * File: GameMain
+ * Description:
+ *
+ * ****************************************
  */
 package csci205FinalProject;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
 /**
@@ -25,7 +26,18 @@ import javafx.stage.Stage;
 public class GameMain extends Application {
 
     //initialize a gameWorld object here, eventually will be SuperOmar.io
-    GameWorld gameWorld = new GameWorld(60, "GameTest");
+    GameWorld gameWorld = new GameWorld(60, "GameTest") {
+
+        @Override
+        public void initialize(Stage primaryStage) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void handle(ActionEvent event) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    };
 
     @Override
     public void start(Stage primaryStage) {
