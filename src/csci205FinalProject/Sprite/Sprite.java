@@ -111,6 +111,7 @@ public class Sprite {
         return s.getBoundary().intersects(this.getBoundary());
     }
 
+    @Override
     public String toString() {
         return "Current Position: (" + positionX + "," + positionY + ")" + "Current Velocity: (" + velocityX + "," + velocityY + ")";
     }

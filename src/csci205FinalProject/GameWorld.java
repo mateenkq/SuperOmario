@@ -19,7 +19,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TimelineBuilder;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -31,7 +30,7 @@ import javafx.util.Duration;
  *
  * @author Laura
  */
-public abstract class GameWorld implements EventHandler<ActionEvent> {
+public class GameWorld {
 
     //the JavaFX scene
     private Scene gameScene;
@@ -48,6 +47,10 @@ public abstract class GameWorld implements EventHandler<ActionEvent> {
     //The title of the game window
     private final String title;
 
+    private GameView theView;
+
+    private Background scrollingBackground;
+
     /**
      * The Sprite Manager (to be built later)
      *
@@ -62,6 +65,8 @@ public abstract class GameWorld implements EventHandler<ActionEvent> {
     public GameWorld(final int framesPerSec, final String title) {
         this.framesPerSec = framesPerSec;
         this.title = title;
+        buildAndSetGameLoop();
+        this.scrollingBackground = new Background();
 
         //this method will come later
         //buildAndSetGameLoop();
@@ -87,7 +92,7 @@ public abstract class GameWorld implements EventHandler<ActionEvent> {
                                         }
                                     });
 
-        //set's the gameLoop
+        //sets the gameLoop
         setGameLoop(
                 TimelineBuilder.create().cycleCount(Animation.INDEFINITE).keyFrames(
                         frame).build());
@@ -98,7 +103,24 @@ public abstract class GameWorld implements EventHandler<ActionEvent> {
      *
      * @param primaryStage
      */
-    public abstract void initialize(final Stage primaryStage);
+    public void initialize(final Stage primaryStage) {
+        // This is where we will set up all of the visuals
+        primaryStage.setTitle(getTitle());
+
+        theView = new GameView(this);
+
+        setSceneNodes(theView.getSceneNodes());
+
+        setGameScene(new Scene(theView.getRoot(), GameView.WIDTH.get() * 2,
+                               GameView.HEIGHT.get() * 2));
+
+        theView.loadView();
+
+        primaryStage.setScene(getGameScene());
+
+        // this is where we set up the game loop
+        // and we make all our environments
+    }
 
     /**
      * Starts game loop
@@ -137,6 +159,10 @@ public abstract class GameWorld implements EventHandler<ActionEvent> {
 
     public void setSceneNodes(Group sceneNodes) {
         this.sceneNodes = sceneNodes;
+    }
+
+    public Background getBackground() {
+        return this.scrollingBackground;
     }
 
 }
