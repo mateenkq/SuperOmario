@@ -87,7 +87,7 @@ public abstract class GameWorld implements EventHandler<ActionEvent> {
                                         }
                                     });
 
-        //set's the gameLoop
+        //sets the gameLoop
         setGameLoop(
                 TimelineBuilder.create().cycleCount(Animation.INDEFINITE).keyFrames(
                         frame).build());
