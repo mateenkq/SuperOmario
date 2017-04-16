@@ -18,7 +18,6 @@ package csci205FinalProject;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.TimelineBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -64,7 +63,7 @@ public abstract class GameWorld implements EventHandler<ActionEvent> {
         this.title = title;
 
         //this method will come later
-        //buildAndSetGameLoop();
+        buildAndSetGameLoop();
     }
 
     /**
@@ -88,9 +87,10 @@ public abstract class GameWorld implements EventHandler<ActionEvent> {
                                     });
 
         //sets the gameLoop
-        setGameLoop(
-                TimelineBuilder.create().cycleCount(Animation.INDEFINITE).keyFrames(
-                        frame).build());
+        final Timeline timeline = new Timeline();
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.getKeyFrames().add(frame);
+        setGameLoop(timeline);
     }
 
     /**
