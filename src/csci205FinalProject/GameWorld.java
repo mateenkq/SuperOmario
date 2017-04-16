@@ -48,11 +48,6 @@ public abstract class GameWorld implements EventHandler<ActionEvent> {
     private final String title;
 
     /**
-     * The Sprite Manager (to be built later)
-     *
-     */
-    //private final SpriteManager spriteManager = new SpriteManager();
-    /**
      * GameWorld constructor, sets the gameLoop
      *
      * @param framesPerSec

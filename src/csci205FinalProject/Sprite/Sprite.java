@@ -16,8 +16,10 @@
 package csci205FinalProject.Sprite;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Circle;
 
 /**
  *
@@ -37,11 +39,15 @@ public class Sprite {
     private double width;
     private double height;
 
+    public Node node;
+
     public Sprite() {
         positionX = 0;
         positionY = 0;
         velocityX = 0;
         velocityY = 0;
+
+        node = new Circle();
     }
 
     public void setImage(Image i) {

@@ -15,6 +15,8 @@
  */
 package csci205FinalProject;
 
+import csci205FinalProject.Sprite.PlayerManager;
+import csci205FinalProject.Sprite.SpriteAnimate;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,8 +35,15 @@ public class SuperOmario extends GameWorld {
     //number of sprites currently in frame
     private final static Label NUM_SPRITES = new Label();
 
+    /**
+     * The Sprite Manager (to be built later)
+     *
+     */
+    private SpriteAnimate playerManager;
+
     public SuperOmario(int framesPerSec, String title) {
         super(framesPerSec, title);
+        playerManager = null;
     }
 
     public void initialize(final Stage primaryStage) {
@@ -46,6 +55,8 @@ public class SuperOmario extends GameWorld {
         setSceneNodes(new Group());
         setGameScene(new Scene(getSceneNodes()));
         primaryStage.setScene(getGameScene());
+
+        playerManager = new PlayerManager(this);
 
         //create a button to freeze the gameLoop
         final Timeline gameLoop = getGameLoop();
