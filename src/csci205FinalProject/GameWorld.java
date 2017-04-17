@@ -18,7 +18,6 @@ package csci205FinalProject;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -30,7 +29,7 @@ import javafx.util.Duration;
  *
  * @author Laura
  */
-public abstract class GameWorld implements EventHandler<ActionEvent> {
+public abstract class GameWorld implements EventHandler<Event> {
 
     //the JavaFX scene
     private Scene gameScene;

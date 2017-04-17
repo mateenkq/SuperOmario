@@ -30,21 +30,19 @@ public class Player extends Sprite implements EventHandler<KeyEvent> {
 
     private GameWorld game;
 
+    @Override
+    public void handle(KeyEvent key) {
+        if (key.getCode() == KeyCode.RIGHT) {
+            System.out.println("RIGHT");
+        }
+    }
+
     public Player(GameWorld g) {
         super();
         game = g;
-        System.out.println(game.toString());
-        System.out.println(game.getSceneNodes().toString());
-        System.out.println(game.getSceneNodes().getChildren().toString());
+        node.addEventHandler(KeyEvent.KEY_PRESSED, this);
         game.getSceneNodes().getChildren().add(node);
 
-    }
-
-    @Override
-    public void handle(KeyEvent key) {
-        if (key.getCode() == KeyCode.RIGHT && key.getEventType() == KeyEvent.KEY_PRESSED) {
-            System.out.println("RIGHT");
-        }
     }
 
 }

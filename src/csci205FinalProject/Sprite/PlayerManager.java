@@ -34,7 +34,6 @@ public class PlayerManager extends SpriteAnimate implements
         super(1);
         game = g;
         this.playerSprite = new Player(game);
-        this.playerSprite.node.addEventHandler(KeyEvent.ANY, this);
     }
 
     @Override

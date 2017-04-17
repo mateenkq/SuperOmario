@@ -15,15 +15,17 @@
  */
 package csci205FinalProject;
 
+import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.PlayerManager;
+import csci205FinalProject.Sprite.Sprite;
 import csci205FinalProject.Sprite.SpriteAnimate;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -40,10 +42,28 @@ public class SuperOmario extends GameWorld {
      *
      */
     private SpriteAnimate playerManager;
+    private Sprite player;
 
     public SuperOmario(int framesPerSec, String title) {
         super(framesPerSec, title);
         playerManager = null;
+        player = null;
+    }
+
+    @Override
+    public void handle(Event event) {
+        {
+            switch (getGameLoop().getStatus()) {
+                case RUNNING:
+                    getGameLoop().stop();
+                    System.out.println("stopped");
+                    break;
+                case STOPPED:
+                    getGameLoop().play();
+                    System.out.println("resumed");
+                    break;
+            }
+        }
     }
 
     public void initialize(final Stage primaryStage) {
@@ -57,30 +77,13 @@ public class SuperOmario extends GameWorld {
         primaryStage.setScene(getGameScene());
 
         playerManager = new PlayerManager(this);
+        player = new Player(this);
 
         //create a button to freeze the gameLoop
         final Timeline gameLoop = getGameLoop();
         Button freezeBtn = new Button("Freeze/Resume");
-        freezeBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                switch (gameLoop.getStatus()) {
-                    case RUNNING:
-                        gameLoop.stop();
-                        break;
-                    case STOPPED:
-                        gameLoop.play();
-                        break;
-                }
-            }
-        }
-        );
+        freezeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
+        getSceneNodes().getChildren().add(freezeBtn);
     }
 
-    //idk why the handle method inside the initialize method wasn't enough, but apparently not all abstract methods have been declared without this
-    @Override
-    public void handle(ActionEvent event) {
-        System.out.println("handled");
-    }
 }
