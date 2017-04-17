@@ -22,6 +22,10 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -29,7 +33,7 @@ import javafx.util.Duration;
  *
  * @author Laura
  */
-public abstract class GameWorld implements EventHandler<Event> {
+public abstract class GameWorld implements EventHandler<KeyEvent> {
 
     //the JavaFX scene
     private Scene gameScene;
@@ -46,6 +50,14 @@ public abstract class GameWorld implements EventHandler<Event> {
     //The title of the game window
     private final String title;
 
+    private GraphicsContext gc;
+
+    private Canvas canvas;
+
+    ImageView backgroundImageView;
+    // This defines the scrolling speed of the background
+    double backgroundScrollSpeed = 0.5;
+
     /**
      * GameWorld constructor, sets the gameLoop
      *
@@ -56,8 +68,14 @@ public abstract class GameWorld implements EventHandler<Event> {
         this.framesPerSec = framesPerSec;
         this.title = title;
 
-        //this method will come later
         buildAndSetGameLoop();
+
+        //this method will come later
+        backgroundImageView = new ImageView(getClass().getResource(
+                "/background.png").toExternalForm());
+        backgroundImageView.relocate(0,
+                                     -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
+
     }
 
     /**
@@ -77,6 +95,17 @@ public abstract class GameWorld implements EventHandler<Event> {
                                             //updateSprites();
                                             //checkCollisions();
                                             //cleanupSprites();
+                                            // scroll background
+                                            //calculate new position
+                                            double y = backgroundImageView.getLayoutY() + backgroundScrollSpeed;
+
+                                            // check bounds. Scrolling upwards
+                                            if (Double.compare(y, 0) >= 0) {
+                                                y = 0;
+                                            }
+
+                                            // move the background
+                                            backgroundImageView.setLayoutY(y);
                                         }
                                     });
 
@@ -131,6 +160,27 @@ public abstract class GameWorld implements EventHandler<Event> {
 
     public void setSceneNodes(Group sceneNodes) {
         this.sceneNodes = sceneNodes;
+    }
+
+    public GraphicsContext getGc() {
+        return gc;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public void setGc(GraphicsContext gc) {
+        this.gc = gc;
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
+
+    @Override
+    public void handle(KeyEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

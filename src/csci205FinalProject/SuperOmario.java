@@ -20,12 +20,14 @@ import csci205FinalProject.Sprite.PlayerManager;
 import csci205FinalProject.Sprite.Sprite;
 import csci205FinalProject.Sprite.SpriteAnimate;
 import javafx.animation.Timeline;
-import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -44,6 +46,10 @@ public class SuperOmario extends GameWorld {
     private SpriteAnimate playerManager;
     private Sprite player;
 
+    private Button freezeBtn;
+
+    Pane backgroundLayer;
+
     public SuperOmario(int framesPerSec, String title) {
         super(framesPerSec, title);
         playerManager = null;
@@ -51,8 +57,12 @@ public class SuperOmario extends GameWorld {
     }
 
     @Override
-    public void handle(Event event) {
-        {
+    public void handle(KeyEvent key) {
+        if (key.getCode() == KeyCode.RIGHT) {
+            System.out.println("RIGHT");
+            /// this will (eventually) call a function that makes the player go right
+
+        } else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
                 case RUNNING:
                     getGameLoop().stop();
@@ -64,8 +74,10 @@ public class SuperOmario extends GameWorld {
                     break;
             }
         }
+
     }
 
+    @Override
     public void initialize(final Stage primaryStage) {
 
         //Set the game's title
@@ -76,14 +88,25 @@ public class SuperOmario extends GameWorld {
         setGameScene(new Scene(getSceneNodes()));
         primaryStage.setScene(getGameScene());
 
+        backgroundLayer = new Pane();
+
+        this.setCanvas(new Canvas(GameMain.SCENE_HEIGHT, GameMain.SCENE_WIDTH));
+        getSceneNodes().getChildren().add(getCanvas());
+        backgroundLayer.getChildren().add(
+                backgroundImageView);
+
+        this.getSceneNodes().getChildren().add(backgroundLayer);
+        backgroundLayer.toBack();
+
+        this.setGc(getCanvas().getGraphicsContext2D());
+
         playerManager = new PlayerManager(this);
         player = new Player(this);
 
-        //create a button to freeze the gameLoop
+        this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
         final Timeline gameLoop = getGameLoop();
-        Button freezeBtn = new Button("Freeze/Resume");
-        freezeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
-        getSceneNodes().getChildren().add(freezeBtn);
+//        freezeBtn = new Button("Freeze/Resume");
+//        getSceneNodes().getChildren().add(freezeBtn);
     }
 
 }

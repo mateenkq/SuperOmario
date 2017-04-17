@@ -15,27 +15,95 @@
  */
 package csci205FinalProject;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
  *
  * @author Laura
+ * @see
+ * http://wecode4fun.blogspot.com/2015/01/scrolling-background-we-create.html
  */
 public class GameMain extends Application {
 
+    public static double SCENE_HEIGHT = 240;
+    public static double SCENE_WIDTH = 500;
+
     //initialize a gameWorld object here, eventually will be SuperOmar.io
-    GameWorld gameWorld = new SuperOmario(60, "GameTest");
+    GameWorld gameWorld;
+
+    // This is the main gameLoop
+    private AnimationTimer gameLoop;
+
+    // This is a container for the background image
+    ImageView backgroundImageView;
+
+    // This defines the scrolling speed of the background
+    double backgroundScrollSpeed = 0.5;
+
+    // Defines the visible components of the GUI
+    public static GameView theView;
+
+    @Override
+    public void init() throws Exception {
+        super.init(); //To change body of generated methods, choose Tools | Templates.
+        gameWorld = new SuperOmario(60, "GameTest");
+        theView = new GameView();
+    }
 
     @Override
     public void start(Stage primaryStage) {
 
         gameWorld.initialize(primaryStage);
 
-        gameWorld.beginGameLoop();
+        // create scene
+        Scene scene = gameWorld.getGameScene();
 
-        primaryStage.setFullScreen(true);
+        // show the stage
+//        primaryStage.setScene(scene);
         primaryStage.show();
+
+//        loadGame();
+//        startGameLoop();
+//        primaryStage.setFullScreen(true);
+        primaryStage.show();
+    }
+
+    /**
+     * loads the Game
+     */
+    public void loadGame() {
+        backgroundImageView = new ImageView(getClass().getResource(
+                "/background.png").toExternalForm());
+
+        backgroundImageView.relocate(0,
+                                     -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
+        this.theView.getBackgroundLayer().getChildren().add(backgroundImageView);
+
+    }
+
+    public void startGameLoop() {
+        // game loop
+        gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                // scroll background
+                //calculate new position
+                double y = backgroundImageView.getLayoutY() + backgroundScrollSpeed;
+
+                // check bounds. Scrolling upwards
+                if (Double.compare(y, 0) >= 0) {
+                    y = 0;
+                }
+
+                // move the background
+                backgroundImageView.setLayoutY(y);
+            }
+        };
+        gameLoop.start();
     }
 
     /**

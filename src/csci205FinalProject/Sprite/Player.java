@@ -16,31 +16,22 @@
 package csci205FinalProject.Sprite;
 
 import csci205FinalProject.GameWorld;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 /**
  *
  * @author Morgan
  */
-public class Player extends Sprite implements EventHandler<KeyEvent> {
+public class Player extends Sprite {
 
     private int lives;
 
     private GameWorld game;
 
-    @Override
-    public void handle(KeyEvent key) {
-        if (key.getCode() == KeyCode.RIGHT) {
-            System.out.println("RIGHT");
-        }
-    }
-
     public Player(GameWorld g) {
         super();
         game = g;
-        node.addEventHandler(KeyEvent.KEY_PRESSED, this);
+        this.setImage(".\\csci205FinalProject\\resources\\jm_stand.png");
+        this.render(game.getGc());
         game.getSceneNodes().getChildren().add(node);
 
     }
