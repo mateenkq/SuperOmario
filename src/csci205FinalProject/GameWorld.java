@@ -92,7 +92,7 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
 
                                                 @Override
                                                 public void handle(Event event) {
-                                            //updateSprites();
+                                                    //updateSprites();
                                                     //checkCollisions();
                                                     //cleanupSprites();
                                                     // scroll background
