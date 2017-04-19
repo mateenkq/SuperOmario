@@ -1,17 +1,17 @@
 /* *****************************************
-* CSCI205 - Software Engineering and Design
-* Spring 2017
-*
-* Name: Still going to decide on
-* Date: Apr 14, 2017
-* Time: 6:48:11 PM
-*
-* Project: csci205FinalProject
-* Package: csci205FinalProject
-* File: GameWorld
-* Description:
-* Source: https://dzone.com/articles/javafx-2-game-tutorial-part-2
-* ****************************************
+ * CSCI205 - Software Engineering and Design
+ * Spring 2017
+ *
+ * Name: Still going to decide on
+ * Date: Apr 14, 2017
+ * Time: 6:48:11 PM
+ *
+ * Project: csci205FinalProject
+ * Package: csci205FinalProject
+ * File: GameWorld
+ * Description:
+ * Source: https://dzone.com/articles/javafx-2-game-tutorial-part-2
+ * ****************************************
  */
 package csci205FinalProject;
 
@@ -90,24 +90,25 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         final KeyFrame frame = new KeyFrame(frameDuration,
                                             new EventHandler() {
 
-                                        @Override
-                                        public void handle(Event event) {
+                                                @Override
+                                                public void handle(Event event) {
                                             //updateSprites();
-                                            //checkCollisions();
-                                            //cleanupSprites();
-                                            // scroll background
-                                            //calculate new position
-                                            double y = backgroundImageView.getLayoutY() + backgroundScrollSpeed;
+                                                    //checkCollisions();
+                                                    //cleanupSprites();
+                                                    // scroll background
+                                                    //calculate new position
+                                                    double y = backgroundImageView.getLayoutY() + backgroundScrollSpeed;
 
-                                            // check bounds. Scrolling upwards
-                                            if (Double.compare(y, 0) >= 0) {
-                                                y = 0;
-                                            }
+                                                    // check bounds. Scrolling upwards
+                                                    if (Double.compare(y, 0) >= 0) {
+                                                        y = 0;
+                                                    }
 
-                                            // move the background
-                                            backgroundImageView.setLayoutY(y);
-                                        }
-                                    });
+                                                    // move the background
+                                                    backgroundImageView.setLayoutY(
+                                                            y);
+                                                }
+                                            });
 
         //sets the gameLoop
         final Timeline timeline = new Timeline();
