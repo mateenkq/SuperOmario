@@ -16,6 +16,7 @@
 package csci205FinalProject.Sprite;
 
 import csci205FinalProject.GameWorld;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -29,10 +30,24 @@ public class Player extends Sprite {
 
     public Player(GameWorld g) {
         super();
+        this.setAccelerationY(100);
         game = g;
         this.setImage(".\\csci205FinalProject\\resources\\jm_stand.png");
-        this.render(game.getGc());
-        game.getSceneNodes().getChildren().add(node);
+        this.imageView = new ImageView(image);
+        this.imageView.relocate(this.getPositionX(), this.getPositionY());
+//        this.imageView.setRotate(r);
+//        this.render(game.getGc());
+        game.getSceneNodes().getChildren().add(this.imageView);
+
+    }
+
+    public void isOnGround() {
+//        System.out.println("Y: " + getPositionY() + ", X: " + getPositionX());
+        if (this.getPositionY() > 180) {
+            this.setVelocityY(0);
+//            this.setAccelerationY(0);
+            this.setPostion(getPositionX(), 179);
+        }
 
     }
 

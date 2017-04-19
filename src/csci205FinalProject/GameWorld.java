@@ -15,10 +15,8 @@
  */
 package csci205FinalProject;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
+import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -87,34 +85,54 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         final Duration frameDuration = Duration.millis(
                 1000 / getFramesPerSecond());
         //create frame
-        final KeyFrame frame = new KeyFrame(frameDuration,
-                                            new EventHandler() {
+//        final KeyFrame frame = new KeyFrame(frameDuration,
+//                                            new EventHandler() {
+//
+//                                        @Override
+//                                        public void handle(long currentTime) {
+//                                            updateSprites(
+//                                                    frameDuration.toSeconds());
+//                                            //checkCollisions();
+//                                            //cleanupSprites();
+//                                            // scroll background
+//                                            //calculate new position
+//                                            double y = backgroundImageView.getLayoutY() + backgroundScrollSpeed;
+//
+//                                            // check bounds. Scrolling upwards
+//                                            if (Double.compare(y, 0) >= 0) {
+//                                                y = 0;
+//                                            }
+//
+//                                            // move the background
+//                                            backgroundImageView.setLayoutY(y);
+//                                        }
+//                                    });
+        final long startNanoTime = System.nanoTime();
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                double t = (currentNanoTime - startNanoTime) / 1000000000.0;
 
-                                        @Override
-                                        public void handle(Event event) {
-                                            //updateSprites();
-                                            //checkCollisions();
-                                            //cleanupSprites();
-                                            // scroll background
-                                            //calculate new position
-                                            double y = backgroundImageView.getLayoutY() + backgroundScrollSpeed;
+                updateSprites(frameDuration.toSeconds());
+            }
+        }.start();
 
-                                            // check bounds. Scrolling upwards
-                                            if (Double.compare(y, 0) >= 0) {
-                                                y = 0;
-                                            }
-
-                                            // move the background
-                                            backgroundImageView.setLayoutY(y);
-                                        }
-                                    });
-
+//        AnimationTimer timer = new AnimationTimer() {
+//            @Override
+//            public void handle(long l
+//            ) {
+//                updateSprites()
+//            }
+//
+//        };
         //sets the gameLoop
-        final Timeline timeline = new Timeline();
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.getKeyFrames().add(frame);
-        setGameLoop(timeline);
+//        final Timeline timeline = new Timeline();
+//        timeline.setCycleCount(Animation.INDEFINITE);
+//        timeline.getKeyFrames().add(frame);
+//        setGameLoop(timeline);s
     }
+
+    public abstract void updateSprites(double time);
 
     /**
      * Initialize the gameWorld

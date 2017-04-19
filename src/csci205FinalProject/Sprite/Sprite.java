@@ -17,8 +17,8 @@ package csci205FinalProject.Sprite;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 
 /**
@@ -29,13 +29,14 @@ import javafx.scene.shape.Circle;
  */
 public class Sprite {
 
-    private Image image;
+    protected Image image;
+    protected ImageView imageView;
     private double positionX;
     private double positionY;
     private double velocityX;
     private double velocityY;
-//    private double accelerationX;
-//    private double accelerationY;
+    private double accelerationX;
+    private double accelerationY;
     private double width;
     private double height;
 
@@ -48,6 +49,7 @@ public class Sprite {
         velocityY = 0;
 
         node = new Circle();
+
     }
 
     public void setImage(Image i) {
@@ -64,6 +66,8 @@ public class Sprite {
     public void setPostion(double x, double y) {
         positionX = x;
         positionY = y;
+        node.setTranslateX(positionX);
+        node.setTranslateY(positionY);
     }
 
     public void setVelocity(double x, double y) {
@@ -71,9 +75,26 @@ public class Sprite {
         velocityY = y;
     }
 
-    public void addVelocity(double x, double y) {
+    public void addVelocityX(double x) {
         velocityX += x;
+    }
+
+    public void addVelocityY(double y) {
         velocityY += y;
+    }
+
+    public void setAccelerationX(double accelerationX) {
+        this.accelerationX = accelerationX;
+
+    }
+
+    public void setAccelerationY(double accelerationY) {
+        this.accelerationY = accelerationY;
+    }
+
+    public void changeVelocity(double time) {
+        velocityX += (this.accelerationX * time);
+        velocityY += (this.accelerationY * time);
     }
 
     /**
@@ -83,8 +104,14 @@ public class Sprite {
      * @param time
      */
     public void update(double time) {
+        this.changeVelocity(time);
         positionX += velocityX * time;
         positionY += velocityY * time;
+        node.setTranslateX(positionX);
+        node.setTranslateY(positionY);
+        this.imageView.setX(positionX);
+        this.imageView.setY(positionY);
+
     }
 
     /**
@@ -94,10 +121,10 @@ public class Sprite {
      *
      * @param gc
      */
-    public void render(GraphicsContext gc) {
-        gc.drawImage(image, positionX, positionY);
-    }
-
+//    public void render(GraphicsContext gc) {
+//
+//        gc.drawImage(image, positionX, positionY);
+//    }
     /**
      *
      * @return a new Rectangle2D object
@@ -119,6 +146,34 @@ public class Sprite {
 
     public String toString() {
         return "Current Position: (" + positionX + "," + positionY + ")" + "Current Velocity: (" + velocityX + "," + velocityY + ")";
+    }
+
+    public void setVelocityX(double velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
+    }
+
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    public Image getImage() {
+        return this.image;
     }
 
 }

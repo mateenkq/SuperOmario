@@ -16,8 +16,6 @@
 package csci205FinalProject;
 
 import csci205FinalProject.Sprite.Player;
-import csci205FinalProject.Sprite.PlayerManager;
-import csci205FinalProject.Sprite.Sprite;
 import csci205FinalProject.Sprite.SpriteAnimate;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
@@ -44,7 +42,7 @@ public class SuperOmario extends GameWorld {
      *
      */
     private SpriteAnimate playerManager;
-    private Sprite player;
+    private Player player;
 
     private Button freezeBtn;
 
@@ -58,10 +56,20 @@ public class SuperOmario extends GameWorld {
 
     @Override
     public void handle(KeyEvent key) {
+        System.out.println(key.getEventType().toString());
         if (key.getCode() == KeyCode.RIGHT) {
-            System.out.println("RIGHT");
+            player.setVelocityX(40);
+            key.consume();
             /// this will (eventually) call a function that makes the player go right
-
+        } else if (key.getCode() == KeyCode.LEFT) {
+            if (key.getEventType() == KeyEvent.KEY_PRESSED) {
+                player.setVelocityX(-40);
+                key.consume();
+            } else if (key.getEventType() == KeyEvent.KEY_RELEASED) {
+                player.setVelocityX(0);
+            }
+        } else if (key.getCode() == KeyCode.UP && player.getPositionY() > 176) {
+            player.addVelocityY(-200);
         } else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
                 case RUNNING:
@@ -73,6 +81,8 @@ public class SuperOmario extends GameWorld {
                     System.out.println("resumed");
                     break;
             }
+        } else if (key.getEventType() == KeyEvent.KEY_RELEASED) {
+            player.setVelocityX(0);
         }
 
     }
@@ -100,13 +110,21 @@ public class SuperOmario extends GameWorld {
 
         this.setGc(getCanvas().getGraphicsContext2D());
 
-        playerManager = new PlayerManager(this);
         player = new Player(this);
 
         this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
         final Timeline gameLoop = getGameLoop();
 //        freezeBtn = new Button("Freeze/Resume");
 //        getSceneNodes().getChildren().add(freezeBtn);
+    }
+
+    @Override
+    public void updateSprites(double time) {
+        if (player != null) {
+            player.isOnGround();
+            player.update(time);
+//            player.render(this.getGc());
+        }
     }
 
 }
