@@ -57,7 +57,6 @@ public class SuperOmario extends GameWorld {
 
     @Override
     public void handle(KeyEvent key) {
-        System.out.println(key.getEventType().toString());
         if (key.getCode() == KeyCode.RIGHT) {
             player.setVelocityX(80);
             key.consume();
@@ -121,7 +120,6 @@ public class SuperOmario extends GameWorld {
             @Override
             public void handle(KeyEvent key) {
                 if (key.getCode() == KeyCode.RIGHT) {
-                    System.out.println("right released");
                     /// change to acceleration
                     player.setVelocityX(0);
                 } else if (key.getCode() == KeyCode.LEFT) {
