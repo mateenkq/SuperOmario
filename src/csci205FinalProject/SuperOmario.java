@@ -18,6 +18,7 @@ package csci205FinalProject;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteAnimate;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -58,16 +59,13 @@ public class SuperOmario extends GameWorld {
     public void handle(KeyEvent key) {
         System.out.println(key.getEventType().toString());
         if (key.getCode() == KeyCode.RIGHT) {
-            player.setVelocityX(40);
+            player.setVelocityX(80);
             key.consume();
             /// this will (eventually) call a function that makes the player go right
         } else if (key.getCode() == KeyCode.LEFT) {
-            if (key.getEventType() == KeyEvent.KEY_PRESSED) {
-                player.setVelocityX(-40);
-                key.consume();
-            } else if (key.getEventType() == KeyEvent.KEY_RELEASED) {
-                player.setVelocityX(0);
-            }
+            player.setVelocityX(-80);
+            key.consume();
+
         } else if (key.getCode() == KeyCode.UP && player.getPositionY() > 176) {
             player.addVelocityY(-200);
         } else if (key.getCode() == KeyCode.P) {
@@ -81,8 +79,6 @@ public class SuperOmario extends GameWorld {
                     System.out.println("resumed");
                     break;
             }
-        } else if (key.getEventType() == KeyEvent.KEY_RELEASED) {
-            player.setVelocityX(0);
         }
 
     }
@@ -116,6 +112,23 @@ public class SuperOmario extends GameWorld {
         final Timeline gameLoop = getGameLoop();
 //        freezeBtn = new Button("Freeze/Resume");
 //        getSceneNodes().getChildren().add(freezeBtn);
+
+        setKeyReleasedHandler();
+    }
+
+    private void setKeyReleasedHandler() {
+        this.getGameScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent key) {
+                if (key.getCode() == KeyCode.RIGHT) {
+                    System.out.println("right released");
+                    /// change to acceleration
+                    player.setVelocityX(0);
+                } else if (key.getCode() == KeyCode.LEFT) {
+                    player.setVelocityX(0);
+                }
+            }
+        });
     }
 
     @Override
