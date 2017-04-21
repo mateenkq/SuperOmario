@@ -33,11 +33,12 @@ public class Player extends Sprite {
         this.setAccelerationY(300);
         game = g;
         this.setImage(getClass().getResource("/jm_stand.png").toExternalForm());
-        this.imageView = new ImageView(image);
-        this.imageView.relocate(this.getPositionX(), this.getPositionY());
-//        this.imageView.setRotate(r);
+        this.node = new ImageView(image);
+        this.node.relocate(this.getPositionX(), this.getPositionY());
+//        this.nod.setRotate(r);
 //        this.render(game.getGc());
-        game.getSceneNodes().getChildren().add(this.imageView);
+        this.node = this.node;
+        game.getSceneNodes().getChildren().add(this.node);
 
     }
 
@@ -45,8 +46,7 @@ public class Player extends Sprite {
 //        System.out.println("Y: " + getPositionY() + ", X: " + getPositionX());
         if (this.getPositionY() > 180) {
             this.setVelocityY(0);
-//            this.setAccelerationY(0);
-            this.setPostion(getPositionX(), 179);
+            this.setPostion(getPositionX(), 179.9);
         }
 
     }

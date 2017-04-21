@@ -15,11 +15,9 @@
  */
 package csci205FinalProject.Sprite;
 
-import javafx.geometry.Rectangle2D;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Circle;
 
 /**
  *
@@ -30,7 +28,7 @@ import javafx.scene.shape.Circle;
 public class Sprite {
 
     protected Image image;
-    protected ImageView imageView;
+//    protected ImageView node;
     private double positionX;
     private double positionY;
     private double velocityX;
@@ -47,8 +45,6 @@ public class Sprite {
         positionY = 0;
         velocityX = 0;
         velocityY = 0;
-
-        node = new Circle();
 
     }
 
@@ -109,8 +105,8 @@ public class Sprite {
         positionY += velocityY * time;
         node.setTranslateX(positionX);
         node.setTranslateY(positionY);
-        this.imageView.setX(positionX);
-        this.imageView.setY(positionY);
+//        this.node.setX(positionX);
+//        this.node.setY(positionY);
 
     }
 
@@ -129,8 +125,9 @@ public class Sprite {
      *
      * @return a new Rectangle2D object
      */
-    public Rectangle2D getBoundary() {
-        return new Rectangle2D(positionX, positionY, width, height);
+    public Bounds getBoundary() {
+//        return new Rectangle2D(positionX, positionY, width, height);
+        return this.node.getBoundsInParent();
     }
 
     /**
@@ -142,6 +139,12 @@ public class Sprite {
      */
     public boolean intersects(Sprite s) {
         return s.getBoundary().intersects(this.getBoundary());
+
+    }
+
+    public boolean sideIntersects(Sprite s) {
+//        return s.getBoundary().
+        return false;
     }
 
     public String toString() {
@@ -174,6 +177,31 @@ public class Sprite {
 
     public Image getImage() {
         return this.image;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double w) {
+        this.width = w;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double h) {
+        this.height = h;
+    }
+
+    public void setDimensions(double w, double h) {
+        this.width = w;
+        this.height = h;
+    }
+
+    public Node getNode() {
+        return node;
     }
 
 }

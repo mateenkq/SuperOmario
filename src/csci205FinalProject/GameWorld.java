@@ -114,6 +114,7 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
                 double t = (currentNanoTime - startNanoTime) / 1000000000.0;
 
                 updateSprites(frameDuration.toSeconds());
+                checkCollisons();
             }
         }.start();
 
@@ -133,6 +134,8 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
     }
 
     public abstract void updateSprites(double time);
+
+    public abstract void checkCollisons();
 
     /**
      * Initialize the gameWorld

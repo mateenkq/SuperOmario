@@ -15,6 +15,8 @@
  */
 package csci205FinalProject;
 
+import csci205FinalProject.Sprite.BackgroundManager;
+import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteAnimate;
 import javafx.animation.Timeline;
@@ -106,6 +108,7 @@ public class SuperOmario extends GameWorld {
         this.setGc(getCanvas().getGraphicsContext2D());
 
         player = new Player(this);
+        backgroundManager = new BackgroundManager(this);
 
         this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
         final Timeline gameLoop = getGameLoop();
@@ -114,6 +117,7 @@ public class SuperOmario extends GameWorld {
 
         setKeyReleasedHandler();
     }
+    private BackgroundManager backgroundManager;
 
     private void setKeyReleasedHandler() {
         this.getGameScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -125,6 +129,7 @@ public class SuperOmario extends GameWorld {
                 } else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                 }
+
             }
         });
     }
@@ -135,6 +140,23 @@ public class SuperOmario extends GameWorld {
             player.isOnGround();
             player.update(time);
 //            player.render(this.getGc());
+        }
+    }
+
+    @Override
+    public void checkCollisons() {
+        if (backgroundManager != null) {
+            int j = 0;
+            for (Platform i : backgroundManager.getPlatforms()) {
+                if (i.intersects(player)) {
+                    j++;
+                    System.out.println("intersects " + j);
+                    player.setVelocityY(0);
+                    double newY = ((i.getPositionY() - (i.getHeight() / 2)) - .1) - (player.getHeight() / 2);
+                    newY = player.getPositionY() + (player.getHeight() / 5) - i.getHeight();
+                    player.setPostion(player.getPositionX(), newY);
+                }
+            }
         }
     }
 
