@@ -30,7 +30,7 @@ public class Platform extends Sprite {
         super();
         game = g;
         this.node = new Rectangle(width, height);
-        this.node.relocate(x, y);
+        this.setPostion(x, y);
 
         this.setDimensions(width, height);
 

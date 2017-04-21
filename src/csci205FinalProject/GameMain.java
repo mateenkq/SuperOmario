@@ -75,16 +75,15 @@ public class GameMain extends Application {
     /**
      * loads the Game
      */
-    public void loadGame() {
-        backgroundImageView = new ImageView(getClass().getResource(
-                "/background.png").toExternalForm());
-
-        backgroundImageView.relocate(0,
-                                     -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
-        this.theView.getBackgroundLayer().getChildren().add(backgroundImageView);
-
-    }
-
+//    public void loadGame() {
+//        backgroundImageView = new ImageView(getClass().getResource(
+//                "/background.png").toExternalForm());
+//
+//        backgroundImageView.relocate(0,
+//                                     -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
+//        this.theView.getBackgroundLayer().getChildren().add(backgroundImageView);
+//
+//    }
     public void startGameLoop() {
         // game loop
         gameLoop = new AnimationTimer() {

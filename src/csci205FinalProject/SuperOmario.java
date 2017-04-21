@@ -63,13 +63,16 @@ public class SuperOmario extends GameWorld {
             player.setVelocityX(80);
             key.consume();
             /// this will (eventually) call a function that makes the player go right
-        } else if (key.getCode() == KeyCode.LEFT) {
+        }
+        else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
             key.consume();
 
-        } else if (key.getCode() == KeyCode.UP && player.getPositionY() > 176) {
+        }
+        else if (key.getCode() == KeyCode.UP && player.getPositionY() > 176) {
             player.addVelocityY(-200);
-        } else if (key.getCode() == KeyCode.P) {
+        }
+        else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
                 case RUNNING:
                     getGameLoop().stop();
@@ -126,7 +129,8 @@ public class SuperOmario extends GameWorld {
                 if (key.getCode() == KeyCode.RIGHT) {
                     /// change to acceleration
                     player.setVelocityX(0);
-                } else if (key.getCode() == KeyCode.LEFT) {
+                }
+                else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                 }
 
@@ -152,8 +156,7 @@ public class SuperOmario extends GameWorld {
                     j++;
                     System.out.println("intersects " + j);
                     player.setVelocityY(0);
-                    double newY = ((i.getPositionY() - (i.getHeight() / 2)) - .1) - (player.getHeight() / 2);
-                    newY = player.getPositionY() + (player.getHeight() / 5) - i.getHeight();
+                    double newY = i.getPositionY() - i.getHeight();
                     player.setPostion(player.getPositionX(), newY);
                 }
             }
