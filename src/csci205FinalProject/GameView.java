@@ -15,9 +15,9 @@
  */
 package csci205FinalProject;
 
+import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 
 /**
  * Rendering visual components of game objects
@@ -27,7 +27,7 @@ import javafx.scene.layout.StackPane;
 public class GameView {
 
     //create a root node
-    StackPane root;
+    Group root;
 
     // create layer for the background
     public static Pane backgroundLayer;
@@ -48,7 +48,7 @@ public class GameView {
 //        backgroundLayer.getChildren().add(backgroundImageView);
     }
 
-    public StackPane getRoot() {
+    public Group getRoot() {
         return root;
     }
 

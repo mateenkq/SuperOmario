@@ -17,6 +17,7 @@ package csci205FinalProject;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -29,11 +30,11 @@ import javafx.stage.Stage;
  */
 public class GameMain extends Application {
 
-    public static double SCENE_HEIGHT = 240;
-    public static double SCENE_WIDTH = 500;
+    public static double SCENE_HEIGHT = 800;
+    public static double SCENE_WIDTH = 400;
 
     //initialize a gameWorld object here, eventually will be SuperOmar.io
-    GameWorld gameWorld;
+    SuperOmario gameWorld;
 
     // This is the main gameLoop
     private AnimationTimer gameLoop;
@@ -45,12 +46,13 @@ public class GameMain extends Application {
     double backgroundScrollSpeed = 0.5;
 
     // Defines the visible components of the GUI
-    public static GameView theView;
+    GameView theView;
 
     @Override
     public void init() throws Exception {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         gameWorld = new SuperOmario(60, "GameTest");
+        backgroundImageView = gameWorld.getBackgroundImageView();
         theView = new GameView();
     }
 
@@ -60,15 +62,16 @@ public class GameMain extends Application {
         gameWorld.initialize(primaryStage);
 
         // create scene
-        Scene scene = gameWorld.getGameScene();
+        Scene scene = new Scene(theView.getRoot(), SCENE_WIDTH, SCENE_HEIGHT);
 
         // show the stage
-//        primaryStage.setScene(scene);
+        primaryStage.setScene(scene);
         primaryStage.show();
 
-//        loadGame();
-//        startGameLoop();
-//        primaryStage.setFullScreen(true);
+        loadGame();
+        startGameLoop();
+
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
@@ -76,8 +79,9 @@ public class GameMain extends Application {
      * loads the Game
      */
     public void loadGame() {
-        backgroundImageView = new ImageView(getClass().getResource(
-                "/background.png").toExternalForm());
+//        backgroundImageView =;
+//        backgroundImageView = new ImageView(getClass().getResource(
+//                "/background.png").toExternalForm());
 
         backgroundImageView.relocate(0,
                                      -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);

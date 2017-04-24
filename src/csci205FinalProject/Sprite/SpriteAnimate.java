@@ -16,7 +16,6 @@
 package csci205FinalProject.Sprite;
 
 import java.util.ArrayList;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  *
@@ -63,9 +62,7 @@ public class SpriteAnimate {
         if (currentSprite == this.numOfSprites) {
             // reset to the starting state
             this.currentSprite = 0;
-        }
-
-        else {
+        } else {
             // increment the counter for state/frame
             currentSprite += 1;
         }
@@ -77,8 +74,7 @@ public class SpriteAnimate {
      * @param gc is the GraphicsContext object for which the image has to be
      * rendered
      */
-    public void render(GraphicsContext gc) {
-        this.listOfSprites.get(currentSprite).render(gc);
-    }
-
+//    public void render(GraphicsContext gc) {
+//        this.listOfSprites.get(currentSprite).render(gc);
+//    }
 }
