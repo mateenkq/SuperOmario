@@ -27,6 +27,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -59,6 +61,8 @@ public class SuperOmario extends GameWorld {
 
     Pane backgroundLayer;
 
+    ImageView imageViewMario;
+
     public SuperOmario(int framesPerSec, String title) {
         super(framesPerSec, title);
         playerManager = null;
@@ -69,6 +73,15 @@ public class SuperOmario extends GameWorld {
     public void handle(KeyEvent key) {
         if (key.getCode() == KeyCode.RIGHT) {
             player.setVelocityX(80);
+            imageViewMario = (ImageView) player.node;
+            this.anim = new ImageViewSprite(imageViewMario,
+                                            new Image(
+                                                    "/spritesheet.png"),
+                                            7,
+                                            1, 7,
+                                            60, 95,
+                                            7);
+            anim.start();
             key.consume();
             /// this will (eventually) call a function that makes the player go right
         }
@@ -147,6 +160,17 @@ public class SuperOmario extends GameWorld {
             public void handle(KeyEvent key) {
                 if (key.getCode() == KeyCode.RIGHT) {
                     /// change to acceleration
+//                    ImageView imageViewMario = (ImageView) player.node;
+//
+//                    anim = new ImageViewSprite(imageViewMario,
+//                                               new Image(
+//                                                       "/jm_stand.png"),
+//                                               1,
+//                                               1, 1,
+//                                               14, 30,
+//                                               0);
+                    anim.stop();
+
                     player.setVelocityX(0);
                 }
                 else if (key.getCode() == KeyCode.LEFT) {
