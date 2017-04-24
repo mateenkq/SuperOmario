@@ -31,8 +31,10 @@ public class BackgroundManager {
     public BackgroundManager(GameWorld g) {
         gameWorld = g;
         platforms = new ArrayList();
-        platforms.add(new Platform(g, 50, 30, 100, 180));
+        platforms.add(new Platform(g, 1000, 10, 0, 200));
+        platforms.add(new Platform(g, 200, 10, 100, 150));
         platform = platforms.get(0);
+//        platform.getNode().setOpacity(0);
 
     }
 

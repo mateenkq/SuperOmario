@@ -29,14 +29,14 @@ public class Sprite {
 
     protected Image image;
 //    protected ImageView node;
-    private double positionX;
-    private double positionY;
-    private double velocityX;
-    private double velocityY;
-    private double accelerationX;
-    private double accelerationY;
-    private double width;
-    private double height;
+    protected double positionX;
+    protected double positionY;
+    protected double velocityX;
+    protected double velocityY;
+    protected double accelerationX;
+    protected double accelerationY;
+    protected double width;
+    protected double height;
 
     public Node node;
 
@@ -100,6 +100,7 @@ public class Sprite {
      * @param time
      */
     public void update(double time) {
+
         this.changeVelocity(time);
         positionX += velocityX * time;
         positionY += velocityY * time;
@@ -127,6 +128,7 @@ public class Sprite {
      */
     public Bounds getBoundary() {
 //        return new Rectangle2D(positionX, positionY, width, height);
+
         return this.node.getBoundsInParent();
     }
 
@@ -140,6 +142,14 @@ public class Sprite {
     public boolean intersects(Sprite s) {
         return s.getBoundary().intersects(this.getBoundary());
 
+    }
+
+    public boolean intersectsTop(Sprite s) {
+        if ((s.positionY - s.height < this.positionY) && (s.positionY - s.height > this.positionY - this.height)) {
+            return true;
+        } else {
+            return true;
+        }
     }
 
     public boolean sideIntersects(Sprite s) {

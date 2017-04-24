@@ -63,16 +63,14 @@ public class SuperOmario extends GameWorld {
             player.setVelocityX(80);
             key.consume();
             /// this will (eventually) call a function that makes the player go right
-        }
-        else if (key.getCode() == KeyCode.LEFT) {
+        } else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
             key.consume();
 
-        }
-        else if (key.getCode() == KeyCode.UP && player.getPositionY() > 176) {
+        } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-200);
-        }
-        else if (key.getCode() == KeyCode.P) {
+            player.setOnGround(false);
+        } else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
                 case RUNNING:
                     getGameLoop().stop();
@@ -129,8 +127,7 @@ public class SuperOmario extends GameWorld {
                 if (key.getCode() == KeyCode.RIGHT) {
                     /// change to acceleration
                     player.setVelocityX(0);
-                }
-                else if (key.getCode() == KeyCode.LEFT) {
+                } else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                 }
 
@@ -152,12 +149,15 @@ public class SuperOmario extends GameWorld {
         if (backgroundManager != null) {
             int j = 0;
             for (Platform i : backgroundManager.getPlatforms()) {
-                if (i.intersects(player)) {
+                if (i.intersects(player) && (player.getVelocityY() >= 0)) {
+//                    if (!i.intersectsTop(player)) {
                     j++;
                     System.out.println("intersects " + j);
                     player.setVelocityY(0);
-                    double newY = i.getPositionY() - i.getHeight();
+                    double newY = i.getPositionY() - i.getHeight() - 20;
                     player.setPostion(player.getPositionX(), newY);
+                    player.setOnGround(true);
+//                    }
                 }
             }
         }

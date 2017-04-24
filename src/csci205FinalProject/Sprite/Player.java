@@ -28,6 +28,8 @@ public class Player extends Sprite {
 
     private GameWorld game;
 
+    private boolean onGround;
+
     public Player(GameWorld g) {
         super();
         this.setAccelerationY(300);
@@ -49,6 +51,14 @@ public class Player extends Sprite {
             this.setPostion(getPositionX(), 179.9);
         }
 
+    }
+
+    public boolean onGround() {
+        return onGround;
+    }
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
     }
 
 }
