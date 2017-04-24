@@ -59,11 +59,10 @@ public class Sprite {
         setImage(i);
     }
 
-    public void setPostion(double x, double y) {
+    public void setPosition(double x, double y) {
         positionX = x;
         positionY = y;
-        node.setTranslateX(positionX);
-        node.setTranslateY(positionY);
+        node.relocate(x, y);
     }
 
     public void setVelocity(double x, double y) {
@@ -104,8 +103,9 @@ public class Sprite {
         this.changeVelocity(time);
         positionX += velocityX * time;
         positionY += velocityY * time;
-        node.setTranslateX(positionX);
-        node.setTranslateY(positionY);
+        node.relocate(positionX, positionY);
+//        node.setTranslateX(positionX);
+//        node.setTranslateY(positionY);
 //        this.node.setX(positionX);
 //        this.node.setY(positionY);
 
@@ -147,7 +147,8 @@ public class Sprite {
     public boolean intersectsTop(Sprite s) {
         if ((s.positionY - s.height < this.positionY) && (s.positionY - s.height > this.positionY - this.height)) {
             return true;
-        } else {
+        }
+        else {
             return true;
         }
     }

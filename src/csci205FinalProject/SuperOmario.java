@@ -63,14 +63,17 @@ public class SuperOmario extends GameWorld {
             player.setVelocityX(80);
             key.consume();
             /// this will (eventually) call a function that makes the player go right
-        } else if (key.getCode() == KeyCode.LEFT) {
+        }
+        else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
             key.consume();
 
-        } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
+        }
+        else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-200);
             player.setOnGround(false);
-        } else if (key.getCode() == KeyCode.P) {
+        }
+        else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
                 case RUNNING:
                     getGameLoop().stop();
@@ -127,7 +130,8 @@ public class SuperOmario extends GameWorld {
                 if (key.getCode() == KeyCode.RIGHT) {
                     /// change to acceleration
                     player.setVelocityX(0);
-                } else if (key.getCode() == KeyCode.LEFT) {
+                }
+                else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                 }
 
@@ -154,8 +158,12 @@ public class SuperOmario extends GameWorld {
                     j++;
                     System.out.println("intersects " + j);
                     player.setVelocityY(0);
-                    double newY = i.getPositionY() - i.getHeight() - 20;
-                    player.setPostion(player.getPositionX(), newY);
+                    // Y position for both sprites is at the top left corner
+                    // set position at current location of rectangle - height of player
+                    double newY = i.getPositionY() - player.getHeight();
+                    player.setPosition(player.getPositionX(), newY);
+                    System.out.println(i.getPositionY());
+                    System.out.println(player.getPositionY());
                     player.setOnGround(true);
 //                    }
                 }

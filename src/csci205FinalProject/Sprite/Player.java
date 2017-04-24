@@ -48,7 +48,7 @@ public class Player extends Sprite {
 //        System.out.println("Y: " + getPositionY() + ", X: " + getPositionX());
         if (this.getPositionY() > 180) {
             this.setVelocityY(0);
-            this.setPostion(getPositionX(), 179.9);
+            this.setPosition(getPositionX(), 179.9);
         }
 
     }
