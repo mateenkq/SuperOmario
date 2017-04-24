@@ -73,6 +73,7 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
                 "/background.png").toExternalForm());
         backgroundImageView.relocate(0,
                                      -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
+//        backgroundImageView.setScaleY(2);
 
     }
 

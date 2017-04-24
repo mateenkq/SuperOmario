@@ -147,14 +147,12 @@ public class SuperOmario extends GameWorld {
     @Override
     public void checkCollisons() {
         if (backgroundManager != null) {
-            int j = 0;
             for (Platform i : backgroundManager.getPlatforms()) {
                 if (i.intersects(player) && (player.getVelocityY() >= 0)) {
 //                    if (!i.intersectsTop(player)) {
-                    j++;
-                    System.out.println("intersects " + j);
+                    System.out.println(i + " " + player);
                     player.setVelocityY(0);
-                    double newY = i.getPositionY() - i.getHeight() - 20;
+                    double newY = i.getPositionY() - player.getHeight();
                     player.setPostion(player.getPositionX(), newY);
                     player.setOnGround(true);
 //                    }
