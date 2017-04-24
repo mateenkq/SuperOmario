@@ -8,7 +8,7 @@
  *
  * Project: csci205FinalProject
  * Package: csci205FinalProject.Sprite
- * File: SpriteAnimate
+ * File: SpriteManager
  * Description:
  *
  * ****************************************
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  * @author Mateen Qureshi
  */
-public class SpriteAnimate {
+public class SpriteManager {
 
     // number of Sprite objects to be used
     private int numOfSprites;
@@ -35,7 +35,7 @@ public class SpriteAnimate {
      *
      * @param numOfSprites is the number of Sprite objects to be used
      */
-    public SpriteAnimate(int numOfSprites) {
+    public SpriteManager(int numOfSprites) {
         this.numOfSprites = numOfSprites;
         this.listOfSprites = new ArrayList<>();
         for (int i = 0; i < this.numOfSprites; i++) {

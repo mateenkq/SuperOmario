@@ -18,7 +18,7 @@ package csci205FinalProject;
 import csci205FinalProject.Sprite.BackgroundManager;
 import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
-import csci205FinalProject.Sprite.SpriteAnimate;
+import csci205FinalProject.Sprite.SpriteManager;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -44,7 +44,7 @@ public class SuperOmario extends GameWorld {
      * The Sprite Manager (to be built later)
      *
      */
-    private SpriteAnimate playerManager;
+    private SpriteManager playerManager;
     private Player player;
 
     private Button freezeBtn;
