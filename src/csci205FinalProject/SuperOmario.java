@@ -16,6 +16,7 @@
 package csci205FinalProject;
 
 import csci205FinalProject.Sprite.BackgroundManager;
+import csci205FinalProject.Sprite.EnemyManager;
 import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteManager;
@@ -29,6 +30,9 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -48,6 +52,10 @@ public class SuperOmario extends GameWorld {
     private Player player;
 
     private Button freezeBtn;
+
+    private int lives;
+    private Text livesDisplay;
+    private boolean collision = false;
 
     Pane backgroundLayer;
 
@@ -113,15 +121,25 @@ public class SuperOmario extends GameWorld {
 
         player = new Player(this);
         backgroundManager = new BackgroundManager(this);
+        enemyManager = new EnemyManager(this);
 
         this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
         final Timeline gameLoop = getGameLoop();
 //        freezeBtn = new Button("Freeze/Resume");
 //        getSceneNodes().getChildren().add(freezeBtn);
 
+        //display lives left
+        lives = 3;
+        livesDisplay = new Text(0, 12, String.format("Lives Left: %d",
+                                                     lives));
+        livesDisplay.setFont(new Font("Arial", 15));
+        livesDisplay.setFill(Color.WHITE);
+        getSceneNodes().getChildren().add(livesDisplay);
+
         setKeyReleasedHandler();
     }
     private BackgroundManager backgroundManager;
+    private EnemyManager enemyManager;
 
     private void setKeyReleasedHandler() {
         this.getGameScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -144,7 +162,12 @@ public class SuperOmario extends GameWorld {
         if (player != null) {
             player.isOnGround();
             player.update(time);
-//            player.render(this.getGc());
+//          player.render(this.getGc());
+        }
+        if (enemyManager != null) {
+            for (int i = 0; i < enemyManager.getFireballs().size(); i++) {
+                this.enemyManager.getFireballs().get(i).update(time);
+            }
         }
     }
 
@@ -154,19 +177,35 @@ public class SuperOmario extends GameWorld {
             int j = 0;
             for (Platform i : backgroundManager.getPlatforms()) {
                 if (i.intersects(player) && (player.getVelocityY() >= 0)) {
-//                    if (!i.intersectsTop(player)) {
-                    j++;
-                    System.out.println("intersects " + j);
                     player.setVelocityY(0);
                     // Y position for both sprites is at the top left corner
                     // set position at current location of rectangle - height of player
                     double newY = i.getPositionY() - player.getHeight();
                     player.setPosition(player.getPositionX(), newY);
-                    System.out.println(i.getPositionY());
-                    System.out.println(player.getPositionY());
                     player.setOnGround(true);
-//                    }
                 }
+            }
+        }
+        if (enemyManager != null) {
+            boolean setOpaque = false;
+            //check if the player has hit any fireballs
+            for (int i = 0; i < enemyManager.getFireballs().size(); i++) {
+                if (enemyManager.getFireballs().get(i).intersects(player)) {
+                    setOpaque = true;
+                    if (!collision) {
+                        lives -= 1;
+                        livesDisplay.setText(String.format("Lives Left: %d",
+                                                           lives));
+                        collision = true;
+                    }
+                }
+            }
+            if (setOpaque) {
+                player.getNode().setOpacity(0);
+            }
+            else {
+                player.getNode().setOpacity(1);
+                collision = false;
             }
         }
     }

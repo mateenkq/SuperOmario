@@ -33,6 +33,8 @@ public class BackgroundManager {
         platforms = new ArrayList();
         platforms.add(new Platform(g, 1000, 10, 0, 200));
         platforms.add(new Platform(g, 200, 10, 100, 150));
+        platforms.add(new Platform(g, 100, 10, 400, 150));
+        platforms.add(new Platform(g, 200, 10, 600, 150));
         platform = platforms.get(0);
 //        platform.getNode().setOpacity(0);
 
