@@ -16,6 +16,7 @@
 package csci205FinalProject;
 
 import csci205FinalProject.Sprite.BackgroundManager;
+import csci205FinalProject.Sprite.ImageViewSprite;
 import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteManager;
@@ -26,6 +27,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -49,7 +52,11 @@ public class SuperOmario extends GameWorld {
 
     private Button freezeBtn;
 
+    ImageViewSprite anim;
+
     Pane backgroundLayer;
+
+    ImageView imageViewMario;
 
     public SuperOmario(int framesPerSec, String title) {
         super(framesPerSec, title);
@@ -61,16 +68,28 @@ public class SuperOmario extends GameWorld {
     public void handle(KeyEvent key) {
         if (key.getCode() == KeyCode.RIGHT) {
             player.setVelocityX(80);
+            imageViewMario = (ImageView) player.node;
+            this.anim = new ImageViewSprite(imageViewMario,
+                                            new Image(
+                                                    "/spritesheet.png"),
+                                            7,
+                                            1, 7,
+                                            60, 95,
+                                            7);
+            anim.start();
             key.consume();
             /// this will (eventually) call a function that makes the player go right
-        } else if (key.getCode() == KeyCode.LEFT) {
+        }
+        else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
             key.consume();
 
-        } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
+        }
+        else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-200);
             player.setOnGround(false);
-        } else if (key.getCode() == KeyCode.P) {
+        }
+        else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
                 case RUNNING:
                     getGameLoop().stop();
@@ -126,8 +145,20 @@ public class SuperOmario extends GameWorld {
             public void handle(KeyEvent key) {
                 if (key.getCode() == KeyCode.RIGHT) {
                     /// change to acceleration
+//                    ImageView imageViewMario = (ImageView) player.node;
+//
+//                    anim = new ImageViewSprite(imageViewMario,
+//                                               new Image(
+//                                                       "/jm_stand.png"),
+//                                               1,
+//                                               1, 1,
+//                                               14, 30,
+//                                               0);
+                    anim.stop();
+
                     player.setVelocityX(0);
-                } else if (key.getCode() == KeyCode.LEFT) {
+                }
+                else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                 }
 
