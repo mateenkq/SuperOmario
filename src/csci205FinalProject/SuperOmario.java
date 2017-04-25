@@ -17,6 +17,7 @@ package csci205FinalProject;
 
 import csci205FinalProject.Sprite.BackgroundManager;
 import csci205FinalProject.Sprite.EnemyManager;
+import csci205FinalProject.Sprite.ImageViewSprite;
 import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteManager;
@@ -59,6 +60,8 @@ public class SuperOmario extends GameWorld {
     private Text livesDisplay;
     private boolean collision = false;
 
+    private ImageViewSprite anim;
+
     Pane backgroundLayer;
 
     ImageView imageViewMario;
@@ -67,34 +70,30 @@ public class SuperOmario extends GameWorld {
         super(framesPerSec, title);
         playerManager = null;
         player = null;
+
     }
 
     @Override
     public void handle(KeyEvent key) {
         if (key.getCode() == KeyCode.RIGHT) {
             player.setVelocityX(80);
-            imageViewMario = (ImageView) player.node;
-            this.anim = new ImageViewSprite(imageViewMario,
-                                            new Image(
-                                                    "/spritesheet.png"),
-                                            7,
-                                            1, 7,
-                                            60, 95,
-                                            7);
-            anim.start();
+
+            if (player.onGround()) {
+                anim.start();
+            }
             key.consume();
             /// this will (eventually) call a function that makes the player go right
-        }
-        else if (key.getCode() == KeyCode.LEFT) {
+        } else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
+            if (player.onGround()) {
+                anim.start();
+            }
             key.consume();
 
-        }
-        else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
+        } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-200);
             player.setOnGround(false);
-        }
-        else if (key.getCode() == KeyCode.P) {
+        } else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
                 case RUNNING:
                     getGameLoop().stop();
@@ -133,6 +132,15 @@ public class SuperOmario extends GameWorld {
         this.setGc(getCanvas().getGraphicsContext2D());
 
         player = new Player(this);
+
+        imageViewMario = (ImageView) player.node;
+        this.anim = new ImageViewSprite(imageViewMario,
+                                        new Image(
+                                                "/spritesheet.png"),
+                                        7,
+                                        1, 7,
+                                        19, 30,
+                                        7);
         backgroundManager = new BackgroundManager(this);
         enemyManager = new EnemyManager(this);
 
@@ -172,9 +180,9 @@ public class SuperOmario extends GameWorld {
                     anim.stop();
 
                     player.setVelocityX(0);
-                }
-                else if (key.getCode() == KeyCode.LEFT) {
+                } else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
+                    anim.stop();
                 }
 
             }
@@ -226,8 +234,7 @@ public class SuperOmario extends GameWorld {
             }
             if (setOpaque) {
                 player.getNode().setOpacity(0);
-            }
-            else {
+            } else {
                 player.getNode().setOpacity(1);
                 collision = false;
             }
