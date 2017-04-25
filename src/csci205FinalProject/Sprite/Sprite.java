@@ -104,11 +104,11 @@ public class Sprite {
         positionX += velocityX * time;
         positionY += velocityY * time;
         node.relocate(positionX, positionY);
+
 //        node.setTranslateX(positionX);
 //        node.setTranslateY(positionY);
 //        this.node.setX(positionX);
 //        this.node.setY(positionY);
-
     }
 
     /**
@@ -147,8 +147,7 @@ public class Sprite {
     public boolean intersectsTop(Sprite s) {
         if ((s.positionY - s.height < this.positionY) && (s.positionY - s.height > this.positionY - this.height)) {
             return true;
-        }
-        else {
+        } else {
             return true;
         }
     }

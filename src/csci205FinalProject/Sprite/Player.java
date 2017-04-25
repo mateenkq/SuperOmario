@@ -32,7 +32,7 @@ public class Player extends Sprite {
 
     public Player(GameWorld g) {
         super();
-        this.setAccelerationY(300);
+        this.setAccelerationY(400);
         game = g;
         this.setImage(getClass().getResource("/jm_stand.png").toExternalForm());
         this.node = new ImageView(image);

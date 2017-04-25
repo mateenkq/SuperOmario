@@ -91,7 +91,7 @@ public class SuperOmario extends GameWorld {
             key.consume();
 
         } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
-            player.addVelocityY(-200);
+            player.addVelocityY(-300);
             player.setOnGround(false);
         } else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
@@ -116,12 +116,13 @@ public class SuperOmario extends GameWorld {
 
         //Create the scene
         setSceneNodes(new Group());
-        setGameScene(new Scene(getSceneNodes()));
+        setGameScene(new Scene(getSceneNodes(), GameMain.SCENE_WIDTH,
+                               GameMain.SCENE_HEIGHT));
         primaryStage.setScene(getGameScene());
 
         backgroundLayer = new Pane();
 
-        this.setCanvas(new Canvas(GameMain.SCENE_HEIGHT, GameMain.SCENE_WIDTH));
+        this.setCanvas(new Canvas(GameMain.SCENE_WIDTH, GameMain.SCENE_HEIGHT));
         getSceneNodes().getChildren().add(getCanvas());
         backgroundLayer.getChildren().add(
                 backgroundImageView);
@@ -144,6 +145,25 @@ public class SuperOmario extends GameWorld {
         backgroundManager = new BackgroundManager(this);
         enemyManager = new EnemyManager(this);
 
+        backgroundImageView.fitWidthProperty().bind(
+                getGameScene().widthProperty().multiply(3));
+        backgroundImageView.fitHeightProperty().bind(
+                getGameScene().heightProperty());
+
+        for (Platform i : backgroundManager.getPlatforms()) {
+
+            i.getNode().xProperty().bind(
+                    getGameScene().widthProperty().multiply(
+                            i.getPropWidth()));
+            i.getNode().yProperty().bind(
+                    getGameScene().heightProperty().multiply(
+                            i.getPropHeight()));
+
+        }
+//        player.getNode().scaleXProperty().bind(
+//                getGameScene().widthProperty().divide(600));
+//        player.getNode().scaleYProperty().bind(
+//                getGameScene().heightProperty().divide(600));
         this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
         final Timeline gameLoop = getGameLoop();
 //        freezeBtn = new Button("Freeze/Resume");
@@ -192,13 +212,18 @@ public class SuperOmario extends GameWorld {
     @Override
     public void updateSprites(double time) {
         if (player != null) {
-            player.isOnGround();
+//            player.isOnGround();
             player.update(time);
 //          player.render(this.getGc());
         }
         if (enemyManager != null) {
             for (int i = 0; i < enemyManager.getFireballs().size(); i++) {
                 this.enemyManager.getFireballs().get(i).update(time);
+            }
+        }
+        if (backgroundManager != null) {
+            for (Platform i : backgroundManager.getPlatforms()) {
+                i.update(time);
             }
         }
     }
@@ -209,12 +234,14 @@ public class SuperOmario extends GameWorld {
             int j = 0;
             for (Platform i : backgroundManager.getPlatforms()) {
                 if (i.intersects(player) && (player.getVelocityY() >= 0)) {
+                    System.out.println("intersect!");
                     player.setVelocityY(0);
                     // Y position for both sprites is at the top left corner
                     // set position at current location of rectangle - height of player
                     double newY = i.getPositionY() - player.getHeight();
                     player.setPosition(player.getPositionX(), newY);
                     player.setOnGround(true);
+
                 }
             }
         }
