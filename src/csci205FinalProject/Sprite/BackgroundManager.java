@@ -28,16 +28,26 @@ public class BackgroundManager {
     ArrayList<Platform> platforms;
     Platform platform;
 
+    /**
+     *
+     * @param g
+     */
     public BackgroundManager(GameWorld g) {
         gameWorld = g;
         platforms = new ArrayList();
-        platforms.add(new Platform(g, 1000, 10, 0, 200));
-        platforms.add(new Platform(g, 200, 10, 100, 150));
+        platforms.add(new Platform(g, 1000, 10, 0, 180));
+        platforms.add(new Platform(g, 50, 10, 10, 130));
+        platforms.add(new Platform(g, 50, 10, 110, 130));
+        platforms.add(new Platform(g, 50, 10, 200, 130));
         platform = platforms.get(0);
 //        platform.getNode().setOpacity(0);
 
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Platform> getPlatforms() {
         return platforms;
     }

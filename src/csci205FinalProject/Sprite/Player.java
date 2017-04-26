@@ -32,7 +32,7 @@ public class Player extends Sprite {
 
     public Player(GameWorld g) {
         super();
-        this.setAccelerationY(300);
+        this.setAccelerationY(400);
         game = g;
         this.setImage(getClass().getResource("/jm_stand.png").toExternalForm());
         this.node = new ImageView(image);
@@ -48,7 +48,7 @@ public class Player extends Sprite {
 //        System.out.println("Y: " + getPositionY() + ", X: " + getPositionX());
         if (this.getPositionY() > 180) {
             this.setVelocityY(0);
-            this.setPostion(getPositionX(), 179.9);
+            this.setPosition(getPositionX(), 179.9);
         }
 
     }
