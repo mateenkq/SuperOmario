@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="240" height="15" tilewidth="16" tileheight="16" nextobjectid="32">
+ <tileset firstgid="1" name="tileset_gutter" tilewidth="16" tileheight="16" spacing="2" margin="1" tilecount="924" columns="33">
+  <image source="../../../../../Downloads/tileset_gutter.png" width="594" height="504"/>
+ </tileset>
+ <layer name="Background" width="240" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzt07EJACAMRcHovC7odhbiAIGAiPfg+hT5s0dMAAAAAAAAAAAA0kbbbt8B5J392jC8x34BcqSKbv/xr6SKFiD7bnw=
+  </data>
+ </layer>
+ <layer name="Graphics" width="240" height="15">
+  <data encoding="base64" compression="zlib">
+   eJztlM0NwjAMhV3YhBUYBLEBE7AGN26IuTghxuDWI60oUqSSpI6jJnbeJ71r9H7kEAEAQBrPjujVlXYRR4vPXLSWNwb6mDN2sqWvau5Gi89ctJY3BvqY43ZSczdafOaitbwx0Mecf53U2I0Wn7loLW8M9PGffsj+8KivqBctPnPRWt4YFvu4Db7vQu9H8v9rB6G/JSzNUNpnKqkbac3Lxfr+Psbc10mSG3Z72U1aqxdOhpI+U5FspDEvF+v7+3BzS2/Y7eU9vLHfrNMLN0Mpn6lIN9KWl4v1/UP8fI8Z3BwplOqFm0HbftKNtOXlYn3/ELjf+vfD/Yaxvn8I3G/9++F+w1jc/9xBEKRVF6ITBEEQBEHr6gNo/JVH
+  </data>
+ </layer>
+ <objectgroup name="Ground" visible="0">
+  <object id="5" x="0" y="32" width="1343" height="16"/>
+  <object id="7" x="192" y="-15">
+   <polyline points="0,0 0,44 -95,45 -96,-2 -49,-49 0,-1 1,1"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="Buildings" visible="0">
+  <object id="9" x="336" y="30">
+   <polyline points="0,0 0,-112 64,-175 127,-112 128,-1 128,2 2,2 -2,-1"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="Street Lights" visible="0"/>
+</map>
