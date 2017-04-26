@@ -1,17 +1,17 @@
 /* *****************************************
-* CSCI205 - Software Engineering and Design
-* Spring 2017
-*
-* Name: Still going to decide on
-* Date: Apr 15, 2017
-* Time: 2:22:50 AM
-*
-* Project: csci205FinalProject
-* Package: csci205FinalProject
-* File: SuperOmario
-* Description:
-*
-* ****************************************
+ * CSCI205 - Software Engineering and Design
+ * Spring 2017
+ *
+ * Name: Still going to decide on
+ * Date: Apr 15, 2017
+ * Time: 2:22:50 AM
+ *
+ * Project: csci205FinalProject
+ * Package: csci205FinalProject
+ * File: SuperOmario
+ * Description:
+ *
+ * ****************************************
  */
 package csci205FinalProject;
 
@@ -79,21 +79,30 @@ public class SuperOmario extends GameWorld {
             player.setVelocityX(80);
 
             if (player.onGround()) {
+                this.anim.getImageView().setImage(new Image(
+                        "/spritesheet.png"));
+
                 anim.start();
+
             }
             key.consume();
             /// this will (eventually) call a function that makes the player go right
-        } else if (key.getCode() == KeyCode.LEFT) {
+        }
+        else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
             if (player.onGround()) {
+                this.anim.getImageView().setImage(new Image(
+                        "/spritesheet_flipped.png"));
                 anim.start();
             }
             key.consume();
 
-        } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
+        }
+        else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-300);
             player.setOnGround(false);
-        } else if (key.getCode() == KeyCode.P) {
+        }
+        else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
                 case RUNNING:
                     getGameLoop().stop();
@@ -200,7 +209,8 @@ public class SuperOmario extends GameWorld {
                     anim.stop();
 
                     player.setVelocityX(0);
-                } else if (key.getCode() == KeyCode.LEFT) {
+                }
+                else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                     anim.stop();
                 }
@@ -261,7 +271,8 @@ public class SuperOmario extends GameWorld {
             }
             if (setOpaque) {
                 player.getNode().setOpacity(0);
-            } else {
+            }
+            else {
                 player.getNode().setOpacity(1);
                 collision = false;
             }

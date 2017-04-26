@@ -1,17 +1,17 @@
 /* *****************************************
-* CSCI205 - Software Engineering and Design
-* Spring 2017
-*
-* Name: Still going to decide on
-* Date: Apr 24, 2017
-* Time: 4:23:06 PM
-*
-* Project: csci205FinalProject
-* Package: csci205FinalProject.Sprite
-* File: ImageViewSprite
-* Description:
-*
-* ****************************************
+ * CSCI205 - Software Engineering and Design
+ * Spring 2017
+ *
+ * Name: Still going to decide on
+ * Date: Apr 24, 2017
+ * Time: 4:23:06 PM
+ *
+ * Project: csci205FinalProject
+ * Package: csci205FinalProject.Sprite
+ * File: ImageViewSprite
+ * Description:
+ *
+ * ****************************************
  */
 package csci205FinalProject.Sprite;
 
@@ -26,7 +26,7 @@ import javafx.scene.image.ImageView;
 
 public class ImageViewSprite extends AnimationTimer {
 
-    private final ImageView imageView; //Image view that will display our sprite
+    private ImageView imageView; //Image view that will display our sprite
 
     private final int totalFrames; //Total number of frames in the sequence
     float fps; //frames per second I.E. 24
@@ -57,6 +57,10 @@ public class ImageViewSprite extends AnimationTimer {
         fps = framesPerSecond;
 
         lastFrame = System.nanoTime();
+    }
+
+    public ImageView getImageView() {
+        return this.imageView;
     }
 
     public float getFps() {
@@ -93,7 +97,7 @@ public class ImageViewSprite extends AnimationTimer {
                 currentRow = 0;
                 currentCol = Math.abs(
                         currentCol - (totalFrames - (int) (Math.floor(
-                                                                   (float) totalFrames / cols) * cols)));
+                                                           (float) totalFrames / cols) * cols)));
             }
 
             imageView.setViewport(new Rectangle2D(currentCol * frameWidth,
