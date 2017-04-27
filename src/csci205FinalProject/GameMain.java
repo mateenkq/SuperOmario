@@ -29,8 +29,8 @@ import javafx.stage.Stage;
  */
 public class GameMain extends Application {
 
-    public static double SCENE_HEIGHT = 240;
-    public static double SCENE_WIDTH = 500;
+    public static double SCENE_HEIGHT = 360;
+    public static double SCENE_WIDTH = 750;
 
     //initialize a gameWorld object here, eventually will be SuperOmar.io
     GameWorld gameWorld;

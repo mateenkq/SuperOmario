@@ -25,17 +25,23 @@ import java.util.ArrayList;
 public class EnemyManager {
 
     GameWorld gameWorld;
-    ArrayList<Fireball> fireballs;
+    ArrayList<Enemy> enemies;
 
     public EnemyManager(GameWorld g) {
         gameWorld = g;
-        fireballs = new ArrayList();
-        fireballs.add(new Fireball(g, -50, 950, 175));
-        fireballs.add(new Fireball(g, -30, 950, 125));
+        enemies = new ArrayList();
+        for (Platform p : gameWorld.getBackgroundManager().getPlatforms()) {
+            enemies.add(new Enemy(g, 50, p));
+        }
     }
 
-    public ArrayList<Fireball> getFireballs() {
-        return fireballs;
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public void remove(Enemy enemy) {
+        enemies.remove(enemy);
+        gameWorld.getSceneNodes().getChildren().remove(enemy.getNode());
     }
 
 }

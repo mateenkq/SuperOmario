@@ -66,6 +66,9 @@ public class SuperOmario extends GameWorld {
 
     ImageView imageViewMario;
 
+    private BackgroundManager backgroundManager;
+    private EnemyManager enemyManager;
+
     public SuperOmario(int framesPerSec, String title) {
         super(framesPerSec, title);
         playerManager = null;
@@ -86,7 +89,7 @@ public class SuperOmario extends GameWorld {
 
             }
             key.consume();
-            /// this will (eventually) call a function that makes the player go right
+
         }
         else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
@@ -155,7 +158,7 @@ public class SuperOmario extends GameWorld {
         enemyManager = new EnemyManager(this);
 
         backgroundImageView.fitWidthProperty().bind(
-                getGameScene().widthProperty().multiply(3));
+                getGameScene().widthProperty().multiply(2));
         backgroundImageView.fitHeightProperty().bind(
                 getGameScene().heightProperty());
 
@@ -163,16 +166,17 @@ public class SuperOmario extends GameWorld {
 
             i.getNode().xProperty().bind(
                     getGameScene().widthProperty().multiply(
-                            i.getPropWidth()));
+                            i.getPropXPos()));
             i.getNode().yProperty().bind(
                     getGameScene().heightProperty().multiply(
-                            i.getPropHeight()));
+                            i.getPropYPos()));
 
         }
-//        player.getNode().scaleXProperty().bind(
-//                getGameScene().widthProperty().divide(600));
-//        player.getNode().scaleYProperty().bind(
-//                getGameScene().heightProperty().divide(600));
+        player.getNode().scaleXProperty().bind(
+                getGameScene().widthProperty().multiply(player.getPropXPos()));
+        player.getNode().scaleYProperty().bind(
+                getGameScene().heightProperty().multiply(player.getPropYPos()));
+
         this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
         final Timeline gameLoop = getGameLoop();
 //        freezeBtn = new Button("Freeze/Resume");
@@ -188,8 +192,6 @@ public class SuperOmario extends GameWorld {
 
         setKeyReleasedHandler();
     }
-    private BackgroundManager backgroundManager;
-    private EnemyManager enemyManager;
 
     private void setKeyReleasedHandler() {
         this.getGameScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -227,13 +229,16 @@ public class SuperOmario extends GameWorld {
 //          player.render(this.getGc());
         }
         if (enemyManager != null) {
-            for (int i = 0; i < enemyManager.getFireballs().size(); i++) {
-                this.enemyManager.getFireballs().get(i).update(time);
+            for (int i = 0; i < enemyManager.getEnemies().size(); i++) {
+                this.enemyManager.getEnemies().get(i).update(time);
+                this.enemyManager.getEnemies().get(i).updateVelocity();
             }
         }
         if (backgroundManager != null) {
+            int j = 0;
             for (Platform i : backgroundManager.getPlatforms()) {
                 i.update(time);
+
             }
         }
     }
@@ -244,7 +249,6 @@ public class SuperOmario extends GameWorld {
             int j = 0;
             for (Platform i : backgroundManager.getPlatforms()) {
                 if (i.intersects(player) && (player.getVelocityY() >= 0)) {
-                    System.out.println("intersect!");
                     player.setVelocityY(0);
                     // Y position for both sprites is at the top left corner
                     // set position at current location of rectangle - height of player
@@ -257,19 +261,36 @@ public class SuperOmario extends GameWorld {
         }
         if (enemyManager != null) {
             boolean setOpaque = false;
+            boolean topCollision = false;
+            int enemyNum = 0;
             //check if the player has hit any fireballs
-            for (int i = 0; i < enemyManager.getFireballs().size(); i++) {
-                if (enemyManager.getFireballs().get(i).intersects(player)) {
+            for (int i = 0; i < enemyManager.getEnemies().size(); i++) {
+                if (enemyManager.getEnemies().get(i).intersects(player)) {
                     setOpaque = true;
-                    if (!collision) {
+                    //if it killed the enemy
+                    if (isTopCollision(i)) {
+                        topCollision = true;
+                        enemyNum = i;
+                    }
+                    //only lose life when collision begins, not continuously throughout collision
+                    else if (!collision) {
                         lives -= 1;
                         livesDisplay.setText(String.format("Lives Left: %d",
                                                            lives));
+
                         collision = true;
                     }
                 }
             }
-            if (setOpaque) {
+            if (topCollision) {
+                //enemy dissapears
+                enemyManager.remove(enemyManager.getEnemies().get(
+                        enemyNum));
+                //bounce off enemy
+                player.addVelocityY(-400);
+                player.setOnGround(false);
+            }
+            else if (setOpaque) {
                 player.getNode().setOpacity(0);
             }
             else {
@@ -277,6 +298,23 @@ public class SuperOmario extends GameWorld {
                 collision = false;
             }
         }
+    }
+
+    public boolean isTopCollision(int i) {
+        double enemyXPos = enemyManager.getEnemies().get(i).getPositionX();
+        //if the player is over the enemy
+        boolean xInRange = ((enemyXPos - 5) <= player.getPositionX()) && (player.getPositionX() < (enemyXPos + 5));
+        //and the player is moving down (jumping on top of enemy)
+        if ((xInRange) && (player.getVelocityY() > 0)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public BackgroundManager getBackgroundManager() {
+        return backgroundManager;
     }
 
 }

@@ -15,6 +15,7 @@
  */
 package csci205FinalProject;
 
+import csci205FinalProject.Sprite.BackgroundManager;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
@@ -71,8 +72,9 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         //this method will come later
         backgroundImageView = new ImageView(getClass().getResource(
                 "/background.png").toExternalForm());
-        backgroundImageView.relocate(0,
-                                     -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
+        backgroundImageView.relocate(0, 0);
+        //backgroundImageView.relocate(0,
+        //                           -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
 
     }
 
@@ -190,6 +192,8 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
     public Canvas getCanvas() {
         return canvas;
     }
+
+    public abstract BackgroundManager getBackgroundManager();
 
     public void setGc(GraphicsContext gc) {
         this.gc = gc;

@@ -30,6 +30,9 @@ public class Player extends Sprite {
 
     private boolean onGround;
 
+    private Double propYPos;
+    private Double propXPos;
+
     public Player(GameWorld g) {
         super();
         this.setAccelerationY(400);
@@ -39,6 +42,11 @@ public class Player extends Sprite {
         this.node.relocate(this.getPositionX(), this.getPositionY());
 //        this.nod.setRotate(r);
 //        this.render(game.getGc());
+
+        //half of ratio of height to width over intial dimensions of the game
+        this.propYPos = (this.getHeight() / this.getWidth()) / (game.getGameScene().getHeight() * 2);
+        propXPos = (this.getHeight() / this.getWidth()) / (game.getGameScene().getWidth() * 2);
+
         this.node = this.node;
         game.getSceneNodes().getChildren().add(this.node);
 
@@ -59,6 +67,14 @@ public class Player extends Sprite {
 
     public void setOnGround(boolean onGround) {
         this.onGround = onGround;
+    }
+
+    public Double getPropYPos() {
+        return propYPos;
+    }
+
+    public Double getPropXPos() {
+        return propXPos;
     }
 
 }

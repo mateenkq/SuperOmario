@@ -24,11 +24,11 @@ import javafx.scene.shape.Rectangle;
  */
 public class Platform extends Sprite {
 
-    GameWorld game;
+    private GameWorld game;
 
 //    ReadOnlyDoubleProperty propHeight;
-    Double propHeight;
-    Double propWidth;
+    private Double propYPos;
+    private Double propXPos;
 
     public Platform(GameWorld g, double width, double height, double x, double y) {
         super();
@@ -36,8 +36,8 @@ public class Platform extends Sprite {
         this.node = new Rectangle(width, height);
         this.setPosition(x, y);
 
-        this.propHeight = y / g.getGameScene().getHeight();
-        propWidth = x / g.getGameScene().getWidth();
+        this.propYPos = y / g.getGameScene().getHeight();
+        propXPos = x / g.getGameScene().getWidth();
 
 //        propHeight = new ReadOnlyDoubleWrapper(y / g.getGameScene().getHeight()).getReadOnlyProperty();
         this.setDimensions(width, height);
@@ -50,12 +50,12 @@ public class Platform extends Sprite {
         return (Rectangle) this.node;
     }
 
-    public Double getPropHeight() {
-        return propHeight;
+    public Double getPropYPos() {
+        return propYPos;
     }
 
-    public Double getPropWidth() {
-        return propWidth;
+    public Double getPropXPos() {
+        return propXPos;
     }
 
     @Override
