@@ -87,8 +87,7 @@ public class SuperOmario extends GameWorld {
             }
             key.consume();
             /// this will (eventually) call a function that makes the player go right
-        }
-        else if (key.getCode() == KeyCode.LEFT) {
+        } else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
             if (player.onGround()) {
                 this.anim.getImageView().setImage(new Image(
@@ -97,12 +96,10 @@ public class SuperOmario extends GameWorld {
             }
             key.consume();
 
-        }
-        else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
+        } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-300);
             player.setOnGround(false);
-        }
-        else if (key.getCode() == KeyCode.P) {
+        } else if (key.getCode() == KeyCode.P) {
             switch (getGameLoop().getStatus()) {
                 case RUNNING:
                     getGameLoop().stop();
@@ -163,16 +160,22 @@ public class SuperOmario extends GameWorld {
 
             i.getNode().xProperty().bind(
                     getGameScene().widthProperty().multiply(
-                            i.getPropWidth()));
+                            i.getPropXPos()));
             i.getNode().yProperty().bind(
                     getGameScene().heightProperty().multiply(
-                            i.getPropHeight()));
+                            i.getPropYPos()));
+            i.getNode().heightProperty().bind(
+                    getGameScene().heightProperty().multiply(i.getPropHeight()));
+            i.getNode().widthProperty().bind(
+                    getGameScene().widthProperty().multiply(i.getPropWidth()));
 
         }
-//        player.getNode().scaleXProperty().bind(
-//                getGameScene().widthProperty().divide(600));
-//        player.getNode().scaleYProperty().bind(
-//                getGameScene().heightProperty().divide(600));
+
+        player.getNode().fitWidthProperty().bind(
+                getGameScene().widthProperty().multiply(player.getPropWidth()));
+        player.getNode().fitHeightProperty().bind(
+                getGameScene().heightProperty().multiply(player.getPropHeight()));
+
         this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
         final Timeline gameLoop = getGameLoop();
 //        freezeBtn = new Button("Freeze/Resume");
@@ -209,8 +212,7 @@ public class SuperOmario extends GameWorld {
                     anim.stop();
 
                     player.setVelocityX(0);
-                }
-                else if (key.getCode() == KeyCode.LEFT) {
+                } else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                     anim.stop();
                 }
@@ -271,8 +273,7 @@ public class SuperOmario extends GameWorld {
             }
             if (setOpaque) {
                 player.getNode().setOpacity(0);
-            }
-            else {
+            } else {
                 player.getNode().setOpacity(1);
                 collision = false;
             }

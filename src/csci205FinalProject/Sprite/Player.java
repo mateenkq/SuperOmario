@@ -30,6 +30,9 @@ public class Player extends Sprite {
 
     private boolean onGround;
 
+    private Double propWidth;
+    private Double propHeight;
+
     public Player(GameWorld g) {
         super();
         this.setAccelerationY(400);
@@ -39,7 +42,10 @@ public class Player extends Sprite {
         this.node.relocate(this.getPositionX(), this.getPositionY());
 //        this.nod.setRotate(r);
 //        this.render(game.getGc());
-        this.node = this.node;
+
+        propWidth = this.getNode().getImage().getWidth() / g.getGameScene().getWidth();
+        propHeight = this.getNode().getImage().getWidth() / g.getGameScene().getHeight();
+
         game.getSceneNodes().getChildren().add(this.node);
 
     }
@@ -53,12 +59,43 @@ public class Player extends Sprite {
 
     }
 
+    /**
+     * Takes in the current time and calculates what the new position should be
+     * based on the current velocity
+     *
+     * @param time
+     */
+    @Override
+    public void update(double time) {
+
+        this.changeVelocity(time);
+        positionX += velocityX * time;
+        positionY += velocityY * time;
+        node.relocate(positionX, positionY);
+
+        this.height = this.getNode().getFitHeight();
+        this.width = this.getNode().getFitWidth();
+    }
+
     public boolean onGround() {
         return onGround;
     }
 
     public void setOnGround(boolean onGround) {
         this.onGround = onGround;
+    }
+
+    @Override
+    public ImageView getNode() {
+        return (ImageView) this.node;
+    }
+
+    public Double getPropWidth() {
+        return propWidth;
+    }
+
+    public Double getPropHeight() {
+        return propHeight;
     }
 
 }
