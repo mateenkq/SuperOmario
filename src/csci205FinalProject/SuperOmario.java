@@ -16,6 +16,7 @@
 package csci205FinalProject;
 
 import csci205FinalProject.Sprite.BackgroundManager;
+import csci205FinalProject.Sprite.Enemy;
 import csci205FinalProject.Sprite.EnemyManager;
 import csci205FinalProject.Sprite.ImageViewSprite;
 import csci205FinalProject.Sprite.Platform;
@@ -172,6 +173,15 @@ public class SuperOmario extends GameWorld {
                             i.getPropYPos()));
 
         }
+
+        for (Enemy j : enemyManager.getEnemies()) {
+
+            //bind to platform height
+            j.getNode().yProperty().bind(
+                    j.getPlatform().getNode().yProperty().subtract(
+                            (j.getNode().heightProperty()).divide(2)));
+        }
+
         player.getNode().scaleXProperty().bind(
                 getGameScene().widthProperty().multiply(player.getPropXPos()));
         player.getNode().scaleYProperty().bind(
@@ -231,11 +241,9 @@ public class SuperOmario extends GameWorld {
         if (enemyManager != null) {
             for (int i = 0; i < enemyManager.getEnemies().size(); i++) {
                 this.enemyManager.getEnemies().get(i).update(time);
-                this.enemyManager.getEnemies().get(i).updateVelocity();
             }
         }
         if (backgroundManager != null) {
-            int j = 0;
             for (Platform i : backgroundManager.getPlatforms()) {
                 i.update(time);
 
@@ -246,7 +254,6 @@ public class SuperOmario extends GameWorld {
     @Override
     public void checkCollisons() {
         if (backgroundManager != null) {
-            int j = 0;
             for (Platform i : backgroundManager.getPlatforms()) {
                 if (i.intersects(player) && (player.getVelocityY() >= 0)) {
                     player.setVelocityY(0);

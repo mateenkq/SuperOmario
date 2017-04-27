@@ -31,6 +31,11 @@ public class Enemy extends Sprite {
     private double rightEdge;
     private double leftEdge;
 
+    private double propYPos;
+    private double propXPos;
+
+    private Platform platform;
+
     public Enemy(GameWorld g, double velocity, Platform p) {
         super();
         game = g;
@@ -41,19 +46,27 @@ public class Enemy extends Sprite {
         //set on top of platform
         this.rightEdge = p.getPositionX() + p.getWidth();
         this.leftEdge = p.getPositionX();
+
         this.setPosition(leftEdge,
                          (p.getPositionY() - (this.getHeight() / 2)));
 
-        //bind to platform height
-        //this.getNode().scaleXProperty().bind(p.getPositionY());
         this.setDimensions(width, height);
         this.setVelocityX(velocity);
+
+        this.platform = p;
 
         g.getSceneNodes().getChildren().add(node);
     }
 
+    public void updateEdges() {
+
+        this.rightEdge = this.platform.getPositionX() + this.platform.getWidth();
+        this.leftEdge = this.platform.getPositionX();
+    }
+
     //reverse direction at end of platform
     public void updateVelocity() {
+
         boolean nearRightEdge = ((rightEdge - (this.getWidth() * 2) - 1) <= this.getPositionX());
         boolean nearLeftEdge = (this.getPositionX() <= (leftEdge + 1));
         if ((nearRightEdge && (this.getVelocityX() > 0)) || (nearLeftEdge && (this.getVelocityX() < 0))) {
@@ -75,6 +88,23 @@ public class Enemy extends Sprite {
 
     public final double getHeight() {
         return height;
+    }
+
+    public Platform getPlatform() {
+        return platform;
+    }
+
+    @Override
+    public Rectangle getNode() {
+        return (Rectangle) this.node;
+    }
+
+    @Override
+    public void update(double time) {
+        super.update(time);
+
+        updateEdges();
+        updateVelocity();
     }
 
 }
