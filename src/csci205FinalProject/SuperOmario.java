@@ -171,6 +171,11 @@ public class SuperOmario extends GameWorld {
             i.getNode().yProperty().bind(
                     getGameScene().heightProperty().multiply(
                             i.getPropYPos()));
+            i.getNode().heightProperty().bind(
+                    getGameScene().heightProperty().multiply(
+                            i.getPropHeight()));
+            i.getNode().widthProperty().bind(
+                    getGameScene().widthProperty().multiply(i.getPropWidth()));
 
         }
 
@@ -186,6 +191,12 @@ public class SuperOmario extends GameWorld {
                 getGameScene().widthProperty().multiply(player.getPropXPos()));
         player.getNode().scaleYProperty().bind(
                 getGameScene().heightProperty().multiply(player.getPropYPos()));
+
+        player.getNode().fitWidthProperty().bind(
+                getGameScene().widthProperty().multiply(
+                        player.getPropWidth()));
+        player.getNode().fitHeightProperty().bind(
+                getGameScene().heightProperty().multiply(player.getPropHeight()));
 
         this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
         final Timeline gameLoop = getGameLoop();

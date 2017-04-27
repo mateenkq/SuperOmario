@@ -26,9 +26,11 @@ public class Platform extends Sprite {
 
     private GameWorld game;
 
-//    ReadOnlyDoubleProperty propHeight;
     private Double propYPos;
     private Double propXPos;
+
+    Double propHeight;
+    Double propWidth;
 
     public Platform(GameWorld g, double width, double height, double x, double y) {
         super();
@@ -39,7 +41,10 @@ public class Platform extends Sprite {
         this.propYPos = y / g.getGameScene().getHeight();
         propXPos = x / g.getGameScene().getWidth();
 
-//        propHeight = new ReadOnlyDoubleWrapper(y / g.getGameScene().getHeight()).getReadOnlyProperty();
+        propHeight = height / g.getGameScene().getHeight();
+        propWidth = width / g.getGameScene().getWidth();
+
+//        propYPos = new ReadOnlyDoubleWrapper(y / g.getGameScene().getHeight()).getReadOnlyProperty();
         this.setDimensions(width, height);
 
         g.getSceneNodes().getChildren().add(node);
@@ -56,6 +61,14 @@ public class Platform extends Sprite {
 
     public Double getPropXPos() {
         return propXPos;
+    }
+
+    public Double getPropHeight() {
+        return propHeight;
+    }
+
+    public Double getPropWidth() {
+        return propWidth;
     }
 
     @Override
