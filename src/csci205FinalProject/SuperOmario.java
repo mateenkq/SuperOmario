@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -61,6 +62,10 @@ public class SuperOmario extends GameWorld {
     private Text livesDisplay;
     private boolean collision = false;
 
+    public static double xLeft = 0;	// Pixel coord of left edge of viewable
+
+    public static final int SCROLL = 400;  // Set edge limit for scrolling
+
     private ImageViewSprite anim;
 
     Pane backgroundLayer;
@@ -75,6 +80,29 @@ public class SuperOmario extends GameWorld {
         playerManager = null;
         player = null;
 
+    }
+
+    public void checkScrolling() {
+        // Test if this.player is at edge of view window and scroll appropriately
+        if (this.player != null) {
+            if (this.player.getPositionX() < (xLeft + (this.getGameScene().getWidth() / 2))) {
+                xLeft = this.player.getPositionX() - (this.getGameScene().getWidth() / 2);
+                if (xLeft < 0) {
+                    xLeft = 0;
+                }
+            }
+            if ((this.player.getPositionX() + this.player.getWidth()) > (xLeft + GameMain.SCENE_WIDTH - (this.getGameScene().getWidth() / 2))) {
+                xLeft = this.player.getPositionX() + this.player.getWidth() - GameMain.SCENE_WIDTH + (this.getGameScene().getWidth() / 2);
+//            if (xLeft > (grid.getWidth() - GameMain.SCENE_WIDTH)) {
+//                xLeft = grid.getWidth() - GameMain.SCENE_WIDTH;
+//            }
+            }
+        }
+    }
+
+    public void render(GraphicsContext gc) {
+        gc.drawImage(backgroundImageView.getImage(), -200 - xLeft, 0);
+        gc.drawImage(backgroundImageView.getImage(), 800 - xLeft, 0);
     }
 
     @Override
@@ -278,6 +306,8 @@ public class SuperOmario extends GameWorld {
 
             }
         }
+        checkScrolling();
+        render(this.getGc());
     }
 
     @Override
