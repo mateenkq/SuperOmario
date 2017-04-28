@@ -36,12 +36,16 @@ public class Enemy extends Sprite {
 
     private Platform platform;
 
+    private double speed;
+
     public Enemy(GameWorld g, double velocity, Platform p) {
         super();
         game = g;
         width = 15;
         height = 7;
         this.node = new Rectangle(height, width, Color.RED);
+
+        speed = velocity;
 
         //set on top of platform
         this.rightEdge = p.getPositionX() + p.getWidth();

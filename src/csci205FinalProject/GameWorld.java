@@ -15,6 +15,7 @@
  */
 package csci205FinalProject;
 
+import csci205FinalProject.Sprite.Background;
 import csci205FinalProject.Sprite.BackgroundManager;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -56,6 +57,8 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
     // This defines the scrolling speed of the background
     double backgroundScrollSpeed = 0.5;
 
+    Background background;
+
     /**
      * GameWorld constructor, sets the gameLoop
      *
@@ -69,11 +72,8 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         buildAndSetGameLoop();
 
         //this method will come later
-        backgroundImageView = new ImageView(getClass().getResource(
-                "/background.png").toExternalForm());
-        backgroundImageView.relocate(0, 0);
-        //backgroundImageView.relocate(0,
-        //                           -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
+        background = new Background(this);
+        backgroundImageView = background.getNode();
 
     }
 
