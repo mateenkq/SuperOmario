@@ -81,10 +81,9 @@ public class SuperOmario extends GameWorld {
     public void handle(KeyEvent key) {
         if (key.getCode() == KeyCode.RIGHT) {
             player.setVelocityX(80);
-
+            this.anim.getImageView().setImage(new Image(
+                    "/spritesheet2.png"));
             if (player.onGround()) {
-                this.anim.getImageView().setImage(new Image(
-                        "/spritesheet.png"));
 
                 anim.start();
 
@@ -94,9 +93,10 @@ public class SuperOmario extends GameWorld {
         }
         else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
+            this.anim.getImageView().setImage(new Image(
+                    "/spritesheet_flipped2.png"));
             if (player.onGround()) {
-                this.anim.getImageView().setImage(new Image(
-                        "/spritesheet_flipped.png"));
+
                 anim.start();
             }
             key.consume();
@@ -147,10 +147,10 @@ public class SuperOmario extends GameWorld {
         imageViewMario = (ImageView) player.node;
         this.anim = new ImageViewSprite(imageViewMario,
                                         new Image(
-                                                "/spritesheet.png"),
+                                                "/spritesheet2.png"),
                                         7,
                                         1, 7,
-                                        19, 30,
+                                        38, 60,
                                         7);
         backgroundManager = new BackgroundManager(this);
         enemyManager = new EnemyManager(this);
@@ -261,6 +261,9 @@ public class SuperOmario extends GameWorld {
     public void updateSprites(double time) {
         if (player != null) {
 //            player.isOnGround();
+            if (player.onGround()) {
+                anim.start();
+            }
             player.update(time);
 //          player.render(this.getGc());
         }
