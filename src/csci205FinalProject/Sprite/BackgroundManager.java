@@ -50,6 +50,14 @@ public class BackgroundManager {
         platform = platforms.get(0);
 //        platform.getNode().setOpacity(0);
 
+        coffees = new ArrayList();
+        //GameWorld g, double width, double height,
+        coffees.add(new Coffee(g, 100, 210));
+        coffees.add(new Coffee(g, 450, 160));
+        coffees.add(new Coffee(g, 250, 110));
+        coffees.add(new Coffee(g, 400, 110));
+        coffees.add(new Coffee(g, 550, 110));
+
     }
 
     /**
@@ -62,5 +70,10 @@ public class BackgroundManager {
 
     public ArrayList<Coffee> getCoffees() {
         return coffees;
+    }
+
+    public void remove(Coffee coffee) {
+        coffees.remove(coffee);
+        gameWorld.getSceneNodes().getChildren().remove(coffee.getNode());
     }
 }

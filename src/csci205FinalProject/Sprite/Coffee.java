@@ -16,8 +16,7 @@
 package csci205FinalProject.Sprite;
 
 import csci205FinalProject.GameWorld;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -26,32 +25,91 @@ import javafx.scene.shape.Circle;
 public class Coffee extends Sprite {
 
     private GameWorld game;
+    private double width;
+    private double height;
 
-    public Coffee(GameWorld g, double width, double height) {
+    private double center;
+
+    private double propWidth;
+    private double propHeight;
+    private double propRatio;
+    private double propXPos;
+    private double propCenter;
+
+    public Coffee(GameWorld g, double x, double y) {
         super();
         game = g;
-        this.node = new Circle(width, Color.YELLOW);
+        this.width = 6;
+        this.height = 10;
+
+        this.setImage(getClass().getResource("/coffee.png").toExternalForm());
+        this.node = new ImageView(image);
+
+        this.setPosition(x, y);
 
         this.setDimensions(width, height);
+        this.setVelocityY(20);
+
+        center = y;
+
+        //base bindings off of ratio between initial image dimensions, and initial game dimensions
+        propWidth = this.getNode().getImage().getWidth() / g.getGameScene().getWidth();
+        propHeight = this.getNode().getImage().getHeight() / g.getGameScene().getHeight();
+
+        propRatio = (this.getNode().getImage().getWidth() / this.getNode().getImage().getHeight());
+
+        propCenter = (this.getCenter() / g.getGameScene().getHeight());
+        propXPos = this.getPositionX() / g.getGameScene().getWidth();
 
         g.getSceneNodes().getChildren().add(node);
 
     }
 
     @Override
-    public Circle getNode() {
-        return (Circle) this.node;
+    public ImageView getNode() {
+        return (ImageView) this.node;
     }
 
     @Override
     public void update(double time) {
-        positionX = this.getNode().centerXProperty().getValue();
-        positionY = this.getNode().centerYProperty().getValue();
-//        this.changeVelocity(time);
-//        positionX += velocityX * time;
-//        positionY += velocityY * time;
-        node.relocate(positionX, positionY);
+        super.update(time);
 
+        updateVelocity();
+
+        setPosition(this.getNode().xProperty().getValue(), getPositionY());
+        center = this.getNode().yProperty().getValue();
+    }
+
+    public void updateVelocity() {
+        boolean belowBottom = this.getPositionY() >= (this.center + 2);
+        boolean aboveTop = this.getPositionY() <= (this.center - 2);
+
+        if (this.getVelocityY() > 0 && belowBottom) {
+            this.setVelocityY(-getVelocityY());
+        }
+        else if (this.getVelocityY() < 0 && aboveTop) {
+            this.setVelocityY(-getVelocityY());
+        }
+    }
+
+    public double getPropHeight() {
+        return propHeight;
+    }
+
+    public double getPropWidth() {
+        return propWidth;
+    }
+
+    public double getPropXPos() {
+        return propXPos;
+    }
+
+    public double getCenter() {
+        return center;
+    }
+
+    public double getPropCenter() {
+        return propCenter;
     }
 
 }
