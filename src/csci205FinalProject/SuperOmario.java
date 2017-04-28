@@ -76,7 +76,7 @@ public class SuperOmario extends GameWorld {
     @Override
     public void handle(KeyEvent key) {
         if (key.getCode() == KeyCode.RIGHT) {
-            player.setVelocityX(80);
+
             this.anim.getImageView().setImage(new Image(
                     "/spritesheet2.png"));
             if (player.onGround()) {
@@ -84,6 +84,14 @@ public class SuperOmario extends GameWorld {
                 anim.start();
 
             }
+            if (player.getPositionX() >= (this.getGameScene().getWidth() / 2)) {
+                this.backgroundImageView.relocate(
+                        backgroundImageView.getLayoutX() - 1,
+                        backgroundImageView.getLayoutY());
+            } else {
+                player.setVelocityX(80);
+            }
+
             key.consume();
             /// this will (eventually) call a function that makes the player go right
         } else if (key.getCode() == KeyCode.LEFT) {
