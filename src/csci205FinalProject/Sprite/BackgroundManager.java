@@ -28,6 +28,8 @@ public class BackgroundManager {
     ArrayList<Platform> platforms;
     Platform platform;
 
+    ArrayList<Coffee> coffees;
+
     /**
      *
      * @param g
@@ -35,10 +37,16 @@ public class BackgroundManager {
     public BackgroundManager(GameWorld g) {
         gameWorld = g;
         platforms = new ArrayList();
-        platforms.add(new Platform(g, 1000, 10, 0, 180));
+        //GameWorld g, double width, double height, double x, double y
+        platforms.add(new Platform(g, 300, 10, 0, 230));
+        platforms.add(new Platform(g, 300, 10, 400, 180));
         platforms.add(new Platform(g, 100, 10, 200, 130));
         platforms.add(new Platform(g, 100, 10, 350, 130));
         platforms.add(new Platform(g, 100, 10, 500, 130));
+        //end of level platform
+        platforms.add(
+                new Platform(g, 30, 10, (g.getGameScene().getWidth() - 40),
+                             (g.getGameScene().getHeight() - 57)));
         platform = platforms.get(0);
 //        platform.getNode().setOpacity(0);
 
@@ -52,4 +60,7 @@ public class BackgroundManager {
         return platforms;
     }
 
+    public ArrayList<Coffee> getCoffees() {
+        return coffees;
+    }
 }

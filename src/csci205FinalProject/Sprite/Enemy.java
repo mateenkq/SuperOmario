@@ -31,16 +31,16 @@ public class Enemy extends Sprite {
     private double rightEdge;
     private double leftEdge;
 
-    private double propYPos;
-    private double propXPos;
+    private double propHeight;
+    private double propWidth;
 
     private Platform platform;
 
     public Enemy(GameWorld g, double velocity, Platform p) {
         super();
         game = g;
-        width = 7;
-        height = 15;
+        width = 15;
+        height = 7;
         this.node = new Rectangle(height, width, Color.RED);
 
         //set on top of platform
@@ -48,10 +48,14 @@ public class Enemy extends Sprite {
         this.leftEdge = p.getPositionX();
 
         this.setPosition(leftEdge,
-                         (p.getPositionY() - (this.getHeight() / 2)));
+                         (p.getPositionY() - (this.getHeight())));
 
         this.setDimensions(width, height);
         this.setVelocityX(velocity);
+
+        //ratios for bindings based on initial game dimensions
+        propHeight = this.getHeight() / game.getGameScene().getHeight();
+        propWidth = this.getWidth() / game.getGameScene().getWidth();
 
         this.platform = p;
 
@@ -67,7 +71,7 @@ public class Enemy extends Sprite {
     //reverse direction at end of platform
     public void updateVelocity() {
 
-        boolean nearRightEdge = ((rightEdge - (this.getWidth() * 2) - 1) <= this.getPositionX());
+        boolean nearRightEdge = ((rightEdge - (this.getWidth()) - 1) <= this.getPositionX());
         boolean nearLeftEdge = (this.getPositionX() <= (leftEdge + 1));
         if ((nearRightEdge && (this.getVelocityX() > 0)) || (nearLeftEdge && (this.getVelocityX() < 0))) {
             this.setVelocityX(-(this.getVelocityX()));
@@ -94,6 +98,14 @@ public class Enemy extends Sprite {
         return platform;
     }
 
+    public double getPropHeight() {
+        return propHeight;
+    }
+
+    public double getPropWidth() {
+        return propWidth;
+    }
+
     @Override
     public Rectangle getNode() {
         return (Rectangle) this.node;
@@ -105,6 +117,10 @@ public class Enemy extends Sprite {
 
         updateEdges();
         updateVelocity();
+
+        this.setPosition(this.getPositionX(),
+                         (this.platform.getPositionY() - (this.getHeight())));
+
     }
 
 }

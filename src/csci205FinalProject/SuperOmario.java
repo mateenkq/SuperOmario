@@ -22,7 +22,7 @@ import csci205FinalProject.Sprite.ImageViewSprite;
 import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteManager;
-import javafx.animation.Timeline;
+import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -107,16 +107,10 @@ public class SuperOmario extends GameWorld {
             player.setOnGround(false);
         }
         else if (key.getCode() == KeyCode.P) {
-            switch (getGameLoop().getStatus()) {
-                case RUNNING:
-                    getGameLoop().stop();
-                    System.out.println("stopped");
-                    break;
-                case STOPPED:
-                    getGameLoop().play();
-                    System.out.println("resumed");
-                    break;
-            }
+            getGameLoop().stop();
+        }
+        else if (key.getCode() == KeyCode.L) {
+            getGameLoop().start();
         }
 
     }
@@ -135,6 +129,7 @@ public class SuperOmario extends GameWorld {
 
         backgroundLayer = new Pane();
 
+        //put in Image
         this.setCanvas(new Canvas(GameMain.SCENE_WIDTH, GameMain.SCENE_HEIGHT));
         getSceneNodes().getChildren().add(getCanvas());
         backgroundLayer.getChildren().add(
@@ -145,8 +140,10 @@ public class SuperOmario extends GameWorld {
 
         this.setGc(getCanvas().getGraphicsContext2D());
 
+        //create player
         player = new Player(this);
 
+        //set player image
         imageViewMario = (ImageView) player.node;
         this.anim = new ImageViewSprite(imageViewMario,
                                         new Image(
@@ -158,11 +155,56 @@ public class SuperOmario extends GameWorld {
         backgroundManager = new BackgroundManager(this);
         enemyManager = new EnemyManager(this);
 
-        backgroundImageView.fitWidthProperty().bind(
-                getGameScene().widthProperty().multiply(2));
-        backgroundImageView.fitHeightProperty().bind(
-                getGameScene().heightProperty());
+        //do bindings
+        bindBackground();
 
+        bindPlatforms();
+
+        bindEnemies();
+
+        bindPlayer();
+
+        //add event handler for key press
+        this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
+
+        final AnimationTimer gameLoop = getGameLoop();
+
+        //display lives left
+        livesDisplay();
+
+        //add event handler for key release
+        setKeyReleasedHandler();
+    }
+
+    public void livesDisplay() {
+        lives = 3;
+        livesDisplay = new Text(0, 12, String.format("Lives Left: %d",
+                                                     lives));
+        livesDisplay.setFont(new Font("Arial", 15));
+        livesDisplay.setFill(Color.WHITE);
+        getSceneNodes().getChildren().add(livesDisplay);
+    }
+
+    public void bindPlayer() {
+        player.getNode().fitHeightProperty().bind(
+                getGameScene().heightProperty().multiply(player.getPropHeight()));
+        player.getNode().fitWidthProperty().bind(
+                getGameScene().heightProperty().multiply(
+                        player.getPropHeight()).multiply(player.getPropRatio()));
+    }
+
+    public void bindEnemies() {
+        for (Enemy j : enemyManager.getEnemies()) {
+
+            j.getNode().widthProperty().bind(
+                    getGameScene().widthProperty().multiply(j.getPropWidth()));
+            //width is based on the height
+            j.getNode().heightProperty().bind(
+                    getGameScene().heightProperty().multiply(j.getPropHeight()));
+        }
+    }
+
+    public void bindPlatforms() {
         for (Platform i : backgroundManager.getPlatforms()) {
 
             i.getNode().xProperty().bind(
@@ -178,40 +220,13 @@ public class SuperOmario extends GameWorld {
                     getGameScene().widthProperty().multiply(i.getPropWidth()));
 
         }
+    }
 
-        for (Enemy j : enemyManager.getEnemies()) {
-
-            //bind to platform height
-            j.getNode().yProperty().bind(
-                    j.getPlatform().getNode().yProperty().subtract(
-                            (j.getNode().heightProperty()).divide(2)));
-        }
-
-        player.getNode().scaleXProperty().bind(
-                getGameScene().widthProperty().multiply(player.getPropXPos()));
-        player.getNode().scaleYProperty().bind(
-                getGameScene().heightProperty().multiply(player.getPropYPos()));
-
-        player.getNode().fitWidthProperty().bind(
-                getGameScene().widthProperty().multiply(
-                        player.getPropWidth()));
-        player.getNode().fitHeightProperty().bind(
-                getGameScene().heightProperty().multiply(player.getPropHeight()));
-
-        this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
-        final Timeline gameLoop = getGameLoop();
-//        freezeBtn = new Button("Freeze/Resume");
-//        getSceneNodes().getChildren().add(freezeBtn);
-
-        //display lives left
-        lives = 3;
-        livesDisplay = new Text(0, 12, String.format("Lives Left: %d",
-                                                     lives));
-        livesDisplay.setFont(new Font("Arial", 15));
-        livesDisplay.setFill(Color.WHITE);
-        getSceneNodes().getChildren().add(livesDisplay);
-
-        setKeyReleasedHandler();
+    public void bindBackground() {
+        backgroundImageView.fitWidthProperty().bind(
+                getGameScene().widthProperty().multiply(2));
+        backgroundImageView.fitHeightProperty().bind(
+                getGameScene().heightProperty());
     }
 
     private void setKeyReleasedHandler() {
