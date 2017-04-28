@@ -71,6 +71,9 @@ public class SuperOmario extends GameWorld {
 
     ImageView imageViewMario;
 
+    ImageView startMenu;
+    private Text pauseText;
+
     private BackgroundManager backgroundManager;
     private EnemyManager enemyManager;
 
@@ -113,7 +116,8 @@ public class SuperOmario extends GameWorld {
         else if (key.getCode() == KeyCode.P) {
             getGameLoop().stop();
         }
-        else if (key.getCode() == KeyCode.L) {
+        else if (key.getCode() == KeyCode.S) {
+            getSceneNodes().getChildren().remove(startMenu);
             getGameLoop().start();
         }
 
@@ -183,6 +187,38 @@ public class SuperOmario extends GameWorld {
 
         //add event handler for key release
         setKeyReleasedHandler();
+
+        //image that comes up at beginning of game to introduce it, press S to start
+        addStartMenu();
+
+        //text on background to explain keys
+        addKeyInstructions();
+
+        //pause game until player starts it
+        getGameLoop().stop();
+    }
+
+    public void addKeyInstructions() {
+        pauseText = new Text((getGameScene().getWidth() - 100), 12,
+                             "Press 'p' to pause");
+        pauseText.setFont(new Font("Arial", 12));
+        pauseText.setFill(Color.WHITE);
+        getSceneNodes().getChildren().add(pauseText);
+
+        double propXPos = pauseText.getX() / getGameScene().getWidth();
+
+        pauseText.xProperty().bind(
+                getGameScene().widthProperty().multiply(propXPos));
+    }
+
+    public void addStartMenu() {
+        startMenu = new ImageView(
+                getClass().getResource("/spritesheet2.png").toExternalForm());
+        startMenu.setX((getGameScene().getWidth() / 3));
+        startMenu.setY(
+                (getGameScene().getHeight() / 3));
+
+        getSceneNodes().getChildren().add(startMenu);
     }
 
     public void livesDisplay() {
@@ -196,7 +232,7 @@ public class SuperOmario extends GameWorld {
 
     public void coffeesDisplay() {
         coffees = 0;
-        coffeesDisplay = new Text(getGameScene().getWidth() - 75, 12,
+        coffeesDisplay = new Text(0, 30,
                                   String.format("Coffees: %d",
                                                 coffees));
         coffeesDisplay.setFont(new Font("Arial", 15));
