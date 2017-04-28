@@ -28,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -41,6 +42,7 @@ import javafx.stage.Stage;
 /**
  *
  * @author Laura
+ * @see https://gist.github.com/jewelsea/5032398
  */
 public class SuperOmario extends GameWorld {
 
@@ -53,7 +55,6 @@ public class SuperOmario extends GameWorld {
      */
     private SpriteManager playerManager;
     private Player player;
-
     private Button freezeBtn;
 
     private int lives;
@@ -62,8 +63,11 @@ public class SuperOmario extends GameWorld {
 
     private ImageViewSprite anim;
 
-    Pane backgroundLayer;
+    Pane initBackground;
 
+    ScrollPane backgroundLayer;
+
+//    ScrollPane scroll;
     ImageView imageViewMario;
 
     public SuperOmario(int framesPerSec, String title) {
@@ -71,6 +75,22 @@ public class SuperOmario extends GameWorld {
         playerManager = null;
         player = null;
 
+    }
+
+    /**
+     * Creates a scrolling
+     *
+     * @param backgroundLayer
+     * @return
+     */
+    public ScrollPane createScrollPane(Pane backgroundLayer) {
+        ScrollPane scroll = new ScrollPane();
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setPannable(true);
+        scroll.setPrefSize(800, 600);
+        scroll.setContent(backgroundLayer);
+        return scroll;
     }
 
     @Override
@@ -98,6 +118,7 @@ public class SuperOmario extends GameWorld {
             key.consume();
 
         }
+
         else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-300);
             player.setOnGround(false);
@@ -129,13 +150,15 @@ public class SuperOmario extends GameWorld {
                                GameMain.SCENE_HEIGHT));
         primaryStage.setScene(getGameScene());
 
-        backgroundLayer = new Pane();
+        initBackground = new Pane();
+        backgroundLayer = new ScrollPane();
 
         this.setCanvas(new Canvas(GameMain.SCENE_WIDTH, GameMain.SCENE_HEIGHT));
         getSceneNodes().getChildren().add(getCanvas());
-        backgroundLayer.getChildren().add(
+        initBackground.getChildren().add(
                 backgroundImageView);
 
+        backgroundLayer = createScrollPane(this.initBackground);
         this.getSceneNodes().getChildren().add(backgroundLayer);
         backgroundLayer.toBack();
 
@@ -158,6 +181,15 @@ public class SuperOmario extends GameWorld {
                 getGameScene().widthProperty().multiply(3));
         backgroundImageView.fitHeightProperty().bind(
                 getGameScene().heightProperty());
+
+        backgroundLayer.prefWidthProperty().bind(getGameScene().widthProperty());
+        backgroundLayer.prefHeightProperty().bind(getGameScene().widthProperty());
+
+        // center the scroll contents.
+        backgroundLayer.setHvalue(
+                backgroundLayer.getHmin() + (backgroundLayer.getHmax() - backgroundLayer.getHmin()) / 2);
+        backgroundLayer.setVvalue(
+                backgroundLayer.getVmin() + (backgroundLayer.getVmax() - backgroundLayer.getVmin()) / 2);
 
         for (Platform i : backgroundManager.getPlatforms()) {
 
