@@ -15,8 +15,8 @@
  */
 package csci205FinalProject;
 
+import csci205FinalProject.Sprite.BackgroundManager;
 import javafx.animation.AnimationTimer;
-import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -40,7 +40,7 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
     private Group sceneNodes;
 
     //Timeline is a subclass of animation which runs a certain number of frames per second
-    private static Timeline gameLoop;
+    private static AnimationTimer gameLoop;
 
     //Number of frames per second
     private final int framesPerSec;
@@ -71,8 +71,9 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         //this method will come later
         backgroundImageView = new ImageView(getClass().getResource(
                 "/background.png").toExternalForm());
-        backgroundImageView.relocate(0,
-                                     -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
+        backgroundImageView.relocate(0, 0);
+        //backgroundImageView.relocate(0,
+        //                           -backgroundImageView.getImage().getHeight() + GameMain.SCENE_HEIGHT);
 
     }
 
@@ -108,7 +109,7 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
 //                                        }
 //                                    });
         final long startNanoTime = System.nanoTime();
-        new AnimationTimer() {
+        gameLoop = new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
                 double t = (currentNanoTime - startNanoTime) / 1000000000.0;
@@ -116,7 +117,9 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
                 updateSprites(frameDuration.toSeconds());
                 checkCollisons();
             }
-        }.start();
+        };
+
+        gameLoop.start();
 
 //        AnimationTimer timer = new AnimationTimer() {
 //            @Override
@@ -148,7 +151,7 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
      * Starts game loop
      */
     public void beginGameLoop() {
-        getGameLoop().play();
+        getGameLoop().start();
     }
 
     private int getFramesPerSecond() {
@@ -159,11 +162,11 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         return title;
     }
 
-    public static Timeline getGameLoop() {
+    public static AnimationTimer getGameLoop() {
         return gameLoop;
     }
 
-    public static void setGameLoop(Timeline gameLoop) {
+    public static void setGameLoop(AnimationTimer gameLoop) {
         GameWorld.gameLoop = gameLoop;
     }
 
@@ -190,6 +193,8 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
     public Canvas getCanvas() {
         return canvas;
     }
+
+    public abstract BackgroundManager getBackgroundManager();
 
     public void setGc(GraphicsContext gc) {
         this.gc = gc;

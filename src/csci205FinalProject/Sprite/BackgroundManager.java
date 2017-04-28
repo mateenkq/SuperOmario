@@ -28,6 +28,8 @@ public class BackgroundManager {
     ArrayList<Platform> platforms;
     Platform platform;
 
+    ArrayList<Coffee> coffees;
+
     /**
      *
      * @param g
@@ -35,12 +37,26 @@ public class BackgroundManager {
     public BackgroundManager(GameWorld g) {
         gameWorld = g;
         platforms = new ArrayList();
-        platforms.add(new Platform(g, 1000, 10, 0, 180));
-        platforms.add(new Platform(g, 50, 10, 10, 130));
-        platforms.add(new Platform(g, 50, 10, 110, 130));
-        platforms.add(new Platform(g, 50, 10, 200, 130));
+        //GameWorld g, double width, double height, double x, double y
+        platforms.add(new Platform(g, 300, 10, 0, 230));
+        platforms.add(new Platform(g, 300, 10, 400, 180));
+        platforms.add(new Platform(g, 100, 10, 200, 130));
+        platforms.add(new Platform(g, 100, 10, 350, 130));
+        platforms.add(new Platform(g, 100, 10, 500, 130));
+        //end of level platform
+        platforms.add(
+                new Platform(g, 30, 10, (g.getGameScene().getWidth() - 40),
+                             (g.getGameScene().getHeight() - 57)));
         platform = platforms.get(0);
 //        platform.getNode().setOpacity(0);
+
+        coffees = new ArrayList();
+        //GameWorld g, double width, double height,
+        coffees.add(new Coffee(g, 100, 210));
+        coffees.add(new Coffee(g, 450, 160));
+        coffees.add(new Coffee(g, 250, 110));
+        coffees.add(new Coffee(g, 400, 110));
+        coffees.add(new Coffee(g, 550, 110));
 
     }
 
@@ -52,4 +68,12 @@ public class BackgroundManager {
         return platforms;
     }
 
+    public ArrayList<Coffee> getCoffees() {
+        return coffees;
+    }
+
+    public void remove(Coffee coffee) {
+        coffees.remove(coffee);
+        gameWorld.getSceneNodes().getChildren().remove(coffee.getNode());
+    }
 }

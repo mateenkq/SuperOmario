@@ -16,6 +16,7 @@
 package csci205FinalProject.Sprite;
 
 import csci205FinalProject.GameWorld;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -24,18 +25,18 @@ import javafx.scene.shape.Rectangle;
  */
 public class Platform extends Sprite {
 
-    GameWorld game;
+    private GameWorld game;
 
-//    ReadOnlyDoubleProperty propYPos;
-    Double propYPos;
-    Double propXPos;
+    private Double propYPos;
+    private Double propXPos;
+
     Double propHeight;
     Double propWidth;
 
     public Platform(GameWorld g, double width, double height, double x, double y) {
         super();
         game = g;
-        this.node = new Rectangle(width, height);
+        this.node = new Rectangle(width, height, Color.DARKGREEN);
         this.setPosition(x, y);
 
         this.propYPos = y / g.getGameScene().getHeight();

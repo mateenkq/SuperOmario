@@ -25,17 +25,26 @@ import java.util.ArrayList;
 public class EnemyManager {
 
     GameWorld gameWorld;
-    ArrayList<Fireball> fireballs;
+    ArrayList<Enemy> enemies;
 
     public EnemyManager(GameWorld g) {
         gameWorld = g;
-        fireballs = new ArrayList();
-        fireballs.add(new Fireball(g, -50, 950, 175));
-        fireballs.add(new Fireball(g, -30, 950, 125));
+        enemies = new ArrayList();
+        //dont add enemy to last platform (end of level)
+        for (int i = 0; i < (gameWorld.getBackgroundManager().getPlatforms().size() - 1); i++) {
+            enemies.add(new Enemy(g, 50,
+                                  gameWorld.getBackgroundManager().getPlatforms().get(
+                                          i)));
+        }
     }
 
-    public ArrayList<Fireball> getFireballs() {
-        return fireballs;
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public void remove(Enemy enemy) {
+        enemies.remove(enemy);
+        gameWorld.getSceneNodes().getChildren().remove(enemy.getNode());
     }
 
 }

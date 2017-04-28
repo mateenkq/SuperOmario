@@ -16,12 +16,14 @@
 package csci205FinalProject;
 
 import csci205FinalProject.Sprite.BackgroundManager;
+import csci205FinalProject.Sprite.Coffee;
+import csci205FinalProject.Sprite.Enemy;
 import csci205FinalProject.Sprite.EnemyManager;
 import csci205FinalProject.Sprite.ImageViewSprite;
 import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteManager;
-import javafx.animation.Timeline;
+import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -60,11 +62,17 @@ public class SuperOmario extends GameWorld {
     private Text livesDisplay;
     private boolean collision = false;
 
+    private int coffees;
+    private Text coffeesDisplay;
+
     private ImageViewSprite anim;
 
     Pane backgroundLayer;
 
     ImageView imageViewMario;
+
+    private BackgroundManager backgroundManager;
+    private EnemyManager enemyManager;
 
     public SuperOmario(int framesPerSec, String title) {
         super(framesPerSec, title);
@@ -93,8 +101,9 @@ public class SuperOmario extends GameWorld {
             }
 
             key.consume();
-            /// this will (eventually) call a function that makes the player go right
-        } else if (key.getCode() == KeyCode.LEFT) {
+
+        }
+        else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
             this.anim.getImageView().setImage(new Image(
                     "/spritesheet_flipped2.png"));
@@ -104,21 +113,16 @@ public class SuperOmario extends GameWorld {
             }
             key.consume();
 
-        } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
+        }
+        else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-300);
             player.setOnGround(false);
-            anim.stop();
-        } else if (key.getCode() == KeyCode.P) {
-            switch (getGameLoop().getStatus()) {
-                case RUNNING:
-                    getGameLoop().stop();
-                    System.out.println("stopped");
-                    break;
-                case STOPPED:
-                    getGameLoop().play();
-                    System.out.println("resumed");
-                    break;
-            }
+        }
+        else if (key.getCode() == KeyCode.P) {
+            getGameLoop().stop();
+        }
+        else if (key.getCode() == KeyCode.L) {
+            getGameLoop().start();
         }
 
     }
@@ -137,6 +141,7 @@ public class SuperOmario extends GameWorld {
 
         backgroundLayer = new Pane();
 
+        //put in Image
         this.setCanvas(new Canvas(GameMain.SCENE_WIDTH, GameMain.SCENE_HEIGHT));
         getSceneNodes().getChildren().add(getCanvas());
         backgroundLayer.getChildren().add(
@@ -147,8 +152,10 @@ public class SuperOmario extends GameWorld {
 
         this.setGc(getCanvas().getGraphicsContext2D());
 
+        //create player
         player = new Player(this);
 
+        //set player image
         imageViewMario = (ImageView) player.node;
         this.anim = new ImageViewSprite(imageViewMario,
                                         new Image(
@@ -160,11 +167,76 @@ public class SuperOmario extends GameWorld {
         backgroundManager = new BackgroundManager(this);
         enemyManager = new EnemyManager(this);
 
-        backgroundImageView.fitWidthProperty().bind(
-                getGameScene().widthProperty().multiply(3));
-        backgroundImageView.fitHeightProperty().bind(
-                getGameScene().heightProperty());
+        //do bindings
+        bindBackground();
 
+        bindPlatforms();
+
+        bindEnemies();
+
+        bindPlayer();
+
+        bindCoffees();
+
+        //add event handler for key press
+        this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
+
+        final AnimationTimer gameLoop = getGameLoop();
+
+        //display lives left
+        livesDisplay();
+
+        //display number coffees had
+        coffeesDisplay();
+
+        //add event handler for key release
+        setKeyReleasedHandler();
+    }
+
+    public void livesDisplay() {
+        lives = 3;
+        livesDisplay = new Text(0, 12, String.format("Lives Left: %d",
+                                                     lives));
+        livesDisplay.setFont(new Font("Arial", 15));
+        livesDisplay.setFill(Color.WHITE);
+        getSceneNodes().getChildren().add(livesDisplay);
+    }
+
+    public void coffeesDisplay() {
+        coffees = 0;
+        coffeesDisplay = new Text(getGameScene().getWidth() - 75, 12,
+                                  String.format("Coffees: %d",
+                                                coffees));
+        coffeesDisplay.setFont(new Font("Arial", 15));
+        coffeesDisplay.setFill(Color.WHITE);
+        getSceneNodes().getChildren().add(coffeesDisplay);
+
+        double propXPos = coffeesDisplay.getX() / getGameScene().getWidth();
+
+        coffeesDisplay.xProperty().bind(
+                getGameScene().widthProperty().multiply(propXPos));
+    }
+
+    public void bindPlayer() {
+        player.getNode().fitHeightProperty().bind(
+                getGameScene().heightProperty().multiply(player.getPropHeight()));
+        player.getNode().fitWidthProperty().bind(
+                getGameScene().heightProperty().multiply(
+                        player.getPropHeight()).multiply(player.getPropRatio()));
+    }
+
+    public void bindEnemies() {
+        for (Enemy j : enemyManager.getEnemies()) {
+
+            j.getNode().widthProperty().bind(
+                    getGameScene().widthProperty().multiply(j.getPropWidth()));
+            //width is based on the height
+            j.getNode().heightProperty().bind(
+                    getGameScene().heightProperty().multiply(j.getPropHeight()));
+        }
+    }
+
+    public void bindPlatforms() {
         for (Platform i : backgroundManager.getPlatforms()) {
 
             i.getNode().xProperty().bind(
@@ -174,34 +246,38 @@ public class SuperOmario extends GameWorld {
                     getGameScene().heightProperty().multiply(
                             i.getPropYPos()));
             i.getNode().heightProperty().bind(
-                    getGameScene().heightProperty().multiply(i.getPropHeight()));
+                    getGameScene().heightProperty().multiply(
+                            i.getPropHeight()));
             i.getNode().widthProperty().bind(
                     getGameScene().widthProperty().multiply(i.getPropWidth()));
 
         }
-
-        player.getNode().fitWidthProperty().bind(
-                getGameScene().widthProperty().multiply(player.getPropWidth()));
-        player.getNode().fitHeightProperty().bind(
-                getGameScene().heightProperty().multiply(player.getPropHeight()));
-
-        this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
-        final Timeline gameLoop = getGameLoop();
-//        freezeBtn = new Button("Freeze/Resume");
-//        getSceneNodes().getChildren().add(freezeBtn);
-
-        //display lives left
-        lives = 3;
-        livesDisplay = new Text(0, 12, String.format("Lives Left: %d",
-                                                     lives));
-        livesDisplay.setFont(new Font("Arial", 15));
-        livesDisplay.setFill(Color.WHITE);
-        getSceneNodes().getChildren().add(livesDisplay);
-
-        setKeyReleasedHandler();
     }
-    private BackgroundManager backgroundManager;
-    private EnemyManager enemyManager;
+
+    public void bindCoffees() {
+        for (Coffee i : backgroundManager.getCoffees()) {
+
+            i.getNode().xProperty().bind(
+                    getGameScene().widthProperty().multiply(
+                            i.getPropXPos()));
+            i.getNode().yProperty().bind(
+                    getGameScene().heightProperty().multiply(
+                            i.getPropCenter()));
+            i.getNode().fitHeightProperty().bind(
+                    getGameScene().heightProperty().multiply(
+                            i.getPropHeight()));
+            i.getNode().fitWidthProperty().bind(
+                    getGameScene().widthProperty().multiply(i.getPropWidth()));
+
+        }
+    }
+
+    public void bindBackground() {
+        backgroundImageView.fitWidthProperty().bind(
+                getGameScene().widthProperty().multiply(2));
+        backgroundImageView.fitHeightProperty().bind(
+                getGameScene().heightProperty());
+    }
 
     private void setKeyReleasedHandler() {
         this.getGameScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -221,7 +297,8 @@ public class SuperOmario extends GameWorld {
                     anim.stop();
 
                     player.setVelocityX(0);
-                } else if (key.getCode() == KeyCode.LEFT) {
+                }
+                else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                     anim.stop();
                 }
@@ -234,20 +311,31 @@ public class SuperOmario extends GameWorld {
     public void updateSprites(double time) {
         if (player != null) {
 //            player.isOnGround();
-            if (player.onGround()) {
+            if (player.onGround() && player.getVelocityX() != 0) {
                 anim.start();
             }
             player.update(time);
+            //if player falls through floor of game
+            if (player.getPositionY() >= getGameScene().getHeight() + 500) {
+                player.setPosition(0, 0);
+                lives -= 1;
+                livesDisplay.setText(String.format("Lives Left: %d",
+                                                   lives));
+            }
 //          player.render(this.getGc());
         }
         if (enemyManager != null) {
-            for (int i = 0; i < enemyManager.getFireballs().size(); i++) {
-                this.enemyManager.getFireballs().get(i).update(time);
+            for (int i = 0; i < enemyManager.getEnemies().size(); i++) {
+                this.enemyManager.getEnemies().get(i).update(time);
             }
         }
         if (backgroundManager != null) {
             for (Platform i : backgroundManager.getPlatforms()) {
                 i.update(time);
+
+            }
+            for (Coffee j : backgroundManager.getCoffees()) {
+                j.update(time);
             }
         }
     }
@@ -255,41 +343,91 @@ public class SuperOmario extends GameWorld {
     @Override
     public void checkCollisons() {
         if (backgroundManager != null) {
-            int j = 0;
             for (Platform i : backgroundManager.getPlatforms()) {
                 if (i.intersects(player) && (player.getVelocityY() >= 0)) {
-                    System.out.println("intersect!");
-                    player.setVelocityY(0);
-                    // Y position for both sprites is at the top left corner
-                    // set position at current location of rectangle - height of player
-                    double newY = i.getPositionY() - player.getHeight();
-                    player.setPosition(player.getPositionX(), newY);
-                    player.setOnGround(true);
+                    if ((player.getPositionY() + player.getHeight()) <= (i.getPositionY() + i.getHeight())) {
+                        player.setVelocityY(0);
+                        // Y position for both sprites is at the top left corner
+                        // set position at current location of rectangle - height of player
+                        double newY = i.getPositionY() - player.getHeight();
+                        player.setPosition(player.getPositionX(), newY);
+                        player.setOnGround(true);
+                    }
 
                 }
+            }
+            boolean hitCoffee = false;
+            int coffeeNum = 0;
+            for (int i = 0; i < backgroundManager.getCoffees().size(); i++) {
+                if (backgroundManager.getCoffees().get(i).intersects(player)) {
+                    hitCoffee = true;
+                    coffeeNum = i;
+                }
+            }
+            if (hitCoffee) {
+                backgroundManager.remove(backgroundManager.getCoffees().get(
+                        coffeeNum));
+                coffees += 1;
+                coffeesDisplay.setText(String.format("Coffees: %d",
+                                                     coffees));
             }
         }
         if (enemyManager != null) {
             boolean setOpaque = false;
+            boolean topCollision = false;
+            int enemyNum = 0;
             //check if the player has hit any fireballs
-            for (int i = 0; i < enemyManager.getFireballs().size(); i++) {
-                if (enemyManager.getFireballs().get(i).intersects(player)) {
+            for (int i = 0; i < enemyManager.getEnemies().size(); i++) {
+                if (enemyManager.getEnemies().get(i).intersects(player)) {
                     setOpaque = true;
-                    if (!collision) {
+                    //if it killed the enemy
+                    if (isTopCollision(i)) {
+                        topCollision = true;
+                        enemyNum = i;
+                    }
+                    //only lose life when collision begins, not continuously throughout collision
+                    else if (!collision) {
                         lives -= 1;
                         livesDisplay.setText(String.format("Lives Left: %d",
                                                            lives));
+
                         collision = true;
                     }
                 }
             }
-            if (setOpaque) {
+            if (topCollision) {
+                //enemy dissapears
+                enemyManager.remove(enemyManager.getEnemies().get(
+                        enemyNum));
+                //bounce off enemy
+                player.addVelocityY(-400);
+                player.setOnGround(false);
+            }
+            else if (setOpaque) {
                 player.getNode().setOpacity(0);
-            } else {
+            }
+            else {
                 player.getNode().setOpacity(1);
                 collision = false;
             }
         }
+    }
+
+    public boolean isTopCollision(int i) {
+        double enemyXPos = enemyManager.getEnemies().get(i).getPositionX();
+        //if the player is over the enemy
+        boolean xInRange = ((enemyXPos - 10) <= player.getPositionX()) && (player.getPositionX() < (enemyXPos + 10));
+        //and the player is moving down (jumping on top of enemy)
+        if ((xInRange) && (player.getVelocityY() > 0)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public BackgroundManager getBackgroundManager() {
+        return backgroundManager;
     }
 
 }

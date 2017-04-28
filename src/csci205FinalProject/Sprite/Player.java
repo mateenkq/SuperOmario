@@ -30,8 +30,13 @@ public class Player extends Sprite {
 
     private boolean onGround;
 
+    private Double propYPos;
+    private Double propXPos;
+
     private Double propWidth;
     private Double propHeight;
+
+    private double propRatio;
 
     public Player(GameWorld g) {
         super();
@@ -43,8 +48,13 @@ public class Player extends Sprite {
 //        this.nod.setRotate(r);
 //        this.render(game.getGc());
 
+        this.node = this.node;
+
+        //base bindings off of ratio between initial image dimensions, and initial game dimensions
         propWidth = this.getNode().getImage().getWidth() / g.getGameScene().getWidth();
-        propHeight = this.getNode().getImage().getWidth() / g.getGameScene().getHeight();
+        propHeight = this.getNode().getImage().getHeight() / g.getGameScene().getHeight();
+
+        propRatio = (this.getNode().getImage().getWidth() / this.getNode().getImage().getHeight());
 
         game.getSceneNodes().getChildren().add(this.node);
 
@@ -68,10 +78,7 @@ public class Player extends Sprite {
     @Override
     public void update(double time) {
 
-        this.changeVelocity(time);
-        positionX += velocityX * time;
-        positionY += velocityY * time;
-        node.relocate(positionX, positionY);
+        super.update(time);
 
         this.height = this.getNode().getFitHeight();
         this.width = this.getNode().getFitWidth();
@@ -96,6 +103,10 @@ public class Player extends Sprite {
 
     public Double getPropHeight() {
         return propHeight;
+    }
+
+    public double getPropRatio() {
+        return propRatio;
     }
 
 }
