@@ -45,7 +45,7 @@ public class BackgroundManager {
         platforms.add(new Platform(g, 100, 10, 500, 130));
         //end of level platform
         platforms.add(
-                new Platform(g, 30, 10, (g.getGameScene().getWidth() - 40),
+                new Platform(g, 700, 10, (g.getGameScene().getWidth() - 40),
                              (g.getGameScene().getHeight() - 57)));
         platform = platforms.get(0);
 //        platform.getNode().setOpacity(0);

@@ -90,17 +90,15 @@ public class Enemy extends Sprite {
                 if (nearLeftEdge) {
                     this.setVelocityX((scrollSpeed / 2) + BASE_VELOCITY);
                 }
+                //if near right edge
+                if (nearRightEdge) {
             }
             //going right
             else if (this.getVelocityX() > 0) {
                 this.setVelocityX((scrollSpeed / 2) + BASE_VELOCITY);
-                //if near right edge
-                if (nearRightEdge) {
-                    this.setVelocityX((scrollSpeed / 2) - BASE_VELOCITY);
                 }
             }
-        }
-        //if we stop scrolling
+        } //if we stop scrolling
         else if (!game.isScrolling()) {
             scrollSpeed = game.getScrollSpeed();
             //going left
@@ -110,15 +108,13 @@ public class Enemy extends Sprite {
                 if (nearLeftEdge) {
                     this.setVelocityX(BASE_VELOCITY);
                 }
-            }
-            else if (this.getVelocityX() > 0) {
+            } else if (this.getVelocityX() > 0) {
                 this.setVelocityX(BASE_VELOCITY);
                 if (nearRightEdge) {
                     this.setVelocityX(-BASE_VELOCITY);
                 }
             }
-        }
-        //if near edges, reverse direction
+        } //if near edges, reverse direction
         else if ((nearRightEdge && (this.getVelocityX() > 0)) || (nearLeftEdge && (this.getVelocityX() < 0))) {
             this.setVelocityX(-(this.getVelocityX()));
         }
