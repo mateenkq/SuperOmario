@@ -21,8 +21,6 @@ import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -49,13 +47,7 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
     //The title of the game window
     private final String title;
 
-    private GraphicsContext gc;
-
-    private Canvas canvas;
-
     ImageView backgroundImageView;
-    // This defines the scrolling speed of the background
-    double backgroundScrollSpeed = 0.5;
 
     Background background;
 
@@ -85,30 +77,9 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         //convert framesPerSec into duration of each frame
         final Duration frameDuration = Duration.millis(
                 1000 / getFramesPerSecond());
-        //create frame
-//        final KeyFrame frame = new KeyFrame(frameDuration,
-//                                            new EventHandler() {
-//
-//                                        @Override
-//                                        public void handle(long currentTime) {
-//                                            updateSprites(
-//                                                    frameDuration.toSeconds());
-//                                            //checkCollisions();
-//                                            //cleanupSprites();
-//                                            // scroll background
-//                                            //calculate new position
-//                                            double y = backgroundImageView.getLayoutY() + backgroundScrollSpeed;
-//
-//                                            // check bounds. Scrolling upwards
-//                                            if (Double.compare(y, 0) >= 0) {
-//                                                y = 0;
-//                                            }
-//
-//                                            // move the background
-//                                            backgroundImageView.setLayoutY(y);
-//                                        }
-//                                    });
+
         final long startNanoTime = System.nanoTime();
+
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
@@ -121,19 +92,6 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
 
         gameLoop.start();
 
-//        AnimationTimer timer = new AnimationTimer() {
-//            @Override
-//            public void handle(long l
-//            ) {
-//                updateSprites()
-//            }
-//
-//        };
-        //sets the gameLoop
-//        final Timeline timeline = new Timeline();
-//        timeline.setCycleCount(Animation.INDEFINITE);
-//        timeline.getKeyFrames().add(frame);
-//        setGameLoop(timeline);s
     }
 
     public abstract void updateSprites(double time);
@@ -186,27 +144,13 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         this.sceneNodes = sceneNodes;
     }
 
-    public GraphicsContext getGc() {
-        return gc;
-    }
-
-    public Canvas getCanvas() {
-        return canvas;
-    }
-
     public abstract BackgroundManager getBackgroundManager();
-
-    public void setGc(GraphicsContext gc) {
-        this.gc = gc;
-    }
-
-    public void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-    }
 
     @Override
     public void handle(KeyEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
+
+    public abstract boolean isScrolling();
 
 }

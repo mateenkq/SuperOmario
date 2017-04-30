@@ -107,23 +107,8 @@ public class Sprite {
         positionY += velocityY * time;
         node.relocate(positionX, positionY);
 
-//        node.setTranslateX(positionX);
-//        node.setTranslateY(positionY);
-//        this.node.setX(positionX);
-//        this.node.setY(positionY);
     }
 
-    /**
-     * Given a GraphicsContext object, draws an image at the location specified
-     * by the positionX and positionY of the Sprite object using the width and
-     * the height of the given image
-     *
-     * @param gc
-     */
-//    public void render(GraphicsContext gc) {
-//
-//        gc.drawImage(image, positionX, positionY);
-//    }
     /**
      *
      * @return a new Rectangle2D object
@@ -149,7 +134,8 @@ public class Sprite {
     public boolean intersectsTop(Sprite s) {
         if ((s.positionY - s.height < this.positionY) && (s.positionY - s.height > this.positionY - this.height)) {
             return true;
-        } else {
+        }
+        else {
             return true;
         }
     }

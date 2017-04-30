@@ -32,7 +32,7 @@ public class EnemyManager {
         enemies = new ArrayList();
         //dont add enemy to last platform (end of level)
         for (int i = 0; i < (gameWorld.getBackgroundManager().getPlatforms().size() - 1); i++) {
-            enemies.add(new Enemy(g, 50,
+            enemies.add(new Enemy(g,
                                   gameWorld.getBackgroundManager().getPlatforms().get(
                                           i)));
         }

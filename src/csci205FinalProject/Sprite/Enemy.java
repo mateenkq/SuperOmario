@@ -36,16 +36,15 @@ public class Enemy extends Sprite {
 
     private Platform platform;
 
-    private double speed;
+    private static double SCROLL_SPEED = -80;
+    private static double BASE_VELOCITY = 50;
 
-    public Enemy(GameWorld g, double velocity, Platform p) {
+    public Enemy(GameWorld g, Platform p) {
         super();
         game = g;
         width = 15;
         height = 7;
         this.node = new Rectangle(height, width, Color.RED);
-
-        speed = velocity;
 
         //set on top of platform
         this.rightEdge = p.getPositionX() + p.getWidth();
@@ -55,7 +54,7 @@ public class Enemy extends Sprite {
                          (p.getPositionY() - (this.getHeight())));
 
         this.setDimensions(width, height);
-        this.setVelocityX(velocity);
+        this.setVelocityX(BASE_VELOCITY);
 
         //ratios for bindings based on initial game dimensions
         propHeight = this.getHeight() / game.getGameScene().getHeight();
@@ -64,6 +63,7 @@ public class Enemy extends Sprite {
         this.platform = p;
 
         g.getSceneNodes().getChildren().add(node);
+
     }
 
     public void updateEdges() {
@@ -74,12 +74,63 @@ public class Enemy extends Sprite {
 
     //reverse direction at end of platform
     public void updateVelocity() {
+        boolean nearRightEdge = ((rightEdge - this.getWidth() - 1) <= this.getPositionX());
+        boolean nearLeftEdge = (this.getPositionX() <= leftEdge);
 
-        boolean nearRightEdge = ((rightEdge - (this.getWidth()) - 1) <= this.getPositionX());
-        boolean nearLeftEdge = (this.getPositionX() <= (leftEdge + 1));
-        if ((nearRightEdge && (this.getVelocityX() > 0)) || (nearLeftEdge && (this.getVelocityX() < 0))) {
+        /**
+         * when not scrolling: right velocity = base velocity = 50 left velocity
+         * = -base velocity = -50
+         *
+         * when scrolling: right velocity = scroll speed + base velocity = -30
+         * left velocity = scroll speed - base velocity = -130
+         *
+         *
+         * therefore, right velocity is always > -40 left velocity is always <
+         * -40
+         */
+        //if we start scrolling
+        if (game.isScrolling()) {
+            //going left
+            if (this.getVelocityX() < -40) {
+                this.setVelocityX(SCROLL_SPEED - BASE_VELOCITY);
+                //if near left edge
+                if (nearLeftEdge && (this.getVelocityX() < -30)) {
+                    System.out.println("at left edge");
+                    this.setVelocityX(SCROLL_SPEED + BASE_VELOCITY);
+                }
+            }
+            //going right
+            else if (this.getVelocityX() > -40) {
+                this.setVelocityX(SCROLL_SPEED + BASE_VELOCITY);
+                //if near right edge
+                if (nearRightEdge) {
+                    System.out.println("at right edge");
+                    this.setVelocityX(SCROLL_SPEED - BASE_VELOCITY);
+                }
+            }
+        }
+        //if we stop scrolling
+        else if (!game.isScrolling()) {
+            //going left
+            if (this.getVelocityX() < 0) {
+                this.setVelocityX(-(BASE_VELOCITY));
+                //if near left edge
+                if (nearLeftEdge) {
+                    this.setVelocityX(BASE_VELOCITY);
+                }
+            }
+            else if (this.getVelocityX() > 0) {
+                this.setVelocityX(BASE_VELOCITY);
+                if (nearRightEdge) {
+                    this.setVelocityX(-BASE_VELOCITY);
+                }
+            }
+        }
+        //if near edges, reverse direction
+        else if ((nearRightEdge && (this.getVelocityX() > 0)) || (nearLeftEdge && (this.getVelocityX() < 0))) {
             this.setVelocityX(-(this.getVelocityX()));
         }
+
     }
 
     public void setWidth(double width) {
@@ -121,6 +172,8 @@ public class Enemy extends Sprite {
 
         updateEdges();
         updateVelocity();
+
+        super.update(time);
 
         this.setPosition(this.getPositionX(),
                          (this.platform.getPositionY() - (this.getHeight())));

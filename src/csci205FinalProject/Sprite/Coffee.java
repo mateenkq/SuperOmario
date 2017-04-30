@@ -76,7 +76,6 @@ public class Coffee extends Sprite {
 
         updateVelocity();
 
-        setPosition(this.getNode().xProperty().getValue(), getPositionY());
         center = this.getNode().yProperty().getValue();
     }
 

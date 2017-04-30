@@ -74,10 +74,9 @@ public class Platform extends Sprite {
 
     @Override
     public void update(double time) {
-        positionX += velocityX * time;
-        positionY += velocityY * time;
-        node.relocate(positionX, positionY);
-//        positionX = this.getNode().xProperty().getValue();
+        super.update(time);
+
+        //    positionX = this.getNode().xProperty().getValue();
         positionY = this.getNode().yProperty().getValue();
 
     }
