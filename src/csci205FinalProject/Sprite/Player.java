@@ -24,14 +24,9 @@ import javafx.scene.image.ImageView;
  */
 public class Player extends Sprite {
 
-    private int lives;
-
     private GameWorld game;
 
     private boolean onGround;
-
-    private Double propYPos;
-    private Double propXPos;
 
     private Double propWidth;
     private Double propHeight;
@@ -45,8 +40,6 @@ public class Player extends Sprite {
         this.setImage(getClass().getResource("/jm_stand.png").toExternalForm());
         this.node = new ImageView(image);
         this.node.relocate(this.getPositionX(), this.getPositionY());
-//        this.nod.setRotate(r);
-//        this.render(game.getGc());
 
         this.node = this.node;
 

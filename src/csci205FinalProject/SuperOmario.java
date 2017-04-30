@@ -27,7 +27,6 @@ import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -61,6 +60,8 @@ public class SuperOmario extends GameWorld {
     private int lives;
     private Text livesDisplay;
     private boolean collision = false;
+
+    private boolean scrolling = false;
 
     private int coffees;
     private Text coffeesDisplay;
@@ -97,13 +98,15 @@ public class SuperOmario extends GameWorld {
             }
             if (player.getPositionX() >= (this.getGameScene().getWidth() / 2)) {
                 scroll();
-            } else {
+            }
+            else {
                 player.setVelocityX(80);
             }
 
             key.consume();
 
-        } else if (key.getCode() == KeyCode.LEFT) {
+        }
+        else if (key.getCode() == KeyCode.LEFT) {
             player.setVelocityX(-80);
             this.anim.getImageView().setImage(new Image(
                     "/spritesheet_flipped2.png"));
@@ -113,10 +116,12 @@ public class SuperOmario extends GameWorld {
             }
             key.consume();
 
-        } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
+        }
+        else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-300);
             player.setOnGround(false);
-        } else if (key.getCode() == KeyCode.P) {
+        }
+        else if (key.getCode() == KeyCode.P) {
             getGameLoop().stop();
         }
         else if (key.getCode() == KeyCode.S) {
@@ -140,18 +145,12 @@ public class SuperOmario extends GameWorld {
 
         backgroundLayer = new Pane();
 
-        //put in Image
-        this.setCanvas(new Canvas(GameMain.SCENE_WIDTH, GameMain.SCENE_HEIGHT));
-        getSceneNodes().getChildren().add(getCanvas());
         backgroundLayer.getChildren().add(
                 backgroundImageView);
 
         this.getSceneNodes().getChildren().add(backgroundLayer);
         backgroundLayer.toBack();
 
-        this.setGc(getCanvas().getGraphicsContext2D());
-
-        //create player
         player = new Player(this);
 
         //set player image
@@ -230,9 +229,15 @@ public class SuperOmario extends GameWorld {
         for (Platform i : this.backgroundManager.getPlatforms()) {
             i.setVelocityX(-80);
         }
-        for (Enemy j : this.enemyManager.getEnemies()) {
-//            j.addVelocityX(-80);
+        for (Coffee i : this.backgroundManager.getCoffees()) {
+            i.setVelocityX(-80);
         }
+//        for (Enemy j : this.enemyManager.getEnemies()) {
+        if (!scrolling) {
+//                j.addVelocityX(-80);
+            scrolling = true;
+        }
+//        }
     }
 
     public void stopScrolling() {
@@ -240,9 +245,16 @@ public class SuperOmario extends GameWorld {
         for (Platform i : this.backgroundManager.getPlatforms()) {
             i.setVelocityX(0);
         }
-        for (Enemy j : this.enemyManager.getEnemies()) {
-//            j.addVelocityX(80);
+        for (Coffee i : this.backgroundManager.getCoffees()) {
+            i.setVelocityX(0);
         }
+//        for (Enemy j : this.enemyManager.getEnemies()) {
+        if (scrolling) {
+//                j.addVelocityX(80);
+            scrolling = false;
+        }
+//
+//        }
     }
 
     public void livesDisplay() {
@@ -291,9 +303,9 @@ public class SuperOmario extends GameWorld {
     public void bindPlatforms() {
         for (Platform i : backgroundManager.getPlatforms()) {
 
-//            i.getNode().xProperty().bind(
-//                    getGameScene().widthProperty().multiply(
-//                            i.getPropXPos()));
+            i.getNode().xProperty().bind(
+                    getGameScene().widthProperty().multiply(
+                            i.getPropXPos()));
             i.getNode().yProperty().bind(
                     getGameScene().heightProperty().multiply(
                             i.getPropYPos()));
@@ -339,7 +351,8 @@ public class SuperOmario extends GameWorld {
                     anim.stop();
                     player.setVelocityX(0);
                     stopScrolling();
-                } else if (key.getCode() == KeyCode.LEFT) {
+                }
+                else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                     anim.stop();
                 }
@@ -443,11 +456,18 @@ public class SuperOmario extends GameWorld {
                 enemyManager.remove(enemyManager.getEnemies().get(
                         enemyNum));
                 //bounce off enemy
-                player.addVelocityY(-400);
+                if (player.getVelocityY() > 200) {
+                    player.addVelocityY(-400);
+                }
+                else {
+                    player.addVelocityY(-200);
+                }
                 player.setOnGround(false);
-            } else if (setOpaque) {
+            }
+            else if (setOpaque) {
                 player.getNode().setOpacity(0);
-            } else {
+            }
+            else {
                 player.getNode().setOpacity(1);
                 collision = false;
             }
@@ -461,13 +481,18 @@ public class SuperOmario extends GameWorld {
         //and the player is moving down (jumping on top of enemy)
         if ((xInRange) && (player.getVelocityY() > 0)) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
 
     public BackgroundManager getBackgroundManager() {
         return backgroundManager;
+    }
+
+    public boolean isScrolling() {
+        return scrolling;
     }
 
 }
