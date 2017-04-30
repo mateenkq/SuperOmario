@@ -91,25 +91,23 @@ public class Enemy extends Sprite {
         //if we start scrolling
         if (game.isScrolling()) {
             //going left
-            if (this.getVelocityX() < -40) {
-                this.setVelocityX(SCROLL_SPEED - BASE_VELOCITY);
+            if (this.getVelocityX() < 0) {
+                this.setVelocityX(SCROLL_SPEED / 2 - BASE_VELOCITY);
                 //if near left edge
                 if (nearLeftEdge && (this.getVelocityX() < -30)) {
                     System.out.println("at left edge");
-                    this.setVelocityX(SCROLL_SPEED + BASE_VELOCITY);
+                    this.setVelocityX(SCROLL_SPEED / 2 + BASE_VELOCITY);
                 }
-            }
-            //going right
-            else if (this.getVelocityX() > -40) {
-                this.setVelocityX(SCROLL_SPEED + BASE_VELOCITY);
+            } //going right
+            else if (this.getVelocityX() > 0) {
+                this.setVelocityX(SCROLL_SPEED / 2 + BASE_VELOCITY);
                 //if near right edge
                 if (nearRightEdge) {
                     System.out.println("at right edge");
-                    this.setVelocityX(SCROLL_SPEED - BASE_VELOCITY);
+                    this.setVelocityX(SCROLL_SPEED / 2 - BASE_VELOCITY);
                 }
             }
-        }
-        //if we stop scrolling
+        } //if we stop scrolling
         else if (!game.isScrolling()) {
             //going left
             if (this.getVelocityX() < 0) {
@@ -118,15 +116,13 @@ public class Enemy extends Sprite {
                 if (nearLeftEdge) {
                     this.setVelocityX(BASE_VELOCITY);
                 }
-            }
-            else if (this.getVelocityX() > 0) {
+            } else if (this.getVelocityX() > 0) {
                 this.setVelocityX(BASE_VELOCITY);
                 if (nearRightEdge) {
                     this.setVelocityX(-BASE_VELOCITY);
                 }
             }
-        }
-        //if near edges, reverse direction
+        } //if near edges, reverse direction
         else if ((nearRightEdge && (this.getVelocityX() > 0)) || (nearLeftEdge && (this.getVelocityX() < 0))) {
             this.setVelocityX(-(this.getVelocityX()));
         }
