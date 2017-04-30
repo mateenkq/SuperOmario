@@ -45,6 +45,10 @@ public class GameMain extends Application {
     public void init() throws Exception {
         super.init();
         gameWorld = new SuperOmario(60, "GameTest");
+        if (gameWorld.isRestart()) {
+            gameWorld = new SuperOmario(60, "GameTest");
+        }
+
     }
 
     @Override

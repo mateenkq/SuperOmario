@@ -53,6 +53,8 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
 
     double scrollSpeed;
 
+    boolean restart;
+
     /**
      * GameWorld constructor, sets the gameLoop
      *
@@ -161,6 +163,10 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
 
     public void setScrollSpeed(double scrollSpeed) {
         this.scrollSpeed = scrollSpeed;
+    }
+
+    public boolean isRestart() {
+        return restart;
     }
 
 }

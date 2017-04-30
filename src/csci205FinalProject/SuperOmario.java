@@ -167,6 +167,9 @@ public class SuperOmario extends GameWorld {
             getSceneNodes().getChildren().remove(startMenu);
             getGameLoop().start();
         }
+        else if (key.getCode() == KeyCode.R && this.gameOver) {
+            restart = true;
+        }
 
     }
 
