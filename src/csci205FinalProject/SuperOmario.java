@@ -103,6 +103,7 @@ public class SuperOmario extends GameWorld {
             if (player.getPositionX() >= (this.getGameScene().getWidth() / 2)) {
                 //make sure player won't scroll beyond background image
                 if (this.background.getPositionX() >= (this.background.getWidth() - this.getGameScene().getWidth())) {
+
                     stopScrolling();
                     player.setVelocityX(80);
                 }
@@ -128,6 +129,7 @@ public class SuperOmario extends GameWorld {
             if (player.getPositionX() <= (this.getGameScene().getWidth() / 4)) {
                 //make sure player won't scroll beyond background image
                 if (this.background.getPositionX() <= (this.background.getWidth() - this.getGameScene().getWidth())) {
+
                     stopScrolling();
                     player.setVelocityX(-80);
 
@@ -374,9 +376,11 @@ public class SuperOmario extends GameWorld {
     }
 
     public void playGameOverMusic() {
-        final URL resource = getClass().getResource("/game_over");
-        final AudioClip gameOver = new AudioClip("/game_over.mp3");
+        //final URL resource = getClass().getResource("/game_over");
+        final AudioClip gameOver = new AudioClip(getClass().getResource(
+                "/game_over.mp3").toExternalForm());
         gameOver.play();
+
     }
 
     public void bindBackground() {
