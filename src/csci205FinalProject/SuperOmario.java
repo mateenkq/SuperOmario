@@ -23,6 +23,7 @@ import csci205FinalProject.Sprite.ImageViewSprite;
 import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteManager;
+import java.net.URL;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -34,6 +35,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -56,7 +60,7 @@ public class SuperOmario extends GameWorld {
     private Player player;
 
     private Button freezeBtn;
-
+    private static MediaPlayer mediaPlayer;
     private int lives;
     private Text livesDisplay;
     private boolean collision = false;
@@ -185,6 +189,9 @@ public class SuperOmario extends GameWorld {
                                         7);
         backgroundManager = new BackgroundManager(this);
         enemyManager = new EnemyManager(this);
+
+        //play music
+        playMusic();
 
         //do bindings
         bindBackground();
@@ -358,6 +365,20 @@ public class SuperOmario extends GameWorld {
         }
     }
 
+    public void playMusic() {
+        // music for start menu
+        final URL resource = getClass().getResource("/omario.mp3");
+        final Media media = new Media(resource.toString());
+        this.mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
+    }
+
+    public void playGameOverMusic() {
+        final URL resource = getClass().getResource("/game_over");
+        final AudioClip gameOver = new AudioClip("/game_over.mp3");
+        gameOver.play();
+    }
+
     public void bindBackground() {
         backgroundImageView.fitWidthProperty().bind(
                 getGameScene().widthProperty().multiply(2));
@@ -467,6 +488,9 @@ public class SuperOmario extends GameWorld {
                     } //only lose life when collision begins, not continuously throughout collision
                     else if (!collision) {
                         lives -= 1;
+                        if (lives == 0) {
+                            playGameOverMusic();
+                        }
                         livesDisplay.setText(String.format("Lives Left: %d",
                                                            lives));
 
