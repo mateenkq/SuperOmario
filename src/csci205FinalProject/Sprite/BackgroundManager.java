@@ -30,6 +30,8 @@ public class BackgroundManager {
 
     ArrayList<Coffee> coffees;
 
+    ArrayList<Life> lives;
+
     /**
      *
      * @param g
@@ -58,6 +60,11 @@ public class BackgroundManager {
         coffees.add(new Coffee(g, 400, 110));
         coffees.add(new Coffee(g, 550, 110));
 
+        lives = new ArrayList();
+        lives.add(new Life(g, 20, 2));
+        lives.add(new Life(g, 26, 2));
+        lives.add(new Life(g, 32, 2));
+
     }
 
     /**
@@ -72,8 +79,17 @@ public class BackgroundManager {
         return coffees;
     }
 
+    public ArrayList<Life> getLives() {
+        return lives;
+    }
+
     public void remove(Coffee coffee) {
         coffees.remove(coffee);
         gameWorld.getSceneNodes().getChildren().remove(coffee.getNode());
+    }
+
+    public void remove(Life life) {
+        lives.remove(life);
+        gameWorld.getSceneNodes().getChildren().remove(life.getNode());
     }
 }

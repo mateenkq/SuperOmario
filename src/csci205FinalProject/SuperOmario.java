@@ -20,6 +20,7 @@ import csci205FinalProject.Sprite.Coffee;
 import csci205FinalProject.Sprite.Enemy;
 import csci205FinalProject.Sprite.EnemyManager;
 import csci205FinalProject.Sprite.ImageViewSprite;
+import csci205FinalProject.Sprite.Life;
 import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteManager;
@@ -217,6 +218,8 @@ public class SuperOmario extends GameWorld {
 
         bindCoffees();
 
+        bindLives();
+
         //add event handler for key press
         this.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
 
@@ -242,8 +245,8 @@ public class SuperOmario extends GameWorld {
     }
 
     public void addKeyInstructions() {
-        pauseText = new Text((getGameScene().getWidth() - 100), 12,
-                             "Press 'p' to pause");
+        pauseText = new Text((getGameScene().getWidth() - 110), 12,
+                             "Arrow keys to move\nPress 'p' to pause\nPress 's' to start");
         pauseText.setFont(new Font("Arial", 12));
         pauseText.setFill(Color.WHITE);
         getSceneNodes().getChildren().add(pauseText);
@@ -301,8 +304,7 @@ public class SuperOmario extends GameWorld {
 
     public void livesDisplay() {
         lives = 3;
-        livesDisplay = new Text(0, 12, String.format("Lives Left: %d",
-                                                     lives));
+        livesDisplay = new Text(0, 12, String.format("Lives: "));
         livesDisplay.setFont(new Font("Arial", 15));
         livesDisplay.setFill(Color.WHITE);
         getSceneNodes().getChildren().add(livesDisplay);
@@ -373,9 +375,31 @@ public class SuperOmario extends GameWorld {
                     getGameScene().heightProperty().multiply(
                             i.getPropHeight()));
             i.getNode().fitWidthProperty().bind(
-                    getGameScene().widthProperty().multiply(i.getPropWidth()));
+                    getGameScene().heightProperty().multiply(
+                            i.getPropHeight()).multiply(i.getPropRatio()));
 
         }
+    }
+
+    public void bindLives() {
+
+        for (Life i : backgroundManager.getLives()) {
+
+            i.getNode().xProperty().bind(
+                    getGameScene().widthProperty().multiply(
+                            i.getPropXPos()));
+            i.getNode().yProperty().bind(
+                    getGameScene().heightProperty().multiply(
+                            i.getPropYPos()));
+            i.getNode().fitHeightProperty().bind(
+                    getGameScene().heightProperty().multiply(
+                            i.getPropHeight()));
+            i.getNode().fitWidthProperty().bind(
+                    getGameScene().heightProperty().multiply(
+                            i.getPropHeight()));
+
+        }
+
     }
 
     public void playMusic() {
@@ -516,8 +540,9 @@ public class SuperOmario extends GameWorld {
                         if (lives == 0) {
                             playGameOverMusic();
                         }
-                        livesDisplay.setText(String.format("Lives Left: %d",
-                                                           lives));
+                        int lastLife = backgroundManager.getLives().size() - 1;
+                        backgroundManager.remove(
+                                backgroundManager.getLives().get(lastLife));
 
                         collision = true;
                     }
