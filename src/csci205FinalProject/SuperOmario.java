@@ -536,13 +536,17 @@ public class SuperOmario extends GameWorld {
                         enemyNum = i;
                     } //only lose life when collision begins, not continuously throughout collision
                     else if (!collision) {
-                        lives -= 1;
-                        if (lives == 0) {
+
+                        if (lives > 0) {
+                            int lastLife = backgroundManager.getLives().size() - 1;
+                            backgroundManager.remove(
+                                    backgroundManager.getLives().get(lastLife));
+                        }
+
+                        else {
                             playGameOverMusic();
                         }
-                        int lastLife = backgroundManager.getLives().size() - 1;
-                        backgroundManager.remove(
-                                backgroundManager.getLives().get(lastLife));
+                        lives -= 1;
 
                         collision = true;
                     }
