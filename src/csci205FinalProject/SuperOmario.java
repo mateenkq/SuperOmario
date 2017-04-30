@@ -24,6 +24,7 @@ import csci205FinalProject.Sprite.Life;
 import csci205FinalProject.Sprite.Platform;
 import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteManager;
+import csci205FinalProject.Sprite.WinFlag;
 import java.net.URL;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -83,6 +84,9 @@ public class SuperOmario extends GameWorld {
 
     private boolean gameOver = false;
 
+    private WinFlag flag;
+    private boolean onFlag = false;
+
     public SuperOmario(int framesPerSec, String title) {
         super(framesPerSec, title);
         playerManager = null;
@@ -113,19 +117,16 @@ public class SuperOmario extends GameWorld {
                     if (player.getPositionX() >= this.getGameScene().getWidth()) {
                         player.setVelocityX(0);
                     }
-                }
-                else {
+                } else {
                     scroll(-80);
                 }
-            }
-            else {
+            } else {
                 player.setVelocityX(80);
             }
 
             key.consume();
 
-        }
-        else if (key.getCode() == KeyCode.LEFT) {
+        } else if (key.getCode() == KeyCode.LEFT) {
 
             this.anim.getImageView().setImage(new Image(
                     "/spritesheet_flipped2.png"));
@@ -145,25 +146,20 @@ public class SuperOmario extends GameWorld {
                         player.setVelocityX(0);
                     }
 
-                }
-                else {
+                } else {
                     scroll(80);
                 }
-            }
-            else {
+            } else {
                 player.setVelocityX(-80);
             }
             key.consume();
 
-        }
-        else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
+        } else if (key.getCode() == KeyCode.UP && player.onGround() == true) {
             player.addVelocityY(-300);
             player.setOnGround(false);
-        }
-        else if (key.getCode() == KeyCode.P) {
+        } else if (key.getCode() == KeyCode.P) {
             getGameLoop().stop();
-        }
-        else if (key.getCode() == KeyCode.S && !this.gameOver) {
+        } else if (key.getCode() == KeyCode.S && !this.gameOver) {
             getSceneNodes().getChildren().remove(startMenu);
             getGameLoop().start();
         }
@@ -193,10 +189,12 @@ public class SuperOmario extends GameWorld {
         this.getSceneNodes().getChildren().add(backgroundLayer);
         backgroundLayer.toBack();
 
+        this.flag = new WinFlag(this);
+
         player = new Player(this);
 
         //set player image
-        imageViewMario = (ImageView) player.node;
+        imageViewMario = (ImageView) player.getNode();
         this.anim = new ImageViewSprite(imageViewMario,
                                         new Image(
                                                 "/spritesheet2.png"),
@@ -262,12 +260,33 @@ public class SuperOmario extends GameWorld {
 
     public void addStartMenu() {
         startMenu = new ImageView(
-                getClass().getResource("/spritesheet2.png").toExternalForm());
-        startMenu.setX((getGameScene().getWidth() / 3));
-        startMenu.setY(
-                (getGameScene().getHeight() / 3));
+                getClass().getResource("/startscreen.png").toExternalForm());
+        startMenu.setX(0);
+        startMenu.setY(0);
+
+        startMenu.setFitWidth(this.getGameScene().getWidth());
+        startMenu.setFitHeight(this.getGameScene().getHeight());
+        startMenu.toFront();
+//        startMenu.setX((getGameScene().getWidth() / 3));
+//        startMenu.setY(
+//                (getGameScene().getHeight() / 3));
 
         getSceneNodes().getChildren().add(startMenu);
+    }
+
+    public void showLoseScreen() {
+        ImageView loseScreen = new ImageView(getClass().getResource(
+                "/losescreen.png").toExternalForm());
+        loseScreen.setX(0);
+        loseScreen.setY(0);
+
+        loseScreen.setFitWidth(this.getGameScene().getWidth());
+        loseScreen.setFitHeight(this.getGameScene().getHeight());
+
+        loseScreen.toFront();
+
+        getSceneNodes().getChildren().add(loseScreen);
+
     }
 
     public void scroll(double velocity) {
@@ -280,6 +299,7 @@ public class SuperOmario extends GameWorld {
         for (Coffee i : this.backgroundManager.getCoffees()) {
             i.setVelocityX(getScrollSpeed());
         }
+        this.flag.setVelocityX(getScrollSpeed());
 //        for (Enemy j : this.enemyManager.getEnemies()) {
         if (!scrolling) {
 //                j.addVelocityX(-80);
@@ -290,6 +310,7 @@ public class SuperOmario extends GameWorld {
 
     public void stopScrolling() {
         this.background.setVelocityX(0);
+        this.flag.setVelocityX(0);
         for (Platform i : this.backgroundManager.getPlatforms()) {
             i.setVelocityX(0);
         }
@@ -423,7 +444,7 @@ public class SuperOmario extends GameWorld {
 
     public void bindBackground() {
         backgroundImageView.fitWidthProperty().bind(
-                getGameScene().widthProperty().multiply(2));
+                getGameScene().widthProperty().multiply(4));
         backgroundImageView.fitHeightProperty().bind(
                 getGameScene().heightProperty());
     }
@@ -436,8 +457,7 @@ public class SuperOmario extends GameWorld {
                     anim.stop();
                     player.setVelocityX(0);
                     stopScrolling();
-                }
-                else if (key.getCode() == KeyCode.LEFT) {
+                } else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                     anim.stop();
                     stopScrolling();
@@ -461,6 +481,7 @@ public class SuperOmario extends GameWorld {
             //if player falls through floor of game
             if (player.getPositionY() >= getGameScene().getHeight() + 500) {
                 player.setPosition(0, 0);
+                player.setVelocityY(0);
                 lives -= 1;
                 livesDisplay.setText(String.format("Lives Left: %d",
                                                    lives));
@@ -468,8 +489,12 @@ public class SuperOmario extends GameWorld {
 
             if (this.lives == 0) {
                 // TODO: Uncomment these lines once we have a working level
-//                getGameLoop().stop();
-//                this.gameOver = true;
+                getGameLoop().stop();
+                this.gameOver = true;
+                showLoseScreen();
+            }
+            if (!player.onGround()) {
+                anim.stop();
             }
 //          player.render(this.getGc());
         }
@@ -486,6 +511,9 @@ public class SuperOmario extends GameWorld {
             for (Coffee j : backgroundManager.getCoffees()) {
                 j.update(time);
             }
+        }
+        if (flag != null) {
+            flag.update(time);
         }
 
     }
@@ -562,18 +590,27 @@ public class SuperOmario extends GameWorld {
                 //bounce off enemy
                 if (player.getVelocityY() > 200) {
                     player.addVelocityY(-400);
-                }
-                else {
+                } else {
                     player.addVelocityY(-200);
                 }
                 player.setOnGround(false);
-            }
-            else if (setOpaque) {
+            } else if (setOpaque) {
                 player.getNode().setOpacity(0);
-            }
-            else {
+            } else {
                 player.getNode().setOpacity(1);
                 collision = false;
+            }
+        }
+        if (this.flag != null) {
+            if (this.flag.intersects(player)) {
+                if (!onFlag) {
+                    this.flag.startAnimation();
+                    onFlag = true;
+                } else if (onFlag && this.flag.isAnimationFinished()) {
+                    this.flag.stopAnimation();
+                }
+            } else if (!this.flag.intersects(player)) {
+                onFlag = false;
             }
         }
     }
@@ -585,8 +622,7 @@ public class SuperOmario extends GameWorld {
         //and the player is moving down (jumping on top of enemy)
         if ((xInRange) && (player.getVelocityY() > 0)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -597,6 +633,10 @@ public class SuperOmario extends GameWorld {
 
     public boolean isScrolling() {
         return scrolling;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
 }

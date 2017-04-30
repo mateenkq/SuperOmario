@@ -38,7 +38,7 @@ public class Sprite {
     protected double width;
     protected double height;
 
-    public Node node;
+    protected Node node;
 
     public Sprite() {
         positionX = 0;
