@@ -97,7 +97,14 @@ public class SuperOmario extends GameWorld {
 
             }
             if (player.getPositionX() >= (this.getGameScene().getWidth() / 2)) {
-                scroll();
+                //make sure player won't scroll beyond background image
+                if (this.background.getPositionX() >= (this.background.getWidth() - this.getGameScene().getWidth())) {
+                    stopScrolling();
+                    player.setVelocityX(80);
+                }
+                else {
+                    scroll(-80);
+                }
             }
             else {
                 player.setVelocityX(80);
@@ -107,12 +114,26 @@ public class SuperOmario extends GameWorld {
 
         }
         else if (key.getCode() == KeyCode.LEFT) {
-            player.setVelocityX(-80);
+
             this.anim.getImageView().setImage(new Image(
                     "/spritesheet_flipped2.png"));
             if (player.onGround()) {
 
                 anim.start();
+            }
+            if (player.getPositionX() <= (this.getGameScene().getWidth() / 4)) {
+                //make sure player won't scroll beyond background image
+                if (this.background.getPositionX() <= (this.background.getWidth() - this.getGameScene().getWidth())) {
+                    stopScrolling();
+                    player.setVelocityX(-80);
+
+                }
+                else {
+                    scroll(80);
+                }
+            }
+            else {
+                player.setVelocityX(-80);
             }
             key.consume();
 
@@ -223,14 +244,15 @@ public class SuperOmario extends GameWorld {
         getSceneNodes().getChildren().add(startMenu);
     }
 
-    public void scroll() {
+    public void scroll(double velocity) {
+        setScrollSpeed(velocity);
         player.setVelocityX(0);
-        this.background.setVelocityX(-80);
+        this.background.setVelocityX(getScrollSpeed());
         for (Platform i : this.backgroundManager.getPlatforms()) {
-            i.setVelocityX(-80);
+            i.setVelocityX(getScrollSpeed());
         }
         for (Coffee i : this.backgroundManager.getCoffees()) {
-            i.setVelocityX(-80);
+            i.setVelocityX(getScrollSpeed());
         }
 //        for (Enemy j : this.enemyManager.getEnemies()) {
         if (!scrolling) {
@@ -355,6 +377,7 @@ public class SuperOmario extends GameWorld {
                 else if (key.getCode() == KeyCode.LEFT) {
                     player.setVelocityX(0);
                     anim.stop();
+                    stopScrolling();
                 }
 
             }

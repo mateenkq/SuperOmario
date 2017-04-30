@@ -36,7 +36,8 @@ public class Enemy extends Sprite {
 
     private Platform platform;
 
-    private static double SCROLL_SPEED = -80;
+    //either 80 or -80 depending on direction of scroll
+    private static double scrollSpeed;
     private static double BASE_VELOCITY = 50;
 
     public Enemy(GameWorld g, Platform p) {
@@ -62,6 +63,8 @@ public class Enemy extends Sprite {
 
         this.platform = p;
 
+        scrollSpeed = game.getScrollSpeed();
+
         g.getSceneNodes().getChildren().add(node);
 
     }
@@ -75,42 +78,31 @@ public class Enemy extends Sprite {
     //reverse direction at end of platform
     public void updateVelocity() {
         boolean nearRightEdge = ((rightEdge - this.getWidth() - 1) <= this.getPositionX());
-        boolean nearLeftEdge = (this.getPositionX() <= leftEdge);
+        boolean nearLeftEdge = (this.getPositionX() <= leftEdge + 1);
 
-        /**
-         * when not scrolling: right velocity = base velocity = 50 left velocity
-         * = -base velocity = -50
-         *
-         * when scrolling: right velocity = scroll speed + base velocity = -30
-         * left velocity = scroll speed - base velocity = -130
-         *
-         *
-         * therefore, right velocity is always > -40 left velocity is always <
-         * -40
-         */
         //if we start scrolling
         if (game.isScrolling()) {
+            scrollSpeed = game.getScrollSpeed();
             //going left
-            if (this.getVelocityX() < -40) {
-                this.setVelocityX(SCROLL_SPEED - BASE_VELOCITY);
+            if (this.getVelocityX() < 0) {
+                this.setVelocityX((scrollSpeed / 2) - BASE_VELOCITY);
                 //if near left edge
-                if (nearLeftEdge && (this.getVelocityX() < -30)) {
-                    System.out.println("at left edge");
-                    this.setVelocityX(SCROLL_SPEED + BASE_VELOCITY);
+                if (nearLeftEdge) {
+                    this.setVelocityX((scrollSpeed / 2) + BASE_VELOCITY);
                 }
             }
             //going right
-            else if (this.getVelocityX() > -40) {
-                this.setVelocityX(SCROLL_SPEED + BASE_VELOCITY);
+            else if (this.getVelocityX() > 0) {
+                this.setVelocityX((scrollSpeed / 2) + BASE_VELOCITY);
                 //if near right edge
                 if (nearRightEdge) {
-                    System.out.println("at right edge");
-                    this.setVelocityX(SCROLL_SPEED - BASE_VELOCITY);
+                    this.setVelocityX((scrollSpeed / 2) - BASE_VELOCITY);
                 }
             }
         }
         //if we stop scrolling
         else if (!game.isScrolling()) {
+            scrollSpeed = game.getScrollSpeed();
             //going left
             if (this.getVelocityX() < 0) {
                 this.setVelocityX(-(BASE_VELOCITY));
