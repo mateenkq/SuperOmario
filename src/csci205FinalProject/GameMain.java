@@ -17,8 +17,11 @@ package csci205FinalProject;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -27,19 +30,21 @@ import javafx.stage.Stage;
  *
  *
  */
-public class GameMain extends Application {
+public class GameMain extends Application implements EventHandler<KeyEvent> {
 
     public static double SCENE_HEIGHT = 360;
     public static double SCENE_WIDTH = 750;
 
     //initialize a gameWorld object here, eventually will be SuperOmar.io
-    GameWorld gameWorld;
+    SuperOmario gameWorld;
 
     // This is the main gameLoop
     private AnimationTimer gameLoop;
 
     // This is a container for the background image
     ImageView backgroundImageView;
+
+    Stage primaryStage;
 
     @Override
     public void init() throws Exception {
@@ -49,6 +54,8 @@ public class GameMain extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        this.primaryStage = primaryStage;
 
         gameWorld.initialize(primaryStage);
 
@@ -62,6 +69,18 @@ public class GameMain extends Application {
         // if we want a full screen game
 //        primaryStage.setFullScreen(true);
         primaryStage.show();
+    }
+
+    @Override
+    public void handle(KeyEvent key) {
+        if (gameWorld.isGameOver() && key.getCode() == KeyCode.S) {
+            System.out.println("new game");
+            gameWorld = new SuperOmario(60, "Super Omario");
+            gameWorld.initialize(primaryStage);
+            primaryStage.setScene(gameWorld.getGameScene());
+            primaryStage.show();
+
+        }
     }
 
     /**
