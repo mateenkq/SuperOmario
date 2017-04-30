@@ -16,8 +16,7 @@
 package csci205FinalProject.Sprite;
 
 import csci205FinalProject.GameWorld;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -43,9 +42,11 @@ public class Enemy extends Sprite {
     public Enemy(GameWorld g, Platform p) {
         super();
         game = g;
-        width = 15;
-        height = 7;
-        this.node = new Rectangle(height, width, Color.RED);
+        width = 20;
+        height = 13;
+        //this.node = new Rectangle(height, width, Color.RED);
+        this.setImage(getClass().getResource("/bluescreen.png").toExternalForm());
+        this.node = new ImageView(image);
 
         //set on top of platform
         this.rightEdge = p.getPositionX() + p.getWidth();
@@ -90,15 +91,18 @@ public class Enemy extends Sprite {
                 if (nearLeftEdge) {
                     this.setVelocityX((scrollSpeed / 2) + BASE_VELOCITY);
                 }
-                //if near right edge
-                if (nearRightEdge) {
             }
+
             //going right
             else if (this.getVelocityX() > 0) {
                 this.setVelocityX((scrollSpeed / 2) + BASE_VELOCITY);
+                if (nearRightEdge) {
+                    this.setVelocityX((scrollSpeed / 2) - BASE_VELOCITY);
                 }
             }
+
         } //if we stop scrolling
+
         else if (!game.isScrolling()) {
             scrollSpeed = game.getScrollSpeed();
             //going left
@@ -108,14 +112,17 @@ public class Enemy extends Sprite {
                 if (nearLeftEdge) {
                     this.setVelocityX(BASE_VELOCITY);
                 }
-            } else if (this.getVelocityX() > 0) {
+            }
+            else if (this.getVelocityX() > 0) {
                 this.setVelocityX(BASE_VELOCITY);
                 if (nearRightEdge) {
                     this.setVelocityX(-BASE_VELOCITY);
                 }
             }
         } //if near edges, reverse direction
-        else if ((nearRightEdge && (this.getVelocityX() > 0)) || (nearLeftEdge && (this.getVelocityX() < 0))) {
+        else if ((nearRightEdge
+                  && (this.getVelocityX()
+                      > 0)) || (nearLeftEdge && (this.getVelocityX() < 0))) {
             this.setVelocityX(-(this.getVelocityX()));
         }
 
@@ -150,8 +157,8 @@ public class Enemy extends Sprite {
     }
 
     @Override
-    public Rectangle getNode() {
-        return (Rectangle) this.node;
+    public ImageView getNode() {
+        return (ImageView) this.node;
     }
 
     @Override

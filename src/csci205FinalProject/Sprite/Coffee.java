@@ -39,7 +39,7 @@ public class Coffee extends Sprite {
     public Coffee(GameWorld g, double x, double y) {
         super();
         game = g;
-        this.width = 6;
+        this.width = 7;
         this.height = 10;
 
         this.setImage(getClass().getResource("/coffee.png").toExternalForm());
