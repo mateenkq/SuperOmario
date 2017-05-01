@@ -80,6 +80,8 @@ public class GameMain extends Application implements EventHandler<KeyEvent> {
                     gameWorld.getSceneNodes().getChildren().remove(
                             gameWorld.getLoseScreen());
                     gameWorld.getSceneNodes().getChildren().remove(
+                            gameWorld.getWinScreen());
+                    gameWorld.getSceneNodes().getChildren().remove(
                             gameWorld.getRestartText());
                     gameWorld = new SuperOmario(60, "Super Omario");
                     gameWorld.initialize(primaryStage);

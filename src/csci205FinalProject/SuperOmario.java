@@ -78,6 +78,7 @@ public class SuperOmario extends GameWorld {
 
     private ImageView startMenu;
     private ImageView loseScreen;
+    private ImageView winScreen;
     private Text restartText;
     private Text pauseText;
 
@@ -303,6 +304,24 @@ public class SuperOmario extends GameWorld {
 
         getSceneNodes().getChildren().add(loseScreen);
         //also show restart text
+        getSceneNodes().getChildren().add(restartText);
+
+    }
+
+    public void showWinScreen() {
+        winScreen = new ImageView(getClass().getResource(
+                "/winScreen.png").toExternalForm());
+        winScreen.setX(0);
+        winScreen.setY(0);
+
+        winScreen.setFitWidth(this.getGameScene().getWidth());
+        winScreen.setFitHeight(this.getGameScene().getHeight());
+
+        winScreen.toFront();
+
+        getSceneNodes().getChildren().add(winScreen);
+        //also show restart text
+        getSceneNodes().getChildren().remove(restartText);
         getSceneNodes().getChildren().add(restartText);
 
     }
@@ -630,6 +649,8 @@ public class SuperOmario extends GameWorld {
                 }
                 else if (onFlag && this.flag.isAnimationFinished()) {
                     this.flag.stopAnimation();
+                    gameOver = true;
+                    this.showWinScreen();
                 }
             }
             else if (!this.flag.intersects(player)) {
@@ -669,6 +690,10 @@ public class SuperOmario extends GameWorld {
 
     public ImageView getLoseScreen() {
         return loseScreen;
+    }
+
+    public ImageView getWinScreen() {
+        return winScreen;
     }
 
 }
