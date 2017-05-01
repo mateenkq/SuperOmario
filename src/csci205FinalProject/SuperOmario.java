@@ -25,6 +25,7 @@ import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.SpriteManager;
 import java.net.URL;
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -42,6 +43,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  *
@@ -343,18 +345,41 @@ public class SuperOmario extends GameWorld {
         }
     }
 
+    /**
+     * When called, this method will play the default music
+     */
     public void playMusic() {
         // music for start menu
-        final URL resource = getClass().getResource("/omario.mp3");
-        final Media media = new Media(resource.toString());
-        this.mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+        if (this.mediaPlayer == null) {
+            final URL resource = getClass().getResource("/omario.mp3");
+            final Media media = new Media(resource.toString());
+            this.mediaPlayer = new MediaPlayer(media);
+        }
+
+        this.mediaPlayer.play();
+
     }
 
+    /**
+     * Pauses the main music and plays the sound pertaining to "Game Over"
+     */
     public void playGameOverMusic() {
-        final URL resource = getClass().getResource("/game_over");
-        final AudioClip gameOver = new AudioClip("/game_over.mp3");
+        final URL resource = getClass().getResource("/you-have-failed.mp3");
+        this.mediaPlayer.pause();
+        final AudioClip gameOver = new AudioClip(resource.toString());
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        pause.setOnFinished(finish -> this.playMusic());
         gameOver.play();
+        pause.play();
+    }
+
+    /**
+     * This music will be played every time the player gets a coffee
+     */
+    public void playCoffeeMusic() {
+        final URL resource = getClass().getResource("/coffee.wav");
+        final AudioClip coffeeGained = new AudioClip(resource.toString());
+        coffeeGained.play();
     }
 
     public void bindBackground() {
@@ -448,6 +473,7 @@ public class SuperOmario extends GameWorld {
                 coffees += 1;
                 coffeesDisplay.setText(String.format("Coffees: %d",
                                                      coffees));
+                playCoffeeMusic();
             }
         }
         if (enemyManager != null) {
@@ -517,6 +543,10 @@ public class SuperOmario extends GameWorld {
 
     public boolean isScrolling() {
         return scrolling;
+    }
+
+    public void setScrolling(boolean scrolling) {
+        this.scrolling = scrolling;
     }
 
 }

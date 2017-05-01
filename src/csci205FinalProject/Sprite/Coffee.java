@@ -1,17 +1,17 @@
 /* *****************************************
-* CSCI205 - Software Engineering and Design
-* Spring 2017
-*
-* Name: Still going to decide on
-* Date: Apr 27, 2017
-* Time: 6:48:08 PM
-*
-* Project: csci205FinalProject
-* Package: csci205FinalProject.Sprite
-* File: Coffee
-* Description:
-*
-* ****************************************
+ * CSCI205 - Software Engineering and Design
+ * Spring 2017
+ *
+ * Name: Still going to decide on
+ * Date: Apr 27, 2017
+ * Time: 6:48:08 PM
+ *
+ * Project: csci205FinalProject
+ * Package: csci205FinalProject.Sprite
+ * File: Coffee
+ * Description:
+ *
+ * ****************************************
  */
 package csci205FinalProject.Sprite;
 
@@ -35,6 +35,10 @@ public class Coffee extends Sprite {
     private double propRatio;
     private double propXPos;
     private double propCenter;
+
+    public Coffee() {
+
+    }
 
     public Coffee(GameWorld g, double x, double y) {
         super();
