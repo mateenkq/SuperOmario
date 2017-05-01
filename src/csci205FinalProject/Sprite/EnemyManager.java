@@ -24,12 +24,16 @@ import java.util.ArrayList;
  */
 public class EnemyManager {
 
+    //current game
     GameWorld gameWorld;
+
+    //all enemies
     ArrayList<Enemy> enemies;
 
     public EnemyManager(GameWorld g) {
         gameWorld = g;
         enemies = new ArrayList();
+        //add one enemy to each platform
         //dont add enemy to last platform (end of level)
         for (int i = 0; i < (gameWorld.getBackgroundManager().getPlatforms().size() - 1); i++) {
             enemies.add(new Enemy(g,

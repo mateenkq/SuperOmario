@@ -25,20 +25,27 @@ import javafx.scene.shape.Rectangle;
  */
 public class Platform extends Sprite {
 
+    //current game
     private GameWorld game;
 
+    //position proportional to game scene
     private Double propYPos;
     private Double propXPos;
 
+    //dimensions proportional to game scene
     Double propHeight;
     Double propWidth;
 
     public Platform(GameWorld g, double width, double height, double x, double y) {
         super();
         game = g;
+        //set node
         this.node = new Rectangle(width, height, Color.DARKGREEN);
+
+        //set position
         this.setPosition(x, y);
 
+        //base bindings off of ratio between initial image dimensions, and initial game dimensions
         this.propYPos = y / g.getGameScene().getHeight();
         propXPos = x / g.getGameScene().getWidth();
 
@@ -77,6 +84,7 @@ public class Platform extends Sprite {
         super.update(time);
 
         //    positionX = this.getNode().xProperty().getValue();
+        //set y position to the y property of the node, which is bound to the game dimensions
         positionY = this.getNode().yProperty().getValue();
 
     }

@@ -24,28 +24,35 @@ import javafx.scene.image.ImageView;
  */
 public class Player extends Sprite {
 
+    //current game
     private GameWorld game;
 
+    //true if player on a platform, false otherwise
     private boolean onGround;
 
+    //dimensions proportional to game scene
     private Double propWidth;
     private Double propHeight;
 
+    //ratio of image width to height
     private double propRatio;
-
-    public Player() {
-    }
 
     public Player(GameWorld g) {
         super();
+        //set gravity
         this.setAccelerationY(450);
         game = g;
+        //set image
         this.setImage(getClass().getResource("/jm_stand.png").toExternalForm());
         this.node = new ImageView(image);
+
+        //set position
         this.node.relocate(this.getPositionX(), this.getPositionY());
 
+        //set fit dimensions for image
         this.getNode().setFitHeight(30);
         this.getNode().setFitWidth(19);
+
         //base bindings off of ratio between initial image dimensions, and initial game dimensions
         propWidth = this.getNode().getImage().getWidth() / g.getGameScene().getWidth();
         propHeight = this.getNode().getImage().getHeight() / g.getGameScene().getHeight();
@@ -58,6 +65,8 @@ public class Player extends Sprite {
 
     public void isOnGround() {
 //        System.out.println("Y: " + getPositionY() + ", X: " + getPositionX());
+
+        //set position onto ground platform
         if (this.getPositionY() > 180) {
             this.setVelocityY(0);
             this.setPosition(getPositionX(), 179.9);
@@ -74,8 +83,10 @@ public class Player extends Sprite {
     @Override
     public void update(double time) {
 
+        //update position
         super.update(time);
 
+        //update dimensions
         this.height = this.getNode().getFitHeight();
         this.width = this.getNode().getFitWidth();
     }

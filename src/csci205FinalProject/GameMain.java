@@ -32,6 +32,7 @@ import javafx.stage.Stage;
  */
 public class GameMain extends Application implements EventHandler<KeyEvent> {
 
+    //height and width of original game scene
     public static double SCENE_HEIGHT = 360;
     public static double SCENE_WIDTH = 750;
 
@@ -70,6 +71,8 @@ public class GameMain extends Application implements EventHandler<KeyEvent> {
         // if we want a full screen game
 //        primaryStage.setFullScreen(true);
         primaryStage.show();
+
+        //add event handler to restart game
         gameWorld.getGameScene().addEventHandler(KeyEvent.KEY_PRESSED, this);
     }
 
@@ -82,7 +85,10 @@ public class GameMain extends Application implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent key) {
+        //if game is over and user presses S key
         if (gameWorld.isGameOver() && key.getCode() == KeyCode.S) {
+
+            //remove current screens (whether win or lose)
             gameWorld.getSceneNodes().getChildren().remove(
                     gameWorld.getLoseScreen());
             gameWorld.getSceneNodes().getChildren().remove(
@@ -90,6 +96,7 @@ public class GameMain extends Application implements EventHandler<KeyEvent> {
             gameWorld.getSceneNodes().getChildren().remove(
                     gameWorld.getRestartText());
 
+            //and create a new game
             gameWorld = new SuperOmario(60, "Super Omario");
             start(primaryStage);
 

@@ -47,10 +47,13 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
     //The title of the game window
     private final String title;
 
+    //background image
     ImageView backgroundImageView;
 
+    //background object
     Background background;
 
+    //speed at which the background is scrolling, enemy class uses this
     double scrollSpeed;
 
     /**
@@ -63,9 +66,10 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         this.framesPerSec = framesPerSec;
         this.title = title;
 
+        //create game loop
         buildAndSetGameLoop();
 
-        //this method will come later
+        //create background
         background = new Background(this);
         backgroundImageView = background.getNode();
 
@@ -82,20 +86,27 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
 
         final long startNanoTime = System.nanoTime();
 
+        //create the game loop
         gameLoop = new AnimationTimer() {
+            //during each frame
             @Override
             public void handle(long currentNanoTime) {
+                //calculate current time
                 double t = (currentNanoTime - startNanoTime) / 1000000000.0;
 
+                //update position of all objects in game since last frame
                 updateSprites(frameDuration.toSeconds());
+                //check if any collisions with sprites and handle accordingly
                 checkCollisons();
             }
         };
 
+        //start the game loop
         gameLoop.start();
 
     }
 
+    //to be implemented by instance of this class
     public abstract void updateSprites(double time);
 
     public abstract void checkCollisons();

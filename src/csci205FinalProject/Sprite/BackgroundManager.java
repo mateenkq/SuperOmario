@@ -24,12 +24,17 @@ import java.util.ArrayList;
  */
 public class BackgroundManager {
 
+    //current game
     GameWorld gameWorld;
+
+    //all platforms
     ArrayList<Platform> platforms;
     Platform platform;
 
+    //all coffees
     ArrayList<Coffee> coffees;
 
+    //all lives
     ArrayList<Life> lives;
 
     /**
@@ -40,7 +45,8 @@ public class BackgroundManager {
     public BackgroundManager(GameWorld g) {
         gameWorld = g;
         platforms = new ArrayList();
-        //GameWorld g, double width, double height, double x, double y
+        //create and add platforms
+        //constructor - GameWorld g, double width, double height, double x, double y
         platforms.add(new Platform(g, 300, 10, 0, 230));
         platforms.add(new Platform(g, 300, 10, 400, 180));
         platforms.add(new Platform(g, 100, 10, 200, 130));
@@ -61,11 +67,13 @@ public class BackgroundManager {
         platforms.add(new Platform(g, 200, 10, 2150, 200));
         platforms.add(new Platform(g, 100, 10, 2350, 130));
         //end of level platform
+        //doesn't have enemy
         platforms.add(new Platform(g, 500, 10, 2400, 350));
 //        platform.getNode().setOpacity(0);
 
         coffees = new ArrayList();
-        //GameWorld g, double width, double height,
+        //create and add coffees
+        //Constructor - GameWorld g, double width, double height,
         coffees.add(new Coffee(g, 100, 210));
         coffees.add(new Coffee(g, 450, 160));
         coffees.add(new Coffee(g, 250, 110));
@@ -87,6 +95,7 @@ public class BackgroundManager {
         coffees.add(new Coffee(g, 2250, 180));
         coffees.add(new Coffee(g, 2420, 110));
 
+        //create and add all lives
         lives = new ArrayList();
         lives.add(new Life(g, 20, 2));
         lives.add(new Life(g, 26, 2));

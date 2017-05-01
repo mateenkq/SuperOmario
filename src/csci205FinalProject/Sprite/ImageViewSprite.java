@@ -113,6 +113,8 @@ public class ImageViewSprite extends AnimationTimer {
             imageView.setViewport(new Rectangle2D(currentCol * frameWidth,
                                                   currentRow * frameHeight,
                                                   frameWidth, frameHeight));
+
+            //if we are currently at the last animation
             if (currentCol == (totalFrames - 1)) {
                 finished = true;
             }

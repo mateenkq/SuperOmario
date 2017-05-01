@@ -85,13 +85,4 @@ public class SpriteManager {
         this.currentSprite = currentSprite;
     }
 
-    /**
-     * Draws an image corresponding to the current Sprite object
-     *
-     * @param gc is the GraphicsContext object for which the image has to be
-     * rendered
-     */
-//    public void render(GraphicsContext gc) {
-//        this.listOfSprites.get(currentSprite).render(gc);
-//    }
 }

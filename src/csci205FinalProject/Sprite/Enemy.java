@@ -24,34 +24,45 @@ import javafx.scene.image.ImageView;
  */
 public class Enemy extends Sprite {
 
+    //current game
     private GameWorld game;
+
+    //enemy width
     private double width;
+    //enemy height
     private double height;
+
+    //right edge of platform that enemy is on
     private double rightEdge;
+    //left edge of platform
     private double leftEdge;
 
+    //dimensions proportional to game scene
     private double propHeight;
     private double propWidth;
 
+    //platform enemy is on
     private Platform platform;
 
     //either 80 or -80 depending on direction of scroll
     private static double scrollSpeed;
+    //normal speed of enemy
     private static double BASE_VELOCITY = 50;
 
     public Enemy(GameWorld g, Platform p) {
         super();
         game = g;
+        //set dimensions
         width = 20;
         height = 13;
-        //this.node = new Rectangle(height, width, Color.RED);
+
+        //set image
         this.setImage(getClass().getResource("/bluescreen.png").toExternalForm());
         this.node = new ImageView(image);
 
         //set on top of platform
         this.rightEdge = p.getPositionX() + p.getWidth();
         this.leftEdge = p.getPositionX();
-
         this.setPosition(leftEdge,
                          (p.getPositionY() - (this.getHeight())));
 
@@ -76,7 +87,7 @@ public class Enemy extends Sprite {
         this.leftEdge = this.platform.getPositionX();
     }
 
-    //reverse direction at end of platform
+    //reverse direction at end of a platform
     public void updateVelocity() {
         boolean nearRightEdge = ((rightEdge - this.getWidth() - 1) <= this.getPositionX());
         boolean nearLeftEdge = (this.getPositionX() <= leftEdge + 1);
@@ -84,7 +95,7 @@ public class Enemy extends Sprite {
         //if we start scrolling
         if (game.isScrolling()) {
             scrollSpeed = game.getScrollSpeed();
-            //going left
+            //if going left
             if (this.getVelocityX() < 0) {
                 this.setVelocityX((scrollSpeed / 2) - BASE_VELOCITY);
                 //if near left edge
@@ -93,7 +104,7 @@ public class Enemy extends Sprite {
                 }
             }
 
-            //going right
+            //if going right
             else if (this.getVelocityX() > 0) {
                 this.setVelocityX((scrollSpeed / 2) + BASE_VELOCITY);
                 if (nearRightEdge) {
@@ -105,7 +116,7 @@ public class Enemy extends Sprite {
 
         else if (!game.isScrolling()) {
             scrollSpeed = game.getScrollSpeed();
-            //going left
+            //if going left
             if (this.getVelocityX() < 0) {
                 this.setVelocityX(-(BASE_VELOCITY));
                 //if near left edge
@@ -113,8 +124,10 @@ public class Enemy extends Sprite {
                     this.setVelocityX(BASE_VELOCITY);
                 }
             }
+            //if going right
             else if (this.getVelocityX() > 0) {
                 this.setVelocityX(BASE_VELOCITY);
+                //if near right edge
                 if (nearRightEdge) {
                     this.setVelocityX(-BASE_VELOCITY);
                 }
@@ -170,6 +183,7 @@ public class Enemy extends Sprite {
 
         super.update(time);
 
+        //set y position on top of platform
         this.setPosition(this.getPositionX(),
                          (this.platform.getPositionY() - (this.getHeight())));
 

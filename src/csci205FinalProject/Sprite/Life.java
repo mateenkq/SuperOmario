@@ -24,24 +24,33 @@ import javafx.scene.image.ImageView;
  */
 public class Life extends Sprite {
 
+    //current game
     private GameWorld game;
+
+    //life dimensions
     private double width;
     private double height;
 
+    //dimensions proportional to game scene
     private double propWidth;
     private double propHeight;
+
+    //position proportional to game scene
     private double propYPos;
     private double propXPos;
 
     public Life(GameWorld g, double x, double y) {
         super();
         game = g;
+        //set dimensions
         width = 10;
         height = 10;
 
+        //set image
         this.setImage(getClass().getResource("/life.png").toExternalForm());
         this.node = new ImageView(image);
 
+        //set position
         setPosition(x, y);
         setDimensions(width, height);
 

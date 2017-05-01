@@ -25,10 +25,14 @@ import javafx.scene.image.ImageView;
 public class Background extends Sprite {
 
     public Background(GameWorld g) {
+        //we treat the background as a sprite
         super();
+        //set the background image
         this.setImage(getClass().getResource(
                 "/background1.png").toExternalForm());
         this.node = new ImageView(image);
+
+        //set position of background at beginning of game Scene
         node.relocate(0, 0);
         width = this.getImage().getWidth();
         height = this.getImage().getHeight();

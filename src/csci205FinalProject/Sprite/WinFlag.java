@@ -29,9 +29,14 @@ public class WinFlag extends Sprite {
 
     public WinFlag(GameWorld g) {
         super();
+        //set image
         this.node = new ImageView(
                 getClass().getResource("/flagresting.png").toExternalForm());
+
+        //set position at very end of game
         this.setPosition(2700, 270);
+
+        //set animation
         this.animation = new ImageViewSprite(this.getNode(),
                                              new Image(
                                                      "/flagsheet.png"),
