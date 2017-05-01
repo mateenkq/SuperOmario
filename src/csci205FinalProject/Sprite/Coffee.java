@@ -39,8 +39,8 @@ public class Coffee extends Sprite {
     public Coffee(GameWorld g, double x, double y) {
         super();
         game = g;
-        this.width = 10;
-        this.height = 15;
+        this.width = 15;
+        this.height = 18;
 
         this.setImage(getClass().getResource("/coffee.png").toExternalForm());
         this.node = new ImageView(image);
@@ -85,8 +85,7 @@ public class Coffee extends Sprite {
 
         if (this.getVelocityY() > 0 && belowBottom) {
             this.setVelocityY(-getVelocityY());
-        }
-        else if (this.getVelocityY() < 0 && aboveTop) {
+        } else if (this.getVelocityY() < 0 && aboveTop) {
             this.setVelocityY(-getVelocityY());
         }
     }

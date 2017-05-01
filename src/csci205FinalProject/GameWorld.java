@@ -163,4 +163,8 @@ public abstract class GameWorld implements EventHandler<KeyEvent> {
         this.scrollSpeed = scrollSpeed;
     }
 
+    public Background getBackground() {
+        return background;
+    }
+
 }

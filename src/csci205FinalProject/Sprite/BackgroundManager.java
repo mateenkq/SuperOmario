@@ -33,6 +33,7 @@ public class BackgroundManager {
     ArrayList<Life> lives;
 
     /**
+     * *
      *
      * @param g
      */
@@ -45,10 +46,20 @@ public class BackgroundManager {
         platforms.add(new Platform(g, 100, 10, 200, 130));
         platforms.add(new Platform(g, 100, 10, 350, 130));
         platforms.add(new Platform(g, 100, 10, 500, 130));
-        //end of level platform
         platforms.add(
                 new Platform(g, 700, 10, (g.getGameScene().getWidth() - 40),
-                             (g.getGameScene().getHeight() - 57)));
+                             (g.getGameScene().getHeight() - 32)));
+        platforms.add(new Platform(g, 300, 10, 900, 230));
+        platforms.add(new Platform(g, 100, 10, 850, 130));
+        platforms.add(new Platform(g, 100, 10, 1000, 130));
+        platforms.add(new Platform(g, 100, 10, 1250, 100));
+        platforms.add(new Platform(g, 300, 10, 1100, 180));
+        platforms.add(new Platform(g, 100, 10, 1450, 130));
+        platforms.add(new Platform(g, 300, 10, 1650, 180));
+        //end of level platform
+        platforms.add(new Platform(g, 700, 10,
+                                   g.getBackground().getNode().getFitWidth() - 700,
+                                   (g.getGameScene().getHeight() - 32)));
         platform = platforms.get(0);
 //        platform.getNode().setOpacity(0);
 

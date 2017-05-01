@@ -471,7 +471,7 @@ public class SuperOmario extends GameWorld {
         }
         if (player != null) {
 //            player.isOnGround();
-            if (player.onGround() && player.getVelocityX() != 0) {
+            if (player.onGround() && (player.getVelocityX() != 0 | this.background.getVelocityX() != 0)) {
                 anim.start();
             }
             player.update(time);
@@ -486,12 +486,18 @@ public class SuperOmario extends GameWorld {
 
             if (this.lives == 0) {
                 // TODO: Uncomment these lines once we have a working level
-                getGameLoop().stop();
-                this.gameOver = true;
-                showLoseScreen();
+//                getGameLoop().stop();
+//                this.gameOver = true;
+//                showLoseScreen();
             }
             if (!player.onGround()) {
                 anim.stop();
+            }
+            if (player.getPositionX() >= (this.getGameScene().getWidth() / 2)) {
+                if (!this.isScrolling() && player.getVelocityX() > 0) {
+                    this.scroll(-80);
+
+                }
             }
 //          player.render(this.getGc());
         }
@@ -569,9 +575,7 @@ public class SuperOmario extends GameWorld {
                             int lastLife = backgroundManager.getLives().size() - 1;
                             backgroundManager.remove(
                                     backgroundManager.getLives().get(lastLife));
-                        }
-
-                        else {
+                        } else {
                             playGameOverMusic();
                         }
                         lives -= 1;
