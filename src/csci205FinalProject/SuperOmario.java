@@ -320,7 +320,7 @@ public class SuperOmario extends GameWorld {
         winScreen.setFitHeight(this.getGameScene().getHeight());
 
         winScreen.toFront();
-
+        playWinMusic();
         getSceneNodes().getChildren().add(winScreen);
         //also show restart text
         getSceneNodes().getChildren().remove(restartText);
