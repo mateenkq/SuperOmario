@@ -56,11 +56,12 @@ public class BackgroundManager {
         platforms.add(new Platform(g, 300, 10, 1100, 180));
         platforms.add(new Platform(g, 100, 10, 1450, 130));
         platforms.add(new Platform(g, 300, 10, 1650, 180));
+        platforms.add(new Platform(g, 100, 10, 2000, 130));
+        platforms.add(new Platform(g, 100, 10, 2000, 270));
+        platforms.add(new Platform(g, 200, 10, 2150, 200));
+        platforms.add(new Platform(g, 100, 10, 2350, 130));
         //end of level platform
-        platforms.add(new Platform(g, 700, 10,
-                                   g.getBackground().getNode().getFitWidth() - 700,
-                                   (g.getGameScene().getHeight() - 32)));
-        platform = platforms.get(0);
+        platforms.add(new Platform(g, 500, 10, 2400, 350));
 //        platform.getNode().setOpacity(0);
 
         coffees = new ArrayList();
@@ -70,6 +71,21 @@ public class BackgroundManager {
         coffees.add(new Coffee(g, 250, 110));
         coffees.add(new Coffee(g, 400, 110));
         coffees.add(new Coffee(g, 550, 110));
+
+        coffees.add(new Coffee(g, 920, 210));
+        coffees.add(new Coffee(g, 900, 110));
+        coffees.add(new Coffee(g, 1075, 110));
+        coffees.add(new Coffee(g, 1300, 80));
+        coffees.add(new Coffee(g, 1350, 160));
+
+        coffees.add(new Coffee(g, 1475, 110));
+        coffees.add(new Coffee(g, 1750, 160));
+        coffees.add(new Coffee(g, 2005, 110));
+        coffees.add(new Coffee(g, 2025, 110));
+        coffees.add(new Coffee(g, 2060, 250));
+        coffees.add(new Coffee(g, 2080, 250));
+        coffees.add(new Coffee(g, 2250, 180));
+        coffees.add(new Coffee(g, 2420, 110));
 
         lives = new ArrayList();
         lives.add(new Life(g, 20, 2));

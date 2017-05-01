@@ -31,7 +31,7 @@ public class WinFlag extends Sprite {
         super();
         this.node = new ImageView(
                 getClass().getResource("/flagresting.png").toExternalForm());
-        this.setPosition(1300, 250);
+        this.setPosition(2700, 270);
         this.animation = new ImageViewSprite(this.getNode(),
                                              new Image(
                                                      "/flagsheet.png"),

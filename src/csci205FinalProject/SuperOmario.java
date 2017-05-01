@@ -529,7 +529,6 @@ public class SuperOmario extends GameWorld {
             }
 
             if (this.lives == 0) {
-                // TODO: Uncomment these lines once we have a working level
                 getGameLoop().stop();
                 this.gameOver = true;
                 playGameOverMusic();
@@ -539,9 +538,19 @@ public class SuperOmario extends GameWorld {
                 anim.stop();
             }
             if (player.getPositionX() >= (this.getGameScene().getWidth() / 2)) {
-                if (!this.isScrolling() && player.getVelocityX() > 0) {
-                    this.scroll(-80);
+                //make sure game scene won't scroll beyond background image
+                if (-(this.background.getPositionX()) >= (this.background.getNode().getFitWidth() - this.getGameScene().getWidth())) {
 
+                    stopScrolling();
+                    player.setVelocityX(80);
+
+                    //make sure player cant go past edge of image
+                    if (player.getPositionX() >= this.getGameScene().getWidth()) {
+                        player.setVelocityX(0);
+                    }
+                }
+                else if (!this.isScrolling() && player.getVelocityX() > 0) {
+                    scroll(-80);
                 }
             }
         }
