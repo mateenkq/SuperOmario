@@ -1,17 +1,17 @@
 /* *****************************************
-* CSCI205 - Software Engineering and Design
-* Spring 2017
-*
-* Name: Still going to decide on
-* Date: Apr 15, 2017
-* Time: 8:54:00 PM
-*
-* Project: csci205FinalProject
-* Package: csci205FinalProject.Sprite
-* File: Player
-* Description:
-*
-* ****************************************
+ * CSCI205 - Software Engineering and Design
+ * Spring 2017
+ *
+ * Name: Still going to decide on
+ * Date: Apr 15, 2017
+ * Time: 8:54:00 PM
+ *
+ * Project: csci205FinalProject
+ * Package: csci205FinalProject.Sprite
+ * File: Player
+ * Description:
+ *
+ * ****************************************
  */
 package csci205FinalProject.Sprite;
 
@@ -32,6 +32,9 @@ public class Player extends Sprite {
     private Double propHeight;
 
     private double propRatio;
+
+    public Player() {
+    }
 
     public Player(GameWorld g) {
         super();

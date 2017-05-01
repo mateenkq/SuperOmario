@@ -1,17 +1,17 @@
 /* *****************************************
-* CSCI205 - Software Engineering and Design
-* Spring 2017
-*
-* Name: Still going to decide on
-* Date: Apr 14, 2017
-* Time: 6:48:11 PM
-*
-* Project: csci205FinalProject
-* Package: csci205FinalProject
-* File: GameWorld
-* Description:
-* Source: https://dzone.com/articles/javafx-2-game-tutorial-part-2
-* ****************************************
+ * CSCI205 - Software Engineering and Design
+ * Spring 2017
+ *
+ * Name: Still going to decide on
+ * Date: Apr 14, 2017
+ * Time: 6:48:11 PM
+ *
+ * Project: csci205FinalProject
+ * Package: csci205FinalProject
+ * File: GameWorld
+ * Description:
+ * Source: https://dzone.com/articles/javafx-2-game-tutorial-part-2
+ * ****************************************
  */
 package csci205FinalProject;
 

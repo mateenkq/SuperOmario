@@ -62,10 +62,27 @@ public class SpriteManager {
         if (currentSprite == this.numOfSprites) {
             // reset to the starting state
             this.currentSprite = 0;
-        } else {
+        }
+        else {
             // increment the counter for state/frame
             currentSprite += 1;
         }
+    }
+
+    public int getNumOfSprites() {
+        return numOfSprites;
+    }
+
+    public ArrayList<Sprite> getListOfSprites() {
+        return listOfSprites;
+    }
+
+    public int getCurrentSprite() {
+        return currentSprite;
+    }
+
+    public void setCurrentSprite(int currentSprite) {
+        this.currentSprite = currentSprite;
     }
 
     /**

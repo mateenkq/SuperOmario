@@ -1,17 +1,17 @@
 /* *****************************************
-* CSCI205 - Software Engineering and Design
-* Spring 2017
-*
-* Name: Still going to decide on
-* Date: Apr 24, 2017
-* Time: 4:43:05 PM
-*
-* Project: csci205FinalProject
-* Package: csci205FinalProject.Sprite
-* File: Enemy
-* Description:
-*
-* ****************************************
+ * CSCI205 - Software Engineering and Design
+ * Spring 2017
+ *
+ * Name: Still going to decide on
+ * Date: Apr 24, 2017
+ * Time: 4:43:05 PM
+ *
+ * Project: csci205FinalProject
+ * Package: csci205FinalProject.Sprite
+ * File: Enemy
+ * Description:
+ *
+ * ****************************************
  */
 package csci205FinalProject.Sprite;
 
@@ -173,6 +173,26 @@ public class Enemy extends Sprite {
         this.setPosition(this.getPositionX(),
                          (this.platform.getPositionY() - (this.getHeight())));
 
+    }
+
+    public double getRightEdge() {
+        return rightEdge;
+    }
+
+    public double getLeftEdge() {
+        return leftEdge;
+    }
+
+    public void setRightEdge(double rightEdge) {
+        this.rightEdge = rightEdge;
+    }
+
+    public void setLeftEdge(double leftEdge) {
+        this.leftEdge = leftEdge;
+    }
+
+    public GameWorld getGame() {
+        return game;
     }
 
 }
