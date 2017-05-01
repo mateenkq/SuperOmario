@@ -512,7 +512,7 @@ public class SuperOmario extends GameWorld {
         }
         if (player != null) {
 //            player.isOnGround();
-            if (player.onGround() && player.getVelocityX() != 0) {
+            if (player.onGround() && (player.getVelocityX() != 0 | this.background.getVelocityX() != 0)) {
                 anim.start();
             }
             player.update(time);
@@ -537,6 +537,12 @@ public class SuperOmario extends GameWorld {
             }
             if (!player.onGround()) {
                 anim.stop();
+            }
+            if (player.getPositionX() >= (this.getGameScene().getWidth() / 2)) {
+                if (!this.isScrolling() && player.getVelocityX() > 0) {
+                    this.scroll(-80);
+
+                }
             }
         }
         if (enemyManager != null) {
