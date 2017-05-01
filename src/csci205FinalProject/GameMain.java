@@ -50,9 +50,6 @@ public class GameMain extends Application implements EventHandler<KeyEvent> {
     public void init() throws Exception {
         super.init();
         gameWorld = new SuperOmario(60, "GameTest");
-        if (gameWorld.isRestart()) {
-            gameWorld = new SuperOmario(60, "GameTest");
-        }
 
     }
 
@@ -73,18 +70,26 @@ public class GameMain extends Application implements EventHandler<KeyEvent> {
         // if we want a full screen game
 //        primaryStage.setFullScreen(true);
         primaryStage.show();
-    }
+        gameWorld.getGameScene().setOnKeyPressed(
+                new EventHandler<KeyEvent>() {
 
-    @Override
-    public void handle(KeyEvent key) {
-        if (gameWorld.isGameOver() && key.getCode() == KeyCode.S) {
-            System.out.println("new game");
-            gameWorld = new SuperOmario(60, "Super Omario");
-            gameWorld.initialize(primaryStage);
-            primaryStage.setScene(gameWorld.getGameScene());
-            primaryStage.show();
+            @Override
 
+            public void handle(KeyEvent key) {
+                if (gameWorld.isGameOver() && key.getCode() == KeyCode.S) {
+                    gameWorld.getSceneNodes().getChildren().remove(
+                            gameWorld.getLoseScreen());
+                    gameWorld.getSceneNodes().getChildren().remove(
+                            gameWorld.getRestartText());
+                    gameWorld = new SuperOmario(60, "Super Omario");
+                    gameWorld.initialize(primaryStage);
+                    primaryStage.setScene(gameWorld.getGameScene());
+                    primaryStage.show();
+
+                }
+            }
         }
+        );
     }
 
     /**
@@ -92,6 +97,11 @@ public class GameMain extends Application implements EventHandler<KeyEvent> {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void handle(KeyEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

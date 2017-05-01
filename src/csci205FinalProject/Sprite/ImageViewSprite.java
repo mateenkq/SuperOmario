@@ -92,7 +92,8 @@ public class ImageViewSprite extends AnimationTimer {
                 currentRow += addRows + 1;
                 currentCol = frameAdd - (cols - currentCol);
 
-            } else {
+            }
+            else {
                 currentRow += addRows;
                 currentCol += frameAdd;
 
@@ -112,9 +113,6 @@ public class ImageViewSprite extends AnimationTimer {
             imageView.setViewport(new Rectangle2D(currentCol * frameWidth,
                                                   currentRow * frameHeight,
                                                   frameWidth, frameHeight));
-
-            System.out.println(currentCol);
-            System.out.println(totalFrames);
             if (currentCol == (totalFrames - 1)) {
                 finished = true;
             }
