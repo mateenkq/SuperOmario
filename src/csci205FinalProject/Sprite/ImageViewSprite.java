@@ -42,6 +42,8 @@ public class ImageViewSprite extends AnimationTimer {
 
     private long lastFrame = 0;
 
+    private boolean finished;
+
     public ImageViewSprite(ImageView imageView, Image image, int columns,
                            int rows, int totalFrames, int frameWidth,
                            int frameHeight, float framesPerSecond) {
@@ -57,6 +59,7 @@ public class ImageViewSprite extends AnimationTimer {
         fps = framesPerSecond;
 
         lastFrame = System.nanoTime();
+        finished = false;
     }
 
     public ImageView getImageView() {
@@ -69,6 +72,10 @@ public class ImageViewSprite extends AnimationTimer {
 
     public void setFps(float fps) {
         this.fps = fps;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 
     @Override
@@ -84,10 +91,12 @@ public class ImageViewSprite extends AnimationTimer {
             if (currentCol + frameAdd >= cols) {
                 currentRow += addRows + 1;
                 currentCol = frameAdd - (cols - currentCol);
+
             }
             else {
                 currentRow += addRows;
                 currentCol += frameAdd;
+
             }
             currentRow = (currentRow >= rows) ? currentRow - ((int) Math.floor(
                                                               (float) currentRow / rows) * rows) : currentRow;
@@ -97,12 +106,16 @@ public class ImageViewSprite extends AnimationTimer {
                 currentRow = 0;
                 currentCol = Math.abs(
                         currentCol - (totalFrames - (int) (Math.floor(
-                                                           (float) totalFrames / cols) * cols)));
+                                                                   (float) totalFrames / cols) * cols)));
+
             }
 
             imageView.setViewport(new Rectangle2D(currentCol * frameWidth,
                                                   currentRow * frameHeight,
                                                   frameWidth, frameHeight));
+            if (currentCol == (totalFrames - 1)) {
+                finished = true;
+            }
         }
     }
 }

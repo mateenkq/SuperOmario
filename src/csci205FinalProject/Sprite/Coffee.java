@@ -43,8 +43,8 @@ public class Coffee extends Sprite {
     public Coffee(GameWorld g, double x, double y) {
         super();
         game = g;
-        this.width = 6;
-        this.height = 10;
+        this.width = 15;
+        this.height = 18;
 
         this.setImage(getClass().getResource("/coffee.png").toExternalForm());
         this.node = new ImageView(image);
@@ -57,8 +57,8 @@ public class Coffee extends Sprite {
         center = y;
 
         //base bindings off of ratio between initial image dimensions, and initial game dimensions
-        propWidth = this.getNode().getImage().getWidth() / g.getGameScene().getWidth();
-        propHeight = this.getNode().getImage().getHeight() / g.getGameScene().getHeight();
+        propWidth = this.getWidth() / g.getGameScene().getWidth();
+        propHeight = this.getHeight() / g.getGameScene().getHeight();
 
         propRatio = (this.getNode().getImage().getWidth() / this.getNode().getImage().getHeight());
 
@@ -89,8 +89,7 @@ public class Coffee extends Sprite {
 
         if (this.getVelocityY() > 0 && belowBottom) {
             this.setVelocityY(-getVelocityY());
-        }
-        else if (this.getVelocityY() < 0 && aboveTop) {
+        } else if (this.getVelocityY() < 0 && aboveTop) {
             this.setVelocityY(-getVelocityY());
         }
     }
@@ -105,6 +104,10 @@ public class Coffee extends Sprite {
 
     public double getPropXPos() {
         return propXPos;
+    }
+
+    public double getPropRatio() {
+        return propRatio;
     }
 
     public double getCenter() {

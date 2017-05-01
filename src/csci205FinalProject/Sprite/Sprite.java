@@ -38,7 +38,7 @@ public class Sprite {
     protected double width;
     protected double height;
 
-    public Node node;
+    protected Node node;
 
     public Sprite() {
         positionX = 0;
@@ -134,8 +134,7 @@ public class Sprite {
     public boolean intersectsTop(Sprite s) {
         if ((s.positionY - s.height < this.positionY) && (s.positionY - s.height > this.positionY - this.height)) {
             return true;
-        }
-        else {
+        } else {
             return true;
         }
     }

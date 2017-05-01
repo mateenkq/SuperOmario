@@ -38,14 +38,14 @@ public class Player extends Sprite {
 
     public Player(GameWorld g) {
         super();
-        this.setAccelerationY(400);
+        this.setAccelerationY(450);
         game = g;
         this.setImage(getClass().getResource("/jm_stand.png").toExternalForm());
         this.node = new ImageView(image);
         this.node.relocate(this.getPositionX(), this.getPositionY());
 
-        this.node = this.node;
-
+        this.getNode().setFitHeight(30);
+        this.getNode().setFitWidth(19);
         //base bindings off of ratio between initial image dimensions, and initial game dimensions
         propWidth = this.getNode().getImage().getWidth() / g.getGameScene().getWidth();
         propHeight = this.getNode().getImage().getHeight() / g.getGameScene().getHeight();

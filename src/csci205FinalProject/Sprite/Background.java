@@ -26,9 +26,12 @@ public class Background extends Sprite {
 
     public Background(GameWorld g) {
         super();
-        this.node = new ImageView(getClass().getResource(
-                "/background.png").toExternalForm());
+        this.setImage(getClass().getResource(
+                "/background1.png").toExternalForm());
+        this.node = new ImageView(image);
         node.relocate(0, 0);
+        width = this.getImage().getWidth();
+        height = this.getImage().getHeight();
     }
 
     @Override
