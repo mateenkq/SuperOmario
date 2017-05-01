@@ -502,6 +502,16 @@ public class SuperOmario extends GameWorld {
         coffeeGained.play();
     }
 
+    public void playWinMusic() {
+        final URL resource = getClass().getResource("/winning_sound.mp3");
+        this.mediaPlayer.pause();
+        final AudioClip gameWon = new AudioClip(resource.toString());
+        PauseTransition pause = new PauseTransition(Duration.seconds(7));
+        pause.setOnFinished(finish -> this.playMusic());
+        gameWon.play();
+        pause.play();
+    }
+
     public void bindBackground() {
         backgroundImageView.fitWidthProperty().bind(
                 getGameScene().widthProperty().multiply(4));
