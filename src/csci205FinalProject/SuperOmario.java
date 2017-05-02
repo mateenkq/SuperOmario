@@ -818,6 +818,16 @@ public class SuperOmario extends GameWorld {
                 playCoffeeMusic();
                 coffeesDisplay.setText(String.format("Coffees: %d",
                                                      coffees));
+                if (coffees == 10) {
+                    lives += 1;
+                    int size = backgroundManager.getLives().size();
+                    double newX = backgroundManager.getLives().get(size - 1).getPositionX() + 6;
+                    backgroundManager.getLives().add(new Life(this, newX, 2));
+                    bindLives();
+                    coffees = 0;
+                    coffeesDisplay.setText(String.format("Coffees: %d",
+                                                         coffees));
+                }
             }
         }
         if (enemyManager != null) {
@@ -892,6 +902,7 @@ public class SuperOmario extends GameWorld {
                     this.flag.stopAnimation();
                     //player wins the game
                     gameOver = true;
+                    getGameLoop().stop();
                     this.showWinScreen();
                 }
             }
