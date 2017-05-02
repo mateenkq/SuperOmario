@@ -17,7 +17,7 @@
 *.class
 
 # Package Files #
-*.jar
+# *.jar
 *.war
 *.ear
 
@@ -55,4 +55,5 @@ Thumbs.db
 *.swp
 *.tmp
 tmp/
-#/dist/
+
+# /dist/
