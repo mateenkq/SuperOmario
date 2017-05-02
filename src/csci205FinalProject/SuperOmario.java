@@ -26,6 +26,7 @@ import csci205FinalProject.Sprite.Player;
 import csci205FinalProject.Sprite.WinFlag;
 import java.net.URL;
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -41,6 +42,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * SuperOmario - an instance of GameWorld that is a knock-off super mario game
@@ -402,6 +404,7 @@ public class SuperOmario extends GameWorld {
         winScreen.setFitHeight(this.getGameScene().getHeight());
 
         winScreen.toFront();
+        playWinMusic();
 
         getSceneNodes().getChildren().add(winScreen);
         //also show restart text
@@ -599,13 +602,39 @@ public class SuperOmario extends GameWorld {
         mediaPlayer.play();
     }
 
-    //plays music when omario has lost the game
+    /**
+     * Pauses the main music and plays the sound pertaining to "Game Over"
+     */
     public void playGameOverMusic() {
-        //final URL resource = getClass().getResource("/game_over");
-        final AudioClip gameOver = new AudioClip(getClass().getResource(
-                "/game_over.mp3").toExternalForm());
+        final URL resource = getClass().getResource("/you-have-failed.mp3");
+        this.mediaPlayer.pause();
+        final AudioClip gameOver = new AudioClip(resource.toString());
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        pause.setOnFinished(finish -> this.playMusic());
         gameOver.play();
+        pause.play();
+    }
 
+    /**
+     * This music will be played every time the player gets a coffee
+     */
+    public void playCoffeeMusic() {
+        final URL resource = getClass().getResource("/coffee.wav");
+        final AudioClip coffeeGained = new AudioClip(resource.toString());
+        coffeeGained.play();
+    }
+
+    /**
+     * This music will be played when the player wins the game
+     */
+    public void playWinMusic() {
+        final URL resource = getClass().getResource("/winning_sound.mp3");
+        this.mediaPlayer.pause();
+        final AudioClip gameWon = new AudioClip(resource.toString());
+        PauseTransition pause = new PauseTransition(Duration.seconds(7));
+        pause.setOnFinished(finish -> this.playMusic());
+        gameWon.play();
+        pause.play();
     }
 
     /**
@@ -783,6 +812,7 @@ public class SuperOmario extends GameWorld {
                         coffeeNum));
                 //add to number of coffees player has
                 coffees += 1;
+                playCoffeeMusic();
                 coffeesDisplay.setText(String.format("Coffees: %d",
                                                      coffees));
             }
