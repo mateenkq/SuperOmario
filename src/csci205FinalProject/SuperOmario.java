@@ -598,6 +598,9 @@ public class SuperOmario extends GameWorld {
         // music for start menu
         final URL resource = getClass().getResource("/omario.mp3");
         final Media media = new Media(resource.toString());
+        if (this.mediaPlayer != null) {
+            this.mediaPlayer.stop();
+        }
         this.mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
     }
